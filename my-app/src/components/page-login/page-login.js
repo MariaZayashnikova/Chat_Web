@@ -3,6 +3,8 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useFormik } from 'formik';
+import firebase from "firebase/app";
+import "firebase/auth";
 
 const validate = values => {
     const errors = {};
@@ -28,6 +30,15 @@ function PageLogin() {
         validate,
         onSubmit: values => {
             alert(JSON.stringify(values, null, 2));
+            firebase.auth().signInWithEmailAndPassword(values.email, values.password)
+                .then((userCredential) => {
+                    let user = userCredential.user;
+                        console.log(user);
+                })
+                .catch((error) => {
+                    let errorCode = error.code;
+                    let errorMessage = error.message;
+                });
         },
     });
     return (
