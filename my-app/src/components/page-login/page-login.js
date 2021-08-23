@@ -8,7 +8,7 @@ const validate = values => {
     const errors = {};
 
     if (!values.password) {
-        errors.password = 'Required';
+        errors.password = true;
     }
     if (!values.email) {
         errors.email = true;
