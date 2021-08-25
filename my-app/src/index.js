@@ -1,13 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import {Provider} from 'react-redux';
 import firebase from "firebase/app";
 import './index.css';
 import App from './components/app/App';
 import reportWebVitals from './reportWebVitals';
-
-
-
+import store from './store';
 import "firebase/firestore";
 
 const firebaseConfig = {
@@ -21,12 +19,10 @@ const firebaseConfig = {
     measurementId: "G-K7N869Y09Y"
 };
 
-
-
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <Provider store={store}>
+        <App />
+    </Provider>,
   document.getElementById('root')
 );
 reportWebVitals();

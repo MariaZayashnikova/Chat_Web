@@ -3,8 +3,9 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useFormik } from 'formik';
-import firebase from "firebase/app";
-import "firebase/auth";
+import {FETCH_MESSAGES_FAILURE, FETCH_MESSAGES_REQUEST, FETCH_MESSAGES_SUCCESS} from "../../actions";
+import {connect} from 'react-redux';
+
 
 const validate = values => {
     const errors = {};
@@ -21,7 +22,7 @@ const validate = values => {
     return errors;
 }
 
-function PageLogin() {
+function PageLogin({error, FETCH_MESSAGES_REQUEST}) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -29,16 +30,7 @@ function PageLogin() {
         },
         validate,
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
-            firebase.auth().signInWithEmailAndPassword(values.email, values.password)
-                .then((userCredential) => {
-                    let user = userCredential.user;
-                        console.log(user);
-                })
-                .catch((error) => {
-                    let errorCode = error.code;
-                    let errorMessage = error.message;
-                });
+            FETCH_MESSAGES_REQUEST(values);
         },
     });
     return (
@@ -71,10 +63,20 @@ function PageLogin() {
                     />
                     <Button type="submit">Submit</Button>
                 </Form>
-
             </div>
         </div>
     );
 }
+const mapStateToProps = ({error}) => {
+    return {
+        error
+    }
+};
 
-export default PageLogin;
+const mapDispatchToProps = {
+    FETCH_MESSAGES_REQUEST,
+    FETCH_MESSAGES_SUCCESS,
+    FETCH_MESSAGES_FAILURE
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageLogin);
