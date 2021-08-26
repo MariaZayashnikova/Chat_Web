@@ -17,8 +17,8 @@ const reducer = (state = initialState, action) => {
             };
         case 'FETCH_MESSAGES_FAILURE':
             return {
-                ...state,
-                error: true
+                loading: false,
+                error: action.error.message
             };
         default:
             return state;

@@ -22,7 +22,7 @@ const validate = values => {
     return errors;
 }
 
-function PageLogin({error, FETCH_MESSAGES_REQUEST}) {
+function PageLogin({ loading, error, FETCH_MESSAGES_REQUEST}) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -63,12 +63,19 @@ function PageLogin({error, FETCH_MESSAGES_REQUEST}) {
                     />
                     <Button type="submit">Submit</Button>
                 </Form>
+                {loading ? (
+                    <div>Loading...</div>
+                ) : null }
+                {error ? (
+                    <div className="error">{error}</div>
+                ) : null }
             </div>
         </div>
     );
 }
-const mapStateToProps = ({error}) => {
+const mapStateToProps = ({loading, error}) => {
     return {
+        loading,
         error
     }
 };
