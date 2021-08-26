@@ -3,6 +3,10 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useFormik } from 'formik';
+import {FETCH_MESSAGES_FAILURE, FETCH_MESSAGES_REQUEST, FETCH_MESSAGES_SUCCESS} from "../../actions";
+import {connect} from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComments } from '@fortawesome/free-solid-svg-icons';
 
 const validate = values => {
     const errors = {};
@@ -19,7 +23,7 @@ const validate = values => {
     return errors;
 }
 
-function PageLogin() {
+function PageLogin({ loading, error, FETCH_MESSAGES_REQUEST}) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -27,12 +31,14 @@ function PageLogin() {
         },
         validate,
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
+            FETCH_MESSAGES_REQUEST(values);
         },
     });
     return (
         <div className="PageLogin">
-            <h1 className="TitleLogin">Chat</h1>
+            <h1 className="TitleLogin">
+                <FontAwesomeIcon className="icons" icon={faComments} />
+                Chat</h1>
             <div className="containerForm">
                 <Form onSubmit={formik.handleSubmit}>
                     <Form.Control
@@ -60,10 +66,27 @@ function PageLogin() {
                     />
                     <Button type="submit">Submit</Button>
                 </Form>
-
+                {loading ? (
+                    <div>Loading...</div>
+                ) : null }
+                {error ? (
+                    <div className="error">{error}</div>
+                ) : null }
             </div>
         </div>
     );
 }
+const mapStateToProps = ({loading, error}) => {
+    return {
+        loading,
+        error
+    }
+};
 
-export default PageLogin;
+const mapDispatchToProps = {
+    FETCH_MESSAGES_REQUEST,
+    FETCH_MESSAGES_SUCCESS,
+    FETCH_MESSAGES_FAILURE
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageLogin);
