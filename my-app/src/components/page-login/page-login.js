@@ -5,7 +5,8 @@ import Button from 'react-bootstrap/Button';
 import { useFormik } from 'formik';
 import {FETCH_MESSAGES_FAILURE, FETCH_MESSAGES_REQUEST, FETCH_MESSAGES_SUCCESS} from "../../actions";
 import {connect} from 'react-redux';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComments } from '@fortawesome/free-solid-svg-icons';
 
 const validate = values => {
     const errors = {};
@@ -35,7 +36,9 @@ function PageLogin({ loading, error, FETCH_MESSAGES_REQUEST}) {
     });
     return (
         <div className="PageLogin">
-            <h1 className="TitleLogin">Chat</h1>
+            <h1 className="TitleLogin">
+                <FontAwesomeIcon className="icons" icon={faComments} />
+                Chat</h1>
             <div className="containerForm">
                 <Form onSubmit={formik.handleSubmit}>
                     <Form.Control
