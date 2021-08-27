@@ -9,14 +9,14 @@ import store from './store';
 import "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAVSNd9_qs-wGtAjix6FcakayIYJmKP2xg",
-    authDomain: "chat-7cccb.firebaseapp.com",
-    databaseURL: "https://chat-7cccb-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "chat-7cccb",
-    storageBucket: "chat-7cccb.appspot.com",
-    messagingSenderId: "910346942866",
-    appId: "1:910346942866:web:fd25553dcccd68aae0e94b",
-    measurementId: "G-K7N869Y09Y"
+    apiKey: process.env.REACT_APP_APIKEY,
+    authDomain: process.env.REACT_APP_AUTHDOMAIN,
+    databaseURL: process.env.REACT_APP_databaseURL,
+    projectId: process.env.REACT_APP_projectId,
+    storageBucket: process.env.REACT_APP_storageBucket,
+    messagingSenderId: process.env.REACT_APP_messagingSenderId,
+    appId: process.env.REACT_APP_appId,
+    measurementId: process.env.REACT_APP_measurementId
 };
 
 ReactDOM.render(
