@@ -4,14 +4,19 @@
     justify-content: space-around;
     width: 30%;
     margin: 20px auto;
+    background-image: linear-gradient(to right bottom, #00bfff, blue);
+    border-radius: 15px;
+    box-shadow: 1px 1px 20px -3px grey;
 }
 
 .TitlePage {
+    width: 90%;
+    margin: 10px auto;
     color: white;
 }
 
 .containerForm {
-    width: 100%;
+    width: 90%;
     margin: 10px auto;
     padding: 5px;
 }
@@ -52,5 +57,9 @@
     padding: 3px 10px;
     text-align: center;
     background: rgba(204, 255, 255, 0.8);
+}
+
+.colorWhite {
+    color: white;
 }
 

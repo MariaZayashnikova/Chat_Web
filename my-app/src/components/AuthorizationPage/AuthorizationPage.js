@@ -37,7 +37,7 @@ function AuthorizationPage({ loading, error, FETCH_MESSAGES_REQUEST}) {
             <div className="containerForm">
                 <Form onSubmit={formik.handleSubmit}>
                     <FormGroup className="position-relative">
-                        <Label for="email">Email</Label>
+                        <Label className="colorWhite" for="email">Email</Label>
                         <Input
                             className={formik.touched.email && formik.errors.email ? "input inputError" : "input"}
                             id="email"
@@ -51,7 +51,7 @@ function AuthorizationPage({ loading, error, FETCH_MESSAGES_REQUEST}) {
                         <FormFeedback tooltip>{formik.errors.email}</FormFeedback>
                     </FormGroup>
                     <FormGroup className="position-relative">
-                        <Label for="password">Пароль</Label>
+                        <Label className="colorWhite" for="password">Пароль</Label>
                         <Input
                             className={formik.touched.password && formik.errors.password ? "input inputError" : "input"}
                             type="password"
