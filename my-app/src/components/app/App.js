@@ -1,10 +1,12 @@
 import './App.css';
-import PageLogin from "../page-login/page-login";
+import AuthorizationPage from "../AuthorizationPage/AuthorizationPage";
+import HeaderTitle from '../HeaderTitle/HeaderTitle';
 
 function App() {
   return (
     <div className="App">
-        <PageLogin/>
+        <HeaderTitle/>
+        <AuthorizationPage/>
     </div>
   );
 }
