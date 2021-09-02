@@ -1,13 +1,4 @@
-.AuthorizationPage {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 30%;
-    margin: 20px auto;
-    background-image: linear-gradient(to right bottom, #00bfff, blue);
-    border-radius: 15px;
-    box-shadow: 1px 1px 20px -3px grey;
-}
+
 
 .TitlePage {
     width: 90%;
@@ -32,11 +23,11 @@
     padding: 2px 10px;
     line-height: 16px;
 }
-.AuthorizationPage .inputError {
+.Page .inputError {
    border: 2px solid red;
 }
 
-.AuthorizationPage .btn-custom {
+.Page .btn-custom {
     display: block;
     margin: 15px auto;
     width: 50%;
@@ -49,7 +40,6 @@
 }
 
 .error {
-    width: 30%;
     color: red;
     font-size: 18px;
     margin: 5px auto;
@@ -61,5 +51,15 @@
 
 .colorWhite {
     color: white;
+}
+
+.containerLinks {
+    margin: 5px 0 15px 0;
+}
+
+.container {
+    display: flex;
+    justify-content: space-around;
+    margin: 5px 0;
 }
 

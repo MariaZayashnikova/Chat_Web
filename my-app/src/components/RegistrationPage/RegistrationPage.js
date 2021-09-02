@@ -1,45 +1,39 @@
-import './AuthorizationPage.css';
 import React from 'react';
 import { Form, FormGroup, Input, FormFeedback, Label, Button } from 'reactstrap';
 import { useFormik } from 'formik';
-import {FETCH_MESSAGES_FAILURE, FETCH_Authorization_REQUEST, FETCH_MESSAGES_SUCCESS, REMOVE_FAILURE} from "../../actions";
-import {connect} from 'react-redux';
+import {validate} from "../AuthorizationPage/AuthorizationPage";
 import {Link} from "react-router-dom";
+import {
+    FETCH_MESSAGES_FAILURE,
+    FETCH_MESSAGES_SUCCESS,
+    FETCH_Registration_REQUEST,
+    REMOVE_FAILURE
+} from "../../actions";
+import {connect} from 'react-redux';
 
-const validate = values => {
-    const errors = {};
-
-    if (!values.password) {
-        errors.password = true;
-    }
-
-    if (!values.email) {
-        errors.email = true;
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = 'Invalid email address';
-    }
-
-    return errors;
-}
-
-export {validate};
-
-function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE_FAILURE}) {
+function RegistrationPage({ loading, error, FETCH_Registration_REQUEST, FETCH_MESSAGES_FAILURE, REMOVE_FAILURE}) {
     const formik = useFormik({
         initialValues: {
             email: '',
-            password: ''
+            password: '',
+            passwordConfirmation: ''
         },
         validate,
         onSubmit: values => {
-            REMOVE_FAILURE();
-            FETCH_Authorization_REQUEST(values);
+            if(values.password === values.passwordConfirmation) {
+                FETCH_Registration_REQUEST(values);
+            } else {
+                const error = {
+                    message: 'Пароли не совпадают'
+                }
+                FETCH_MESSAGES_FAILURE(error);
+            }
         },
     });
 
     return (
         <div className="Page">
-            <h2 className="TitlePage" >Авторизация</h2>
+            <h2 className="TitlePage" >Регистрация</h2>
             <div className="containerForm">
                 <Form onSubmit={formik.handleSubmit}>
                     <FormGroup className="position-relative">
@@ -68,7 +62,19 @@ function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE
                             value={formik.values.password}
                         />
                     </FormGroup>
-                    <Button className="btn-custom" color="primary" type="submit">Войти</Button>
+                    <FormGroup className="position-relative">
+                        <Label className="colorWhite" for="password">Подтверждение пароля</Label>
+                        <Input
+                            className={formik.touched.password && formik.errors.password ? "input inputError" : "input"}
+                            type="password"
+                            id="passwordConfirmation"
+                            name="passwordConfirmation"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.passwordConfirmation}
+                        />
+                    </FormGroup>
+                    <Button className="btn-custom" color="primary" type="submit">Регистрация</Button>
                 </Form>
                 {loading ? (
                     <div>Loading...</div>
@@ -79,17 +85,14 @@ function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE
             </div>
             <div className="containerLinks">
                 <div className="container">
-                    <div>Войти через VK</div>
-                    <div>Войти через Google</div>
-                </div>
-                <div className="container">
-                    <Link to='/Registration' className="customLink" onClick={REMOVE_FAILURE}>Зарегистрироваться</Link>
+                    <Link to='/' className="customLink">Войти</Link>
                     <div>Забыли пароль?</div>
                 </div>
             </div>
         </div>
-    );
+    )
 }
+
 const mapStateToProps = ({loading, error}) => {
     return {
         loading,
@@ -98,10 +101,10 @@ const mapStateToProps = ({loading, error}) => {
 };
 
 const mapDispatchToProps = {
-    FETCH_Authorization_REQUEST,
+    FETCH_Registration_REQUEST,
     FETCH_MESSAGES_SUCCESS,
     FETCH_MESSAGES_FAILURE,
     REMOVE_FAILURE
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthorizationPage);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationPage);

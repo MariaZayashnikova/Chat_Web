@@ -5,9 +5,32 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: rgba(153, 153, 102, 0.1) !important;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.customLink {
+  text-decoration: none;
+  color: white;
+}
+
+.customLink:hover {
+  color: white;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.Page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30%;
+  margin: 20px auto;
+  background-image: linear-gradient(to right bottom, #00bfff, blue);
+  border-radius: 15px;
+  box-shadow: 1px 1px 20px -3px grey;
 }
