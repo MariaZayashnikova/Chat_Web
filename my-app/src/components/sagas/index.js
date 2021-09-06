@@ -2,9 +2,15 @@ import { call, put,  takeLatest, all } from 'redux-saga/effects';
 import firebase from "firebase/app";
 import "firebase/auth";
 
-
 function fetchAuthorization(action) {
     return firebase.auth().signInWithEmailAndPassword(action.value.email, action.value.password)
+        .then(response => ({ response }))
+        .catch(error => ({ error }));
+}
+
+function fetchAuthorizationViaGoogle(action) {
+    let provider = new firebase.auth.GoogleAuthProvider();
+    return firebase.auth().signInWithPopup(provider)
         .then(response => ({ response }))
         .catch(error => ({ error }));
 }
@@ -18,11 +24,29 @@ function fetchRegistration(action) {
 function* fetchUserAuthorization(action) {
     const { response, error } = yield call(() => fetchAuthorization(action));
          if(response) {
-             yield put({ type: 'FETCH_MESSAGES_SUCCESS'});
+             let data = {
+                 email: response.user.email,
+                 name: response.user.displayName
+             }
+             yield put({ type: 'FETCH_MESSAGES_SUCCESS', data});
          }
          if(error){
             yield put({ type: 'FETCH_MESSAGES_FAILURE', error});
          }
+}
+
+function* fetchUserAuthorizationViaGoogle(action) {
+    const { response, error } = yield call(() => fetchAuthorizationViaGoogle(action));
+    if(response) {
+        let data = {
+            email: response.user.email,
+            name: response.user.displayName
+        }
+        yield put({ type: 'FETCH_MESSAGES_SUCCESS', data});
+    }
+    if(error){
+        yield put({ type: 'FETCH_MESSAGES_FAILURE', error});
+    }
 }
 
 function* fetchUserRegistration(action) {
@@ -39,6 +63,10 @@ function* FETCH_Authorization() {
     yield takeLatest('FETCH_Authorization_REQUEST', fetchUserAuthorization);
 }
 
+function* FETCH_AuthorizationViaGoogle() {
+    yield takeLatest('FETCH_AuthorizationViaGoogle_REQUEST', fetchUserAuthorizationViaGoogle);
+}
+
 function* FETCH_Registration() {
     yield takeLatest('FETCH_Registration_REQUEST', fetchUserRegistration);
 }
@@ -47,6 +75,7 @@ function* FETCH_Registration() {
 export default function* rootSaga() {
     yield all([
         FETCH_Authorization(),
-        FETCH_Registration()
+        FETCH_Registration(),
+        FETCH_AuthorizationViaGoogle()
     ]);
 }

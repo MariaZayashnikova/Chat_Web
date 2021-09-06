@@ -2,9 +2,18 @@ import './AuthorizationPage.css';
 import React from 'react';
 import { Form, FormGroup, Input, FormFeedback, Label, Button } from 'reactstrap';
 import { useFormik } from 'formik';
-import {FETCH_MESSAGES_FAILURE, FETCH_Authorization_REQUEST, FETCH_MESSAGES_SUCCESS, REMOVE_FAILURE} from "../../actions";
+import {
+    FETCH_MESSAGES_FAILURE,
+    FETCH_Authorization_REQUEST,
+    REMOVE_FAILURE,
+    FETCH_AuthorizationViaGoogle_REQUEST
+} from "../../actions";
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+library.add(fab);
 
 const validate = values => {
     const errors = {};
@@ -24,7 +33,7 @@ const validate = values => {
 
 export {validate};
 
-function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE_FAILURE}) {
+function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE_FAILURE, user, FETCH_AuthorizationViaGoogle_REQUEST}) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -32,10 +41,15 @@ function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE
         },
         validate,
         onSubmit: values => {
-            REMOVE_FAILURE();
+            if(error) {
+                REMOVE_FAILURE();
+            }
             FETCH_Authorization_REQUEST(values);
         },
     });
+    function onSignIn() {
+        FETCH_AuthorizationViaGoogle_REQUEST();
+    }
 
     return (
         <div className="Page">
@@ -79,29 +93,40 @@ function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE
             </div>
             <div className="containerLinks">
                 <div className="container">
-                    <div>Войти через VK</div>
-                    <div>Войти через Google</div>
+                    <button className="btn-custom-net">Войти через VK</button>
+                    <button onClick={onSignIn} className="btn-custom-net">
+                        <FontAwesomeIcon className="custom-icon" icon={['fab', 'google']} />
+                        Войти через Google
+                    </button>
                 </div>
                 <div className="container">
-                    <Link to='/Registration' className="customLink" onClick={REMOVE_FAILURE}>Зарегистрироваться</Link>
+                    <Link to='/Registration' className="customLink" onClick={() => {
+                        if(error) {
+                            REMOVE_FAILURE();
+                        }
+                    }} >Зарегистрироваться</Link>
                     <div>Забыли пароль?</div>
                 </div>
             </div>
+            {user ? (
+                <Redirect push to="/OperatorPage"/>
+            ) : null}
         </div>
     );
 }
-const mapStateToProps = ({loading, error}) => {
+const mapStateToProps = ({loading, error, user}) => {
     return {
         loading,
-        error
+        error,
+        user
     }
 };
 
 const mapDispatchToProps = {
     FETCH_Authorization_REQUEST,
-    FETCH_MESSAGES_SUCCESS,
     FETCH_MESSAGES_FAILURE,
-    REMOVE_FAILURE
+    REMOVE_FAILURE,
+    FETCH_AuthorizationViaGoogle_REQUEST
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthorizationPage);
