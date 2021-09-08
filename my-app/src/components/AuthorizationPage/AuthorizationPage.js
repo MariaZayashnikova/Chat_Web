@@ -9,11 +9,9 @@ import {
     FETCH_AuthorizationViaGoogle_REQUEST
 } from "../../actions";
 import {connect} from 'react-redux';
-import {Link, Redirect} from "react-router-dom";
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
+import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-library.add(fab);
+import Spinner from "../Spinner/Spinner";
 
 const validate = values => {
     const errors = {};
@@ -85,7 +83,7 @@ function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE
                     <Button className="btn-custom" color="primary" type="submit">Войти</Button>
                 </Form>
                 {loading ? (
-                    <div>Loading...</div>
+                    <Spinner/>
                 ) : null }
                 {error ? (
                     <div className="error">{error}</div>
@@ -93,7 +91,10 @@ function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE
             </div>
             <div className="containerLinks">
                 <div className="container">
-                    <button className="btn-custom-net">Войти через VK</button>
+                    <button className="btn-custom-net">
+                        <FontAwesomeIcon className="custom-icon" icon={['fab', 'vk']} />
+                        Войти через VK
+                    </button>
                     <button onClick={onSignIn} className="btn-custom-net">
                         <FontAwesomeIcon className="custom-icon" icon={['fab', 'google']} />
                         Войти через Google
@@ -108,9 +109,6 @@ function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE
                     <div>Забыли пароль?</div>
                 </div>
             </div>
-            {user ? (
-                <Redirect push to="/OperatorPage"/>
-            ) : null}
         </div>
     );
 }

@@ -30,6 +30,11 @@ const reducer = (state = initialState, action) => {
                     email: action.data.email
                 }
             };
+        case 'SIGN_OUT_USER':
+            return {
+                ...state,
+                user: null
+            };
         case 'FETCH_MESSAGES_FAILURE':
             return {
                 loading: false,

@@ -50,11 +50,6 @@
     color: white;
 }
 
-.custom-icon {
-    display: block;
-    margin: 0 auto;
-}
-
 .error {
     color: red;
     font-size: 18px;
