@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import {fas} from '@fortawesome/free-solid-svg-icons';
+import Error from "../Error/Error";
 
 library.add(fab, fas);
 
@@ -23,6 +24,8 @@ function App({user}) {
               {user ? (
                   <Redirect push to="/OperatorPage"/>
               ) : <Redirect push to="/"/>}
+              <Route path='/error' component={Error} />
+              <Redirect to="/error"/>
           </div>
       </Router>
   );
