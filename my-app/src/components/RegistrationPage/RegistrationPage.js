@@ -72,15 +72,19 @@ function RegistrationPage({ loadingFromState, errorFromState, FETCH_Registration
                             type="password"
                             id="password"
                             name="password"
+                            invalid={formik.touched.password && formik.errors.password && formik.errors.password.length > 0 ? true : false}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
                         />
+                        <FormFeedback tooltip>
+                            <div>{formik.errors.password}</div>
+                        </FormFeedback>
                     </FormGroup>
                     <FormGroup className="position-relative">
                         <Label className="colorWhite" for="password">Подтверждение пароля</Label>
                         <Input
-                            className={formik.touched.password && formik.errors.password ? "input inputError" : "input"}
+                            className={formik.touched.passwordConfirmation && formik.errors.password ? "input inputError" : "input"}
                             type="password"
                             id="passwordConfirmation"
                             name="passwordConfirmation"

@@ -21,6 +21,8 @@ const validate = values => {
 
     if (!values.password) {
         errors.password = true;
+    } else if (!/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/i.test(values.password)) {
+        errors.password = 'Пароль должен содержать цифру, буквы в нижнем и верхнем регистре и иметь длину не менее 8 знаков';
     }
 
     if (!values.email) {
