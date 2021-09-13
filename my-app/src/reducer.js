@@ -1,7 +1,6 @@
 const initialState = {
-    loading: false,
-    error: false,
-    user: null
+    loadingFromState: false,
+    errorFromState: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -9,41 +8,32 @@ const reducer = (state = initialState, action) => {
         case 'FETCH_Authorization_REQUEST':
             return {
                 ...state,
-                loading: true
+                loadingFromState: true
             };
         case 'FETCH_AuthorizationViaGoogle_REQUEST':
             return {
                 ...state,
-                loading: true
+                loadingFromState: true
             };
         case 'FETCH_Registration_REQUEST':
             return {
                 ...state,
-                loading: true
+                loadingFromState: true
             };
         case 'FETCH_MESSAGES_SUCCESS':
             return {
                 ...state,
-                loading: false,
-                user: {
-                    name: action.data.name,
-                    email: action.data.email
-                }
-            };
-        case 'SIGN_OUT_USER':
-            return {
-                ...state,
-                user: null
+                loadingFromState: false
             };
         case 'FETCH_MESSAGES_FAILURE':
             return {
-                loading: false,
-                error: action.error.message
+                loadingFromState: false,
+                errorFromState: action.error.message
             };
         case 'REMOVE_FAILURE':
             return {
                 ...state,
-                error: false
+                errorFromState: false
             };
         default:
             return state;

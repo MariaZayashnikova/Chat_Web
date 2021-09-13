@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, FormGroup, Input, FormFeedback, Label, Button } from 'reactstrap';
 import { useFormik } from 'formik';
 import {validate} from "../AuthorizationPage/AuthorizationPage";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {
     FETCH_MESSAGES_FAILURE,
     FETCH_MESSAGES_SUCCESS,
@@ -10,8 +10,11 @@ import {
     REMOVE_FAILURE
 } from "../../actions";
 import {connect} from 'react-redux';
+import {useAuthState} from "react-firebase-hooks/auth";
+import {fb} from "../Firebase/componentFirebase";
+import Spinner from "../Spinner/Spinner";
 
-function RegistrationPage({ loading, error, FETCH_Registration_REQUEST, FETCH_MESSAGES_FAILURE, REMOVE_FAILURE}) {
+function RegistrationPage({ loadingFromState, errorFromState, FETCH_Registration_REQUEST, FETCH_MESSAGES_FAILURE, REMOVE_FAILURE}) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -21,15 +24,25 @@ function RegistrationPage({ loading, error, FETCH_Registration_REQUEST, FETCH_ME
         validate,
         onSubmit: values => {
             if(values.password === values.passwordConfirmation) {
+                if(errorFromState) {
+                    REMOVE_FAILURE();
+                }
                 FETCH_Registration_REQUEST(values);
             } else {
                 const error = {
                     message: 'Пароли не совпадают'
                 }
                 FETCH_MESSAGES_FAILURE(error);
-            }
-        },
+            };
+        }
     });
+    const [user] = useAuthState(fb.auth());
+
+    if(user) {
+        return (
+            <Redirect to='/OperatorPage'/>
+        )
+    }
 
     return (
         <div className="Page">
@@ -48,7 +61,9 @@ function RegistrationPage({ loading, error, FETCH_Registration_REQUEST, FETCH_ME
                             onBlur={formik.handleBlur}
                             value={formik.values.email}
                         />
-                        <FormFeedback tooltip>{formik.errors.email}</FormFeedback>
+                        <FormFeedback tooltip>
+                            <div>{formik.errors.email}</div>
+                        </FormFeedback>
                     </FormGroup>
                     <FormGroup className="position-relative">
                         <Label className="colorWhite" for="password">Пароль</Label>
@@ -76,16 +91,20 @@ function RegistrationPage({ loading, error, FETCH_Registration_REQUEST, FETCH_ME
                     </FormGroup>
                     <Button className="btn-custom" color="primary" type="submit">Регистрация</Button>
                 </Form>
-                {loading ? (
-                    <div>Loading...</div>
+                {loadingFromState ? (
+                    <Spinner/>
                 ) : null }
-                {error ? (
-                    <div className="error">{error}</div>
+                {errorFromState ? (
+                    <div className="error">{errorFromState}</div>
                 ) : null }
             </div>
             <div className="containerLinks">
                 <div className="container">
-                    <Link to='/' className="customLink">Войти</Link>
+                    <Link to='/' className="customLink" onClick={() => {
+                        if(errorFromState) {
+                            REMOVE_FAILURE();
+                        }
+                    }}>Войти</Link>
                     <div>Забыли пароль?</div>
                 </div>
             </div>
@@ -93,10 +112,10 @@ function RegistrationPage({ loading, error, FETCH_Registration_REQUEST, FETCH_ME
     )
 }
 
-const mapStateToProps = ({loading, error}) => {
+const mapStateToProps = ({loadingFromState, errorFromState}) => {
     return {
-        loading,
-        error
+        loadingFromState,
+        errorFromState
     }
 };
 

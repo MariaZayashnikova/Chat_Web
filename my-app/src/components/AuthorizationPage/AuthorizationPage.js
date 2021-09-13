@@ -9,9 +9,12 @@ import {
     FETCH_AuthorizationViaGoogle_REQUEST
 } from "../../actions";
 import {connect} from 'react-redux';
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Spinner from "../Spinner/Spinner";
+import "firebase/auth";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {fb} from '../Firebase/componentFirebase';
 
 const validate = values => {
     const errors = {};
@@ -31,7 +34,8 @@ const validate = values => {
 
 export {validate};
 
-function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE_FAILURE, user, FETCH_AuthorizationViaGoogle_REQUEST}) {
+
+function AuthorizationPage({errorFromState, loadingFromState, FETCH_Authorization_REQUEST, REMOVE_FAILURE, FETCH_AuthorizationViaGoogle_REQUEST}) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -39,16 +43,29 @@ function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE
         },
         validate,
         onSubmit: values => {
-            if(error) {
+            if(errorFromState) {
                 REMOVE_FAILURE();
             }
             FETCH_Authorization_REQUEST(values);
         },
     });
+
     function onSignIn() {
         FETCH_AuthorizationViaGoogle_REQUEST();
     }
 
+    const [user, loading] = useAuthState(fb.auth());
+
+    if(loading) {
+        return (
+            <Spinner/>
+        )
+    }
+    if(!loading && user) {
+        return (
+            <Redirect to="/OperatorPage"/>
+        )
+    }
     return (
         <div className="Page">
             <h2 className="TitlePage" >Авторизация</h2>
@@ -66,9 +83,11 @@ function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE
                             onBlur={formik.handleBlur}
                             value={formik.values.email}
                         />
-                        <FormFeedback tooltip>{formik.errors.email}</FormFeedback>
+                        <FormFeedback tooltip>
+                            <div>{formik.errors.email}</div>
+                        </FormFeedback>
                     </FormGroup>
-                    <FormGroup className="position-relative">
+                    <FormGroup>
                         <Label className="colorWhite" for="password">Пароль</Label>
                         <Input
                             className={formik.touched.password && formik.errors.password ? "input inputError" : "input"}
@@ -82,41 +101,38 @@ function AuthorizationPage({ loading, error, FETCH_Authorization_REQUEST, REMOVE
                     </FormGroup>
                     <Button className="btn-custom" color="primary" type="submit">Войти</Button>
                 </Form>
-                {loading ? (
+                {loadingFromState ? (
                     <Spinner/>
                 ) : null }
-                {error ? (
-                    <div className="error">{error}</div>
+                {errorFromState ? (
+                    <div className="error">{errorFromState}</div>
                 ) : null }
             </div>
             <div className="containerLinks">
                 <div className="container">
-                    <button className="btn-custom-net">
-                        <FontAwesomeIcon className="custom-icon" icon={['fab', 'vk']} />
-                        Войти через VK
-                    </button>
+                    <Link to='/Registration' className="customLink" onClick={() => {
+                        if(errorFromState) {
+                            REMOVE_FAILURE();
+                        }
+                    }} >Зарегистрироваться</Link>
                     <button onClick={onSignIn} className="btn-custom-net">
                         <FontAwesomeIcon className="custom-icon" icon={['fab', 'google']} />
                         Войти через Google
                     </button>
+
                 </div>
                 <div className="container">
-                    <Link to='/Registration' className="customLink" onClick={() => {
-                        if(error) {
-                            REMOVE_FAILURE();
-                        }
-                    }} >Зарегистрироваться</Link>
                     <div>Забыли пароль?</div>
                 </div>
             </div>
         </div>
     );
 }
-const mapStateToProps = ({loading, error, user}) => {
+
+const mapStateToProps = ({ errorFromState, loadingFromState}) => {
     return {
-        loading,
-        error,
-        user
+        loadingFromState,
+        errorFromState
     }
 };
 

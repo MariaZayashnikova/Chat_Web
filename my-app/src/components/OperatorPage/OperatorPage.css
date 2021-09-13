@@ -1,0 +1,10 @@
+.OperatorPage {
+    width: 100%;
+    background-image: linear-gradient(to right bottom, #00bfff, blue);
+}
+
+.containerUser {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 16px;
+}

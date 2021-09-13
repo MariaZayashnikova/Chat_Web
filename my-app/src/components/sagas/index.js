@@ -24,11 +24,7 @@ function fetchRegistration(action) {
 function* fetchUserAuthorization(action) {
     const { response, error } = yield call(() => fetchAuthorization(action));
          if(response) {
-             let data = {
-                 email: response.user.email,
-                 name: response.user.displayName
-             }
-             yield put({ type: 'FETCH_MESSAGES_SUCCESS', data});
+             yield put({ type: 'FETCH_MESSAGES_SUCCESS'});
          }
          if(error){
             yield put({ type: 'FETCH_MESSAGES_FAILURE', error});
@@ -38,11 +34,7 @@ function* fetchUserAuthorization(action) {
 function* fetchUserAuthorizationViaGoogle(action) {
     const { response, error } = yield call(() => fetchAuthorizationViaGoogle(action));
     if(response) {
-        let data = {
-            email: response.user.email,
-            name: response.user.displayName
-        }
-        yield put({ type: 'FETCH_MESSAGES_SUCCESS', data});
+        yield put({ type: 'FETCH_MESSAGES_SUCCESS'});
     }
     if(error){
         yield put({ type: 'FETCH_MESSAGES_FAILURE', error});
