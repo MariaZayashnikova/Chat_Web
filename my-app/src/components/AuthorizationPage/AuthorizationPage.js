@@ -5,8 +5,7 @@ import { useFormik } from 'formik';
 import {
     FETCH_MESSAGES_FAILURE,
     FETCH_Authorization_REQUEST,
-    REMOVE_FAILURE,
-    FETCH_AuthorizationViaGoogle_REQUEST
+    FETCH_AuthorizationViaGoogle_REQUEST, REMOVE_FAILURE
 } from "../../actions";
 import {connect} from 'react-redux';
 import {Link, Redirect} from "react-router-dom";
@@ -112,19 +111,22 @@ function AuthorizationPage({errorFromState, loadingFromState, FETCH_Authorizatio
             </div>
             <div className="containerLinks">
                 <div className="container">
+                    <button onClick={onSignIn} className="btn-custom-net">
+                        <FontAwesomeIcon className="custom-icon" icon={['fab', 'google']} />
+                        Войти через Google
+                    </button>
+                </div>
+                <div className="container">
                     <Link to='/Registration' className="customLink" onClick={() => {
                         if(errorFromState) {
                             REMOVE_FAILURE();
                         }
                     }} >Зарегистрироваться</Link>
-                    <button onClick={onSignIn} className="btn-custom-net">
-                        <FontAwesomeIcon className="custom-icon" icon={['fab', 'google']} />
-                        Войти через Google
-                    </button>
-
-                </div>
-                <div className="container">
-                    <div>Забыли пароль?</div>
+                    <Link to='/ResetPassword' className="customLink" onClick={() => {
+                        if(errorFromState) {
+                            REMOVE_FAILURE();
+                        }
+                    }} >Забыли пароль?</Link>
                 </div>
             </div>
         </div>

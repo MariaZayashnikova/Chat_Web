@@ -21,6 +21,14 @@ function fetchRegistration(action) {
         .catch(error => ({ error }));
 }
 
+function ResetPassword(action) {
+    let actionCodeSettings = {
+        url: 'http://localhost:3000',
+        handleCodeInApp: false
+    };
+    return firebase.auth().sendPasswordResetEmail(action.data, actionCodeSettings);
+}
+
 function* fetchUserAuthorization(action) {
     const { response, error } = yield call(() => fetchAuthorization(action));
          if(response) {
@@ -51,6 +59,24 @@ function* fetchUserRegistration(action) {
     }
 }
 
+function* fetchResetPassword(action) {
+    try {
+        yield call(() => ResetPassword(action));
+        let data = {
+            message: 'Письмо отправлено на почту'
+        }
+
+        yield put({ type: 'RESET_PASSWORD_SUCCESS', data});
+
+    } catch {
+        let error = {
+            message: 'Что-то пошло не так... Попробуйте позже'
+        }
+        yield put({ type: 'FETCH_MESSAGES_FAILURE', error});
+    }
+
+}
+
 function* FETCH_Authorization() {
     yield takeLatest('FETCH_Authorization_REQUEST', fetchUserAuthorization);
 }
@@ -63,11 +89,15 @@ function* FETCH_Registration() {
     yield takeLatest('FETCH_Registration_REQUEST', fetchUserRegistration);
 }
 
+function* FETCH_Reset_Password() {
+    yield takeLatest('RESET_PASSWORD', fetchResetPassword);
+}
 
 export default function* rootSaga() {
     yield all([
         FETCH_Authorization(),
         FETCH_Registration(),
-        FETCH_AuthorizationViaGoogle()
+        FETCH_AuthorizationViaGoogle(),
+        FETCH_Reset_Password()
     ]);
 }

@@ -109,7 +109,11 @@ function RegistrationPage({ loadingFromState, errorFromState, FETCH_Registration
                             REMOVE_FAILURE();
                         }
                     }}>Войти</Link>
-                    <div>Забыли пароль?</div>
+                    <Link to='/ResetPassword' className="customLink" onClick={() => {
+                        if(errorFromState) {
+                            REMOVE_FAILURE();
+                        };
+                    }}>Забыли пароль?</Link>
                 </div>
             </div>
         </div>
