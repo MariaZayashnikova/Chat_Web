@@ -1,6 +1,7 @@
 import { call, put,  takeLatest, all } from 'redux-saga/effects';
 import firebase from "firebase/app";
 import "firebase/auth";
+import {toast} from "react-toastify";
 
 function fetchAuthorization(action) {
     return firebase.auth().signInWithEmailAndPassword(action.value.email, action.value.password)
@@ -60,13 +61,19 @@ function* fetchUserRegistration(action) {
 }
 
 function* fetchResetPassword(action) {
+    const notify = () => toast.success('Письмо отпралено на почту', {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
     try {
         yield call(() => ResetPassword(action));
-        let data = {
-            message: 'Письмо отправлено на почту'
-        }
-
-        yield put({ type: 'RESET_PASSWORD_SUCCESS', data});
+        yield put({ type: 'FETCH_MESSAGES_SUCCESS'});
+        notify();
 
     } catch {
         let error = {

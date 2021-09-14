@@ -3,12 +3,14 @@ import {Button, FormFeedback, FormGroup, Input, Label} from "reactstrap";
 import {Link} from "react-router-dom";
 import {useFormik} from "formik";
 import {validate} from "../AuthorizationPage/AuthorizationPage";
-import {RESET_PASSWORD, REMOVE_FAILURE, FETCH_MESSAGES_SUCCESS} from "../../actions";
+import {RESET_PASSWORD, REMOVE_FAILURE} from "../../actions";
 import {connect} from "react-redux";
 import Spinner from "../Spinner/Spinner";
 import './ResetPasswordPage.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function ResetPasswordPage({loadingFromState, errorFromState, RESET_PASSWORD, REMOVE_FAILURE, FETCH_MESSAGES_SUCCESS}) {
+function ResetPasswordPage({loadingFromState, errorFromState, RESET_PASSWORD, REMOVE_FAILURE}) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -49,31 +51,23 @@ function ResetPasswordPage({loadingFromState, errorFromState, RESET_PASSWORD, RE
                         submitResetForm(formik.values.email);
                 }} >Отправить ссылку для восстановления пароля</Button>
             </div>
-            {loadingFromState === true ? (
+            {loadingFromState ? (
                 <Spinner/>
-            ) : null }
-            {loadingFromState.length > 5 ? (
-                <div className="reset-success">{loadingFromState}</div>
             ) : null }
             {errorFromState ? (
                 <div className="error">{errorFromState}</div>
             ) : null }
+            <ToastContainer />
             <div className="containerLinks">
                 <div className="container">
                     <Link to='/' className="customLink" onClick={() => {
                         if(errorFromState) {
                             REMOVE_FAILURE();
                         }
-                        if(loadingFromState) {
-                            FETCH_MESSAGES_SUCCESS();
-                        }
                     }}>Войти</Link>
                     <Link to='/Registration' className="customLink" onClick={() => {
                         if(errorFromState) {
                             REMOVE_FAILURE();
-                        }
-                        if(loadingFromState) {
-                            FETCH_MESSAGES_SUCCESS();
                         }
                     }}>Регистрация</Link>
                 </div>
@@ -91,8 +85,7 @@ const mapStateToProps = ({loadingFromState, errorFromState}) => {
 
 const mapDispatchToProps = {
     RESET_PASSWORD,
-    REMOVE_FAILURE,
-    FETCH_MESSAGES_SUCCESS
+    REMOVE_FAILURE
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordPage);

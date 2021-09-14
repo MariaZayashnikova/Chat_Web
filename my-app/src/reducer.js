@@ -40,11 +40,6 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loadingFromState: true
             };
-        case 'RESET_PASSWORD_SUCCESS':
-            return {
-                ...state,
-                loadingFromState: action.data.message
-            };
         default:
             return state;
     }
