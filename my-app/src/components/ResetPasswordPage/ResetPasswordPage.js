@@ -65,7 +65,7 @@ function ResetPasswordPage({
                     </FormFeedback>
                 </FormGroup>
                 <Button
-                    className="btn-custom"
+                    className="btnCustom"
                     color="primary"
                     type="submit"
                     onClick={() => {

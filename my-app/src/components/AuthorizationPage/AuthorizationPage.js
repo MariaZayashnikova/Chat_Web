@@ -128,11 +128,7 @@ function AuthorizationPage({
                             value={formik.values.password}
                         />
                     </FormGroup>
-                    <Button
-                        className="btn-custom"
-                        color="primary"
-                        type="submit"
-                    >
+                    <Button className="btnCustom" color="primary" type="submit">
                         Войти
                     </Button>
                 </Form>
@@ -143,7 +139,7 @@ function AuthorizationPage({
             </div>
             <div className="containerLinks">
                 <div className="container">
-                    <button onClick={onSignIn} className="btn-custom-net">
+                    <button onClick={onSignIn} className="btnCustomNet">
                         <FontAwesomeIcon
                             className="custom-icon"
                             icon={['fab', 'google']}

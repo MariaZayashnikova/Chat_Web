@@ -129,11 +129,7 @@ function RegistrationPage({
                             value={formik.values.passwordConfirmation}
                         />
                     </FormGroup>
-                    <Button
-                        className="btn-custom"
-                        color="primary"
-                        type="submit"
-                    >
+                    <Button className="btnCustom" color="primary" type="submit">
                         Регистрация
                     </Button>
                 </Form>

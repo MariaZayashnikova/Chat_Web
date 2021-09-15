@@ -35,7 +35,7 @@ code {
   box-shadow: 1px 1px 20px -3px grey;
 }
 
-.Page .btn-custom {
+.Page .btnCustom {
   width: 100%;
   display: block;
   margin: 15px auto;
@@ -60,17 +60,6 @@ code {
 }
 .Page .inputError {
   border: 2px solid red;
-}
-
-.Page .btn-custom-net {
-  width: 30%;
-  border: none;
-  text-align: center;
-  border-radius: 20px;
-  font-size: 16px;
-  line-height: 16px;
-  background: transparent;
-  color: white;
 }
 
 .container {
