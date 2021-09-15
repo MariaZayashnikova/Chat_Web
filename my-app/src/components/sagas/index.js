@@ -24,7 +24,7 @@ function fetchRegistration(action) {
 
 function ResetPassword(action) {
     let actionCodeSettings = {
-        url: 'http://localhost:3000',
+        url: process.env.REACT_APP_url_for_redirect,
         handleCodeInApp: false
     };
     return firebase.auth().sendPasswordResetEmail(action.data, actionCodeSettings);
