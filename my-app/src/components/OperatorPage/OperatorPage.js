@@ -1,37 +1,31 @@
 import React from 'react'
-import firebase from 'firebase/app'
 import 'firebase/auth'
-import { FETCH_MESSAGES_SUCCESS } from '../../actions'
+import { Check_Token, SignOut_User } from '../../actions'
 import { connect } from 'react-redux'
 import './OperatorPage.css'
-import { useAuthState } from 'react-firebase-hooks/auth'
 import { fb } from '../Firebase/componentFirebase'
-import Spinner from '../Spinner/Spinner'
 import { Redirect } from 'react-router-dom'
 import { Nav, NavItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function OperatorPage() {
+function OperatorPage({ user, SignOut_User, Check_Token }) {
     function signOut() {
-        firebase
-            .auth()
+        fb.auth()
             .signOut()
             .then(() => {
-                console.log('signOut user')
+                SignOut_User()
             })
             .catch((error) => {
                 // An error happened.
             })
     }
-    const [user, loading] = useAuthState(fb.auth())
 
-    if (loading) {
-        return <Spinner />
-    }
+    /*    Check_Token(user.token)*/
 
     if (!user) {
         return <Redirect to="/" />
     }
+
     return (
         <div className="OperatorPage">
             <div className="navBar">
@@ -88,15 +82,17 @@ function OperatorPage() {
     )
 }
 
-const mapStateToProps = ({ loadingFromState, errorFromState }) => {
+const mapStateToProps = ({ loadingFromState, errorFromState, user }) => {
     return {
         loadingFromState,
         errorFromState,
+        user,
     }
 }
 
 const mapDispatchToProps = {
-    FETCH_MESSAGES_SUCCESS,
+    Check_Token,
+    SignOut_User,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OperatorPage)

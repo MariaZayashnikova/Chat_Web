@@ -12,9 +12,6 @@ import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Spinner from '../Spinner/Spinner'
-import 'firebase/auth'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { fb } from '../Firebase/componentFirebase'
 
 const validate = (values) => {
     const errors = {}
@@ -46,6 +43,7 @@ export { validate }
 function AuthorizationPage({
     errorFromState,
     loadingFromState,
+    user,
     FETCH_Authorization_REQUEST,
     REMOVE_FAILURE,
     FETCH_AuthorizationViaGoogle_REQUEST,
@@ -68,14 +66,10 @@ function AuthorizationPage({
         FETCH_AuthorizationViaGoogle_REQUEST()
     }
 
-    const [user, loading] = useAuthState(fb.auth())
-
-    if (loading) {
-        return <Spinner />
-    }
-    if (!loading && user) {
+    if (user) {
         return <Redirect to="/OperatorPage" />
     }
+
     return (
         <div className="Page">
             <h2 className="TitlePage">Авторизация</h2>
@@ -176,10 +170,11 @@ function AuthorizationPage({
     )
 }
 
-const mapStateToProps = ({ errorFromState, loadingFromState }) => {
+const mapStateToProps = ({ errorFromState, loadingFromState, user }) => {
     return {
         loadingFromState,
         errorFromState,
+        user,
     }
 }
 

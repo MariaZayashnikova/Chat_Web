@@ -10,13 +10,12 @@ import {
     REMOVE_FAILURE,
 } from '../../actions'
 import { connect } from 'react-redux'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { fb } from '../Firebase/componentFirebase'
 import Spinner from '../Spinner/Spinner'
 
 function RegistrationPage({
     loadingFromState,
     errorFromState,
+    user,
     FETCH_Registration_REQUEST,
     FETCH_MESSAGES_FAILURE,
     REMOVE_FAILURE,
@@ -42,7 +41,6 @@ function RegistrationPage({
             }
         },
     })
-    const [user] = useAuthState(fb.auth())
 
     if (user) {
         return <Redirect to="/OperatorPage" />
@@ -168,10 +166,11 @@ function RegistrationPage({
     )
 }
 
-const mapStateToProps = ({ loadingFromState, errorFromState }) => {
+const mapStateToProps = ({ loadingFromState, errorFromState, user }) => {
     return {
         loadingFromState,
         errorFromState,
+        user,
     }
 }
 
