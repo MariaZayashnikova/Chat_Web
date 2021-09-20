@@ -2,7 +2,7 @@ import React from 'react'
 import { Form, FormGroup, Input, FormFeedback, Label, Button } from 'reactstrap'
 import { useFormik } from 'formik'
 import { validate } from '../AuthorizationPage/AuthorizationPage'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
     FETCH_MESSAGES_FAILURE,
     FETCH_MESSAGES_SUCCESS,
@@ -15,7 +15,6 @@ import Spinner from '../Spinner/Spinner'
 function RegistrationPage({
     loadingFromState,
     errorFromState,
-    user,
     FETCH_Registration_REQUEST,
     FETCH_MESSAGES_FAILURE,
     REMOVE_FAILURE,
@@ -41,10 +40,6 @@ function RegistrationPage({
             }
         },
     })
-
-    if (user) {
-        return <Redirect to="/OperatorPage" />
-    }
 
     return (
         <div className="Page">
@@ -166,11 +161,10 @@ function RegistrationPage({
     )
 }
 
-const mapStateToProps = ({ loadingFromState, errorFromState, user }) => {
+const mapStateToProps = ({ loadingFromState, errorFromState }) => {
     return {
         loadingFromState,
         errorFromState,
-        user,
     }
 }
 

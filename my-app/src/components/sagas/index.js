@@ -3,7 +3,6 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import { toast } from 'react-toastify'
 import { fb } from '../Firebase/componentFirebase'
-import * as admin from 'firebase-admin'
 
 function fetchAuthorization(action) {
     return fb
@@ -33,14 +32,7 @@ function fetchRegistration(action) {
         .catch((error) => ({ error }))
 }
 
-function CheckValidToken(action) {
-    let checkRevoked = true
-    return admin
-        .auth()
-        .verifyIdToken(action.value, checkRevoked)
-        .then((payload) => ({ payload }))
-        .catch((error) => ({ error }))
-}
+function CheckValidToken(action) {}
 
 function ResetPassword(action) {
     let actionCodeSettings = {

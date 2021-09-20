@@ -9,7 +9,7 @@ import {
     REMOVE_FAILURE,
 } from '../../actions'
 import { connect } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Spinner from '../Spinner/Spinner'
 
@@ -43,7 +43,6 @@ export { validate }
 function AuthorizationPage({
     errorFromState,
     loadingFromState,
-    user,
     FETCH_Authorization_REQUEST,
     REMOVE_FAILURE,
     FETCH_AuthorizationViaGoogle_REQUEST,
@@ -64,10 +63,6 @@ function AuthorizationPage({
 
     function onSignIn() {
         FETCH_AuthorizationViaGoogle_REQUEST()
-    }
-
-    if (user) {
-        return <Redirect to="/OperatorPage" />
     }
 
     return (
@@ -170,11 +165,10 @@ function AuthorizationPage({
     )
 }
 
-const mapStateToProps = ({ errorFromState, loadingFromState, user }) => {
+const mapStateToProps = ({ errorFromState, loadingFromState }) => {
     return {
         loadingFromState,
         errorFromState,
-        user,
     }
 }
 

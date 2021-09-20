@@ -1,14 +1,13 @@
 import React from 'react'
 import 'firebase/auth'
-import { Check_Token, SignOut_User } from '../../actions'
+import { SignOut_User } from '../../actions'
 import { connect } from 'react-redux'
 import './OperatorPage.css'
 import { fb } from '../Firebase/componentFirebase'
-import { Redirect } from 'react-router-dom'
 import { Nav, NavItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function OperatorPage({ user, SignOut_User, Check_Token }) {
+function OperatorPage({ user, SignOut_User }) {
     function signOut() {
         fb.auth()
             .signOut()
@@ -18,12 +17,6 @@ function OperatorPage({ user, SignOut_User, Check_Token }) {
             .catch((error) => {
                 // An error happened.
             })
-    }
-
-    /*    Check_Token(user.token)*/
-
-    if (!user) {
-        return <Redirect to="/" />
     }
 
     return (
@@ -91,7 +84,6 @@ const mapStateToProps = ({ loadingFromState, errorFromState, user }) => {
 }
 
 const mapDispatchToProps = {
-    Check_Token,
     SignOut_User,
 }
 

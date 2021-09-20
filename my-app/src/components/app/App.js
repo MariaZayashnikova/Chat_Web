@@ -10,25 +10,27 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import Error from '../Error/Error'
+import { connect } from 'react-redux'
 
 library.add(fab, fas)
 
-function App() {
+function App({ user }) {
     return (
         <Router>
             <div className="App">
                 <HeaderTitle />
                 <Switch>
-                    <Route path="/" exact component={AuthorizationPage} />
+                    <Route
+                        path="/"
+                        exact
+                        render={() =>
+                            user ? <OperatorPage /> : <AuthorizationPage />
+                        }
+                    />
                     <Route
                         path="/Registration"
                         exact
                         component={RegistrationPage}
-                    />
-                    <Route
-                        path="/OperatorPage"
-                        exact
-                        component={OperatorPage}
                     />
                     <Route
                         path="/ResetPassword"
@@ -44,4 +46,10 @@ function App() {
     )
 }
 
-export default App
+const mapStateToProps = ({ user }) => {
+    return {
+        user,
+    }
+}
+
+export default connect(mapStateToProps)(App)
