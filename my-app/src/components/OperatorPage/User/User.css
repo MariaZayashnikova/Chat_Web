@@ -1,0 +1,13 @@
+.containerUser {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nameUser {
+    font-size: 26px;
+    color: darkblue;
+}
+
+.iconUser {
+    margin-right: 5px;
+}

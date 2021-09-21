@@ -1,90 +1,18 @@
 import React from 'react'
-import 'firebase/auth'
-import { SignOut_User } from '../../actions'
-import { connect } from 'react-redux'
 import './OperatorPage.css'
-import { fb } from '../Firebase/componentFirebase'
-import { Nav, NavItem, Button } from 'reactstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import NavBar from './NavBar/NavBar'
+import User from './User/User'
 
-function OperatorPage({ user, SignOut_User }) {
-    function signOut() {
-        fb.auth()
-            .signOut()
-            .then(() => {
-                SignOut_User()
-            })
-            .catch((error) => {
-                // An error happened.
-            })
-    }
-
+function OperatorPage() {
     return (
         <div className="OperatorPage">
-            <div className="navBar">
-                <Nav className="listBar" navbar>
-                    <NavItem className="navItem">
-                        <FontAwesomeIcon
-                            icon={['fas', 'user-edit']}
-                            size="3x"
-                            color="darkblue"
-                            className="customIcon"
-                        />
-                        <div>Активные</div>
-                    </NavItem>
-                    <NavItem className="navItem">
-                        <FontAwesomeIcon
-                            icon={['fas', 'flag-checkered']}
-                            size="3x"
-                            color="darkblue"
-                        />
-                        <div>Завершенные</div>
-                    </NavItem>
-                    <NavItem className="navItem">
-                        <FontAwesomeIcon
-                            icon={['fas', 'save']}
-                            size="3x"
-                            color="darkblue"
-                        />
-                        <div>Сохранённые</div>
-                    </NavItem>
-                </Nav>
-            </div>
+            <NavBar />
             <div className="containerBodyOperatorPage">
-                <div className="containerUser">
-                    <h2 className="nameUser">
-                        <FontAwesomeIcon
-                            icon={['fas', 'user']}
-                            color="darkblue"
-                            className="iconUser"
-                        />
-                        {user.email}
-                    </h2>
-                    <Button
-                        className="btnCustom"
-                        outline
-                        color="primary"
-                        onClick={signOut}
-                    >
-                        Выйти
-                    </Button>
-                </div>
+                <User />
                 <div className="containerBody"></div>
             </div>
         </div>
     )
 }
 
-const mapStateToProps = ({ loadingFromState, errorFromState, user }) => {
-    return {
-        loadingFromState,
-        errorFromState,
-        user,
-    }
-}
-
-const mapDispatchToProps = {
-    SignOut_User,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(OperatorPage)
+export default OperatorPage

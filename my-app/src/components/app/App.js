@@ -11,6 +11,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import Error from '../Error/Error'
 import { connect } from 'react-redux'
+import ActiveCases from '../OperatorPage/AtiveCases/ActiveCases'
 
 library.add(fab, fas)
 
@@ -36,6 +37,11 @@ function App({ user }) {
                         path="/ResetPassword"
                         exact
                         component={ResetPasswordPage}
+                    />
+                    <Route
+                        path="/OperatorPage/Active"
+                        exact
+                        component={ActiveCases}
                     />
                     <Route path="*">
                         <Error />

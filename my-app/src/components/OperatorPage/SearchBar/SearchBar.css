@@ -1,0 +1,15 @@
+.searchBar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 0;
+}
+
+.searchBar .search {
+    width: 40%;
+    margin-left: 15px;
+}
+
+.searchBar .labelSearch {
+    padding-top: 5px;
+}

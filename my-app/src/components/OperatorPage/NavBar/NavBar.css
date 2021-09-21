@@ -1,0 +1,30 @@
+.navBar {
+    width: 10%;
+}
+
+.listBar {
+    border: 2px solid dodgerblue;
+    border-radius: 15px;
+}
+
+.navItem {
+    width: 100%;
+    height: 150px;
+    margin: 15px auto;
+    text-align: center;
+    color: darkblue;
+}
+
+.customIcon {
+    margin-top: 10px;
+}
+
+.nav {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.linkNav {
+    color: darkblue;
+    text-decoration: none;
+}
