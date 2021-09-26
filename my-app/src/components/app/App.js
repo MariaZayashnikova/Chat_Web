@@ -41,7 +41,9 @@ function App({ user }) {
                     <Route
                         path="/OperatorPage/Active"
                         exact
-                        component={ActiveCases}
+                        render={() =>
+                            user ? <ActiveCases /> : <AuthorizationPage />
+                        }
                     />
                     <Route path="*">
                         <Error />

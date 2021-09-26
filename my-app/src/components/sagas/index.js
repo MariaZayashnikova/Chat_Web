@@ -1,6 +1,7 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects'
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/database'
 import { toast } from 'react-toastify'
 import { fb } from '../Firebase/componentFirebase'
 
@@ -32,14 +33,28 @@ function fetchRegistration(action) {
         .catch((error) => ({ error }))
 }
 
-function CheckValidToken(action) {}
-
 function ResetPassword(action) {
     let actionCodeSettings = {
         url: process.env.REACT_APP_url_for_redirect,
         handleCodeInApp: false,
     }
     return fb.auth().sendPasswordResetEmail(action.data, actionCodeSettings)
+}
+
+function user_Logged_Out() {
+    return fb.auth().signOut()
+}
+
+function* userLoggedOut() {
+    try {
+        yield call(() => user_Logged_Out())
+        yield put({ type: 'user_Logged_Out' })
+    } catch {
+        let error = {
+            message: 'Что-то пошло не так... Попробуйте позже',
+        }
+        yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
+    }
 }
 
 function* fetchUserAuthorization(action) {
@@ -54,22 +69,6 @@ function* fetchUserAuthorization(action) {
     }
     if (error) {
         yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
-    }
-}
-
-function* CheckUserToken(action) {
-    const { payload, error } = yield call(() => CheckValidToken(action))
-    if (payload) {
-        console.log(payload)
-    }
-    if (error) {
-        if (error.code === 'auth/id-token-revoked') {
-            console.log(
-                'Token has been revoked. Inform the user to reauthenticate or signOut() the user'
-            )
-        } else {
-            console.log('Token is invalid')
-        }
     }
 }
 
@@ -128,6 +127,27 @@ function* fetchResetPassword(action) {
     }
 }
 
+function fetchDataFromDatabase() {
+    return firebase
+        .database()
+        .ref()
+        .once('value')
+        .then((snapshot) => ({ snapshot }))
+}
+
+function* dataFromDatabase() {
+    try {
+        const { snapshot } = yield call(() => fetchDataFromDatabase())
+        const data = snapshot.val()
+        yield put({ type: 'Data_From_Database', data })
+    } catch {
+        let error = {
+            message: 'Что-то пошло не так... Попробуйте позже',
+        }
+        yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
+    }
+}
+
 function* FETCH_Authorization() {
     yield takeLatest('FETCH_Authorization_REQUEST', fetchUserAuthorization)
 }
@@ -147,8 +167,12 @@ function* FETCH_Reset_Password() {
     yield takeLatest('RESET_PASSWORD', fetchResetPassword)
 }
 
-function* Check_Token() {
-    yield takeLatest('Check_Token', CheckUserToken)
+function* Sign_Out_User() {
+    yield takeLatest('SignOut_User', userLoggedOut)
+}
+
+function* fromDatabase() {
+    yield takeLatest('fetch_Data_From_Database', dataFromDatabase)
 }
 
 export default function* rootSaga() {
@@ -157,6 +181,7 @@ export default function* rootSaga() {
         FETCH_Registration(),
         FETCH_AuthorizationViaGoogle(),
         FETCH_Reset_Password(),
-        Check_Token(),
+        Sign_Out_User(),
+        fromDatabase(),
     ])
 }

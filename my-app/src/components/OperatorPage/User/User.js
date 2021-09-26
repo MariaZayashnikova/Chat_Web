@@ -1,24 +1,11 @@
 import React from 'react'
-import 'firebase/auth'
 import { SignOut_User } from '../../../actions'
 import { connect } from 'react-redux'
 import './User.css'
-import { fb } from '../../Firebase/componentFirebase'
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function User({ user, SignOut_User }) {
-    function signOut() {
-        fb.auth()
-            .signOut()
-            .then(() => {
-                SignOut_User()
-            })
-            .catch((error) => {
-                // An error happened.
-            })
-    }
-
     return (
         <div className="containerUser">
             <h2 className="nameUser">
@@ -33,7 +20,7 @@ function User({ user, SignOut_User }) {
                 className="btnCustom"
                 outline
                 color="primary"
-                onClick={signOut}
+                onClick={() => SignOut_User()}
             >
                 Выйти
             </Button>

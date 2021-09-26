@@ -2,6 +2,8 @@ const initialState = {
     loadingFromState: false,
     errorFromState: false,
     user: null,
+    dataFromDatabase: null,
+    valueSearch: null,
 }
 
 const reducer = (state = initialState, action) => {
@@ -42,14 +44,32 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loadingFromState: true,
             }
-        case 'SignOut_User':
+        case 'user_Logged_Out':
             return {
                 ...state,
                 user: null,
+                loadingFromState: false,
             }
-        case 'Check_Token':
+        case 'SignOut_User':
             return {
                 ...state,
+                loadingFromState: true,
+            }
+        case 'fetch_Data_From_Database':
+            return {
+                ...state,
+                loadingFromState: true,
+            }
+        case 'Data_From_Database':
+            return {
+                ...state,
+                dataFromDatabase: action.data,
+                loadingFromState: false,
+            }
+        case 'Set_Value_Search':
+            return {
+                ...state,
+                valueSearch: action.value,
             }
         default:
             return state

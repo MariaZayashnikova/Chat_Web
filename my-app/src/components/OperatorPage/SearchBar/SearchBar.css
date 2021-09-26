@@ -1,15 +1,30 @@
 .searchBar {
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
     margin: 10px 0;
 }
 
+.containerSearch {
+    margin-bottom: 10px;
+}
+
 .searchBar .search {
+    display: inline-block;
     width: 40%;
     margin-left: 15px;
 }
 
 .searchBar .labelSearch {
     padding-top: 5px;
+}
+
+.resultSearch {
+    background: white;
+    border-radius: 15px;
+}
+
+.resultSearch-infoDialog p {
+    display: inline-block;
+    width: 25%;
 }
