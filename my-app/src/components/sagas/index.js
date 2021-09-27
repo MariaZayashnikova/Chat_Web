@@ -148,6 +148,19 @@ function* dataFromDatabase() {
     }
 }
 
+function pushDataInDataBase(action) {
+    let post = firebase.database().ref('Chats/')
+    let newPost = post.push()
+    newPost
+        .set(action.value)
+        .then(() => console.log('Данные добавлены в базу данных'))
+        .catch((err) => console.log(err))
+}
+
+function* push_Data() {
+    yield takeLatest('push_Data', pushDataInDataBase)
+}
+
 function* FETCH_Authorization() {
     yield takeLatest('FETCH_Authorization_REQUEST', fetchUserAuthorization)
 }
@@ -183,5 +196,6 @@ export default function* rootSaga() {
         FETCH_Reset_Password(),
         Sign_Out_User(),
         fromDatabase(),
+        push_Data(),
     ])
 }

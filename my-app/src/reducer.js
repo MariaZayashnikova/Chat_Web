@@ -71,6 +71,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 valueSearch: action.value,
             }
+        case 'push_Data':
+            return {
+                ...state,
+                loadingFromState: true,
+            }
         default:
             return state
     }

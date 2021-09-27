@@ -1,0 +1,27 @@
+.infoDialog   {
+    display: flex;
+}
+
+.infoDialog-user {
+    width: 13%;
+}
+
+.infoDialog-topic {
+    width: 10%;
+}
+
+.titleTopic {
+    color: darkblue;
+    margin: 0;
+    font-weight: bold;
+}
+
+.queue {
+    color: darkblue;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.contentMessage {
+    width: 70%
+}

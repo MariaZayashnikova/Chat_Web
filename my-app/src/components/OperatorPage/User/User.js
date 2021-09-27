@@ -1,11 +1,31 @@
 import React from 'react'
-import { SignOut_User } from '../../../actions'
+import { push_Data, SignOut_User } from '../../../actions'
 import { connect } from 'react-redux'
 import './User.css'
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function User({ user, SignOut_User }) {
+function User({ user, SignOut_User, push_Data }) {
+    function addDialogCustom() {
+        let name = prompt('Ваше имя')
+        let content = prompt('Тест обращения')
+        let time = new Date().getTime()
+
+        let obj = {
+            client: name,
+            status: 'active',
+            topic: 'topic',
+            subtopic: 'subtopic',
+            messages: {
+                [time]: {
+                    content: content,
+                    isOperator: false,
+                },
+            },
+        }
+        push_Data(obj)
+    }
+
     return (
         <div className="containerUser">
             <h2 className="nameUser">
@@ -16,6 +36,9 @@ function User({ user, SignOut_User }) {
                 />
                 {user.email}
             </h2>
+            <Button outline color="secondary" onClick={addDialogCustom}>
+                Добавить
+            </Button>
             <Button
                 className="btnCustom"
                 outline
@@ -36,6 +59,7 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = {
     SignOut_User,
+    push_Data,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

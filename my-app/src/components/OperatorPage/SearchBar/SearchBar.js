@@ -45,7 +45,7 @@ function SearchBar({
             }
         }
     }
-    console.log(valueSearch)
+
     if (dataFromDatabase && valueSearch) {
         search()
     }
@@ -88,13 +88,8 @@ const ViewResultSearch = ({ arrResult }) => {
     })
 }
 
-const mapStateToProps = ({
-    loadingFromState,
-    dataFromDatabase,
-    valueSearch,
-}) => {
+const mapStateToProps = ({ dataFromDatabase, valueSearch }) => {
     return {
-        loadingFromState,
         dataFromDatabase,
         valueSearch,
     }
