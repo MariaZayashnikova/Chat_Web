@@ -12,6 +12,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import Error from '../Error/Error'
 import { connect } from 'react-redux'
 import ActiveCases from '../OperatorPage/AtiveCases/ActiveCases'
+import SettingsUser from '../OperatorPage/User/SettingsUser/SettingsUser'
 
 library.add(fab, fas)
 
@@ -42,6 +43,11 @@ function App({ user }) {
                         path="/OperatorPage/Active"
                         exact
                         component={ActiveCases}
+                    />
+                    <Route
+                        path="/OperatorPage/Settings"
+                        exact
+                        component={SettingsUser}
                     />
                     <Route path="*">
                         <Error />

@@ -9,5 +9,9 @@
 }
 
 .iconUser {
-    margin-right: 5px;
+    margin: 0 5px;
+}
+
+.settingsUser {
+    cursor: pointer;
 }

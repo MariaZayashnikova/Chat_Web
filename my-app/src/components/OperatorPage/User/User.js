@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import './User.css'
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 function User({ user, SignOut_User, push_Data }) {
     function addDialogCustom() {
@@ -39,6 +39,13 @@ function User({ user, SignOut_User, push_Data }) {
                     className="iconUser"
                 />
                 {user.email}
+                <Link to="/OperatorPage/Settings">
+                    <FontAwesomeIcon
+                        icon={['fas', 'cog']}
+                        color="blue"
+                        className="iconUser settingsUser"
+                    />
+                </Link>
             </h2>
             <Button outline color="secondary" onClick={addDialogCustom}>
                 Добавить
