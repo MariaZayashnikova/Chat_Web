@@ -22,6 +22,20 @@
     font-weight: bold;
 }
 
+.listQueue {
+    height: 600px;
+    overflow: auto;
+}
+
 .contentMessage {
-    width: 70%
+    width: 70%;
+    padding: 0 10px;
+}
+
+.infoDialog-time_button {
+    width: 15%;
+}
+
+.infoDialog-time {
+    margin-bottom: 10px;
 }
