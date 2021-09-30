@@ -8,6 +8,8 @@ import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './ActiveCases.css'
+import moment from 'moment'
+import 'moment/locale/ru.js'
 
 function ActiveCases({ fetch_Data_From_Database, dataFromDatabase }) {
     if (!dataFromDatabase) {
@@ -23,7 +25,6 @@ function ActiveCases({ fetch_Data_From_Database, dataFromDatabase }) {
                 let timeMessage = contentDialog.messages
                 for (let elemMessage in timeMessage) {
                     let message = timeMessage[elemMessage]
-
                     if (status === 'active') {
                         let objResult = {
                             idDialog: elem,
@@ -31,6 +32,7 @@ function ActiveCases({ fetch_Data_From_Database, dataFromDatabase }) {
                             topic: contentDialog.topic,
                             subtopic: contentDialog.subtopic,
                             content: message.content,
+                            time: elemMessage,
                         }
                         resultFilter.push(objResult)
                     }
@@ -61,6 +63,10 @@ function ActiveCases({ fetch_Data_From_Database, dataFromDatabase }) {
 
 const ViewResult = ({ arrResult }) => {
     return arrResult.map((elem) => {
+        let timestamp = moment(parseInt(elem.time, 10)).fromNow() /*.format(
+            'DD MMMM YYYY, HH:mm'
+        )*/
+
         return (
             <ListGroupItem key={elem.idDialog}>
                 <div className="infoDialog">
@@ -84,7 +90,9 @@ const ViewResult = ({ arrResult }) => {
                     </div>
                     <div className="contentMessage">{elem.content}</div>
                     <div>
-                        <div>Время сообщения</div>
+                        <div>
+                            <div>{timestamp}</div>
+                        </div>
                         <Button outline color="primary" size="sm">
                             Войти в диалог
                         </Button>
