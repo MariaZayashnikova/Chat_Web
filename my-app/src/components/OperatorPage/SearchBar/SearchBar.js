@@ -14,7 +14,6 @@ function SearchBar({
 }) {
     let resultSearch = []
     function searchStart(e) {
-        console.log('start search')
         fetch_Data_From_Database()
         resultSearch = []
         Set_Value_Search(e.target.value.toLowerCase())
@@ -28,18 +27,20 @@ function SearchBar({
                 let timeMessage = contentDialog.messages
                 for (let elemMessage in timeMessage) {
                     let message = timeMessage[elemMessage]
-                    let content = message.content.toLowerCase()
-                    let res = content.includes(valueSearch)
+                    if (message.content) {
+                        let content = message.content.toLowerCase()
+                        let res = content.includes(valueSearch)
 
-                    if (res) {
-                        let objResult = {
-                            idDialog: elem,
-                            client: contentDialog.client,
-                            topic: contentDialog.topic,
-                            subtopic: contentDialog.subtopic,
-                            content: message.content,
+                        if (res) {
+                            let objResult = {
+                                idDialog: elem,
+                                client: contentDialog.client,
+                                topic: contentDialog.topic,
+                                subtopic: contentDialog.subtopic,
+                                content: message.content,
+                            }
+                            resultSearch.push(objResult)
                         }
-                        resultSearch.push(objResult)
                     }
                 }
             }
@@ -67,8 +68,9 @@ function SearchBar({
                     onInput={debounce(searchStart, 2000)}
                 />
             </div>
-
-            <ListGroup className="resultSearch">{result}</ListGroup>
+            {result ? (
+                <ListGroup className="resultSearch">{result}</ListGroup>
+            ) : null}
         </div>
     )
 }

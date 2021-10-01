@@ -96,23 +96,25 @@ function ActiveCases({
                 <User />
                 <div className="containerBody">
                     <SearchBar />
-                    <div className="queue">
-                        Клиентов в очереди: {allResultFilter.length}
+                    <div className="containerQueue">
+                        <div className="queue">
+                            Клиентов в очереди: {allResultFilter.length}
+                        </div>
+                        {loadingFromState ? <Spinner /> : null}
+                        <ListGroup id="scrollableDiv" className="listQueue">
+                            <InfiniteScroll
+                                dataLength={displayedFilterResults.length}
+                                pageStart={0}
+                                next={loadFunc}
+                                hasMore={hasMoreActiveCases}
+                                loader={<Spinner />}
+                                children={displayedFilterResults}
+                                scrollableTarget="scrollableDiv"
+                            >
+                                {result}
+                            </InfiniteScroll>
+                        </ListGroup>
                     </div>
-                    {loadingFromState ? <Spinner /> : null}
-                    <ListGroup id="scrollableDiv" className="listQueue">
-                        <InfiniteScroll
-                            dataLength={displayedFilterResults.length}
-                            pageStart={0}
-                            next={loadFunc}
-                            hasMore={hasMoreActiveCases}
-                            loader={<Spinner />}
-                            children={displayedFilterResults}
-                            scrollableTarget="scrollableDiv"
-                        >
-                            {result}
-                        </InfiniteScroll>
-                    </ListGroup>
                 </div>
             </div>
         </div>

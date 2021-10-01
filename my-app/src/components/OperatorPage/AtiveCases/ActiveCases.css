@@ -16,6 +16,10 @@
     font-weight: bold;
 }
 
+.containerQueue {
+    z-index: 2;
+}
+
 .queue {
     color: darkblue;
     font-size: 20px;

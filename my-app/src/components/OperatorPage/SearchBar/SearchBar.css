@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     margin: 10px 0;
+    position: relative;
 }
 
 .containerSearch {
@@ -20,8 +21,15 @@
 }
 
 .resultSearch {
+    position: absolute;
+    width: 100%;
+    top: 50px;
+    height: 540px;
+    border: 1px solid blue;
     background: white;
     border-radius: 15px;
+    overflow: auto;
+    z-index: 10;
 }
 
 .resultSearch-infoDialog p {
