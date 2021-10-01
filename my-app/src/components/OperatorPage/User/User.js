@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import './User.css'
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 function User({ user, SignOut_User, push_Data }) {
     function addDialogCustom() {
@@ -25,9 +25,6 @@ function User({ user, SignOut_User, push_Data }) {
             },
         }
         push_Data(obj)
-    }
-    if (!user) {
-        ;<Redirect push to="/" />
     }
 
     return (

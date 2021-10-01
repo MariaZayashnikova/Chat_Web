@@ -3,7 +3,10 @@ import '../OperatorPage.css'
 import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
-import { fetch_Data_From_Database } from '../../../actions'
+import {
+    change_Value_Active_Cases,
+    fetch_Data_From_Database,
+} from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,18 +15,27 @@ import moment from 'moment'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../../Spinner/Spinner'
-import { Redirect } from 'react-router-dom'
 
-function ActiveCases({ fetch_Data_From_Database, dataFromDatabase, user }) {
+function ActiveCases({
+    fetch_Data_From_Database,
+    dataFromDatabase,
+    user,
+    change_Value_Active_Cases,
+    valueActiveCases,
+    loadingFromState,
+}) {
     if (!dataFromDatabase) {
         fetch_Data_From_Database()
     }
-    let resultFilter = []
-    let numberElem = 5
-    function filterData(number) {
+
+    let allResultFilter = []
+
+    let hasMoreActiveCases = true
+
+    function filterData() {
         for (let idDialog in dataFromDatabase) {
             let objDialogs = dataFromDatabase[idDialog]
-            let i = 0
+
             for (let elem in objDialogs) {
                 let contentDialog = objDialogs[elem]
                 let status = contentDialog.status
@@ -31,7 +43,6 @@ function ActiveCases({ fetch_Data_From_Database, dataFromDatabase, user }) {
                 for (let elemMessage in timeMessage) {
                     let message = timeMessage[elemMessage]
                     if (status === 'active') {
-                        i++
                         let objResult = {
                             idDialog: elem,
                             client: contentDialog.client,
@@ -40,30 +51,44 @@ function ActiveCases({ fetch_Data_From_Database, dataFromDatabase, user }) {
                             content: message.content,
                             time: elemMessage,
                         }
-                        if (i > number) {
-                            return
-                        } else {
-                            resultFilter.push(objResult)
-                        }
+                        allResultFilter.push(objResult)
                     }
                 }
             }
         }
     }
+    let displayedFilterResults = []
+    function createDisplayedFilterResults() {
+        let i = 0
+        allResultFilter.forEach((elem) => {
+            i++
+            if (i > valueActiveCases) {
+                return
+            } else {
+                displayedFilterResults.push(elem)
+            }
+        })
+    }
+
     if (dataFromDatabase) {
-        filterData(numberElem)
-    }
-    function loadFunc(number) {
-        filterData(number)
-        console.log(number)
+        filterData()
+        createDisplayedFilterResults()
     }
 
-    if (!user) {
-        ;<Redirect to="/" />
+    function loadFunc() {
+        setTimeout(() => {
+            change_Value_Active_Cases()
+        }, 1500)
     }
 
-    /*    let result =
-        resultFilter.length > 0 ? <ViewResult arrResult={resultFilter} /> : null*/
+    if (displayedFilterResults.length === allResultFilter.length) {
+        hasMoreActiveCases = false
+    }
+
+    let result =
+        displayedFilterResults.length > 0 ? (
+            <ViewResult arrResult={displayedFilterResults} />
+        ) : null
     return (
         <div className="OperatorPage">
             <NavBar />
@@ -71,67 +96,21 @@ function ActiveCases({ fetch_Data_From_Database, dataFromDatabase, user }) {
                 <User />
                 <div className="containerBody">
                     <SearchBar />
-                    <div className="queue">Клиентов в очереди:</div>
-                    <ListGroup className="listQueue">
+                    <div className="queue">
+                        Клиентов в очереди: {allResultFilter.length}
+                    </div>
+                    {loadingFromState ? <Spinner /> : null}
+                    <ListGroup id="scrollableDiv" className="listQueue">
                         <InfiniteScroll
-                            dataLength={resultFilter.length}
+                            dataLength={displayedFilterResults.length}
                             pageStart={0}
-                            next={() => loadFunc(numberElem + 5)}
-                            hasMore={true}
+                            next={loadFunc}
+                            hasMore={hasMoreActiveCases}
                             loader={<Spinner />}
-                            children={resultFilter}
+                            children={displayedFilterResults}
+                            scrollableTarget="scrollableDiv"
                         >
-                            {resultFilter.map((elem) => {
-                                let timestamp = moment(
-                                    parseInt(elem.time, 10)
-                                ).fromNow() /*.format(
-            'DD MMMM YYYY, HH:mm'
-        )*/
-                                return (
-                                    <ListGroupItem key={elem.idDialog}>
-                                        <div className="infoDialog">
-                                            <div className="infoDialog-user">
-                                                <FontAwesomeIcon
-                                                    icon={['fas', 'user-tie']}
-                                                    size="3x"
-                                                    color="darkblue"
-                                                    className="customIcon"
-                                                />
-                                                <p>{elem.client}</p>
-                                            </div>
-                                            <div className="infoDialog-topic">
-                                                <div>
-                                                    <p className="titleTopic">
-                                                        Тема:
-                                                    </p>{' '}
-                                                    {elem.topic}
-                                                </div>
-                                                <div>
-                                                    <p className="titleTopic">
-                                                        Подтема:
-                                                    </p>{' '}
-                                                    {elem.subtopic}
-                                                </div>
-                                            </div>
-                                            <div className="contentMessage">
-                                                {elem.content}
-                                            </div>
-                                            <div className="infoDialog-time_button">
-                                                <div className="infoDialog-time">
-                                                    <div>{timestamp}</div>
-                                                </div>
-                                                <Button
-                                                    outline
-                                                    color="primary"
-                                                    size="sm"
-                                                >
-                                                    Войти в диалог
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </ListGroupItem>
-                                )
-                            })}
+                            {result}
                         </InfiniteScroll>
                     </ListGroup>
                 </div>
@@ -140,11 +119,11 @@ function ActiveCases({ fetch_Data_From_Database, dataFromDatabase, user }) {
     )
 }
 
-/*const ViewResult = ({ arrResult }) => {
+const ViewResult = ({ arrResult }) => {
     return arrResult.map((elem) => {
-        let timestamp = moment(parseInt(elem.time, 10)).fromNow() /!*.format(
+        let timestamp = moment(parseInt(elem.time, 10)).fromNow() /*.format(
             'DD MMMM YYYY, HH:mm'
-        )*!/
+        )*/
 
         return (
             <ListGroupItem key={elem.idDialog}>
@@ -180,17 +159,25 @@ function ActiveCases({ fetch_Data_From_Database, dataFromDatabase, user }) {
             </ListGroupItem>
         )
     })
-}*/
+}
 
-const mapStateToProps = ({ dataFromDatabase, user }) => {
+const mapStateToProps = ({
+    dataFromDatabase,
+    user,
+    valueActiveCases,
+    loadingFromState,
+}) => {
     return {
         dataFromDatabase,
         user,
+        valueActiveCases,
+        loadingFromState,
     }
 }
 
 const mapDispatchToProps = {
     fetch_Data_From_Database,
+    change_Value_Active_Cases,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActiveCases)

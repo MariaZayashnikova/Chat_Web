@@ -31,3 +31,7 @@ export const Data_From_Database = (data) => ({
 })
 export const Set_Value_Search = (value) => ({ type: 'Set_Value_Search', value })
 export const push_Data = (value) => ({ type: 'push_Data', value })
+export const change_Value_Active_Cases = (value) => ({
+    type: 'change_Value_Active_Cases',
+    value,
+})

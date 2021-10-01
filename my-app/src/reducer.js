@@ -4,6 +4,7 @@ const initialState = {
     user: null,
     dataFromDatabase: null,
     valueSearch: null,
+    valueActiveCases: 5,
 }
 
 const reducer = (state = initialState, action) => {
@@ -75,6 +76,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 loadingFromState: true,
+            }
+        case 'change_Value_Active_Cases':
+            return {
+                ...state,
+                valueActiveCases: state.valueActiveCases + 5,
             }
         default:
             return state

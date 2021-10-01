@@ -1,7 +1,12 @@
 import './App.css'
 import AuthorizationPage from '../AuthorizationPage/AuthorizationPage'
 import HeaderTitle from '../HeaderTitle/HeaderTitle'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import {
+    BrowserRouter as Router,
+    Redirect,
+    Route,
+    Switch,
+} from 'react-router-dom'
 import RegistrationPage from '../RegistrationPage/RegistrationPage'
 import OperatorPage from '../OperatorPage/OperatorPage'
 import ResetPasswordPage from '../ResetPasswordPage/ResetPasswordPage'
@@ -43,7 +48,9 @@ function App({ user }) {
                         path="/OperatorPage/Active"
                         exact
                         component={ActiveCases}
-                    />
+                    >
+                        {!user ? <Redirect push to="/" /> : null}
+                    </Route>
                     <Route
                         path="/OperatorPage/Settings"
                         exact
