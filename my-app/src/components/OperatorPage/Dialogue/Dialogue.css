@@ -1,0 +1,73 @@
+.containerDialogue {
+    padding: 10px;
+    border-radius: 15px;
+}
+.client {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+    padding: 5px 15px;
+    border-radius: 10px;
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.1);
+}
+
+.infoMessage {
+    position: relative;
+}
+
+.timeMessage {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+}
+
+.containerDialogueMessages .listMessages {
+    margin-bottom: 10px;
+    height: 500px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 7px;
+    border-radius: 15px;
+}
+
+.containerAnswer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: rgba(173, 170, 170, 0.2);;
+    border-radius: 10px;
+}
+
+.containerAnswer .answer {
+    width: 40%;
+}
+
+.readyAnswersSettings {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px;
+}
+
+.containerAnswer .readyAnswers  {
+    width: 25%;
+}
+
+.containerAnswer .dropdownCustom {
+    background: transparent;
+    color: black;
+    width: 60%;
+}
+
+.listMessages .operatorMessage {
+    align-self: flex-end;
+    margin-bottom: 5px;
+    background: dodgerblue;
+    color: white;
+}
+
+.listMessages .clientMessage {
+    background: lightgrey;
+}

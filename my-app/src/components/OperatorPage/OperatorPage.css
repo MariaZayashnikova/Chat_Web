@@ -1,15 +1,17 @@
 .OperatorPage {
     display: flex;
-    justify-content: space-around;
     width: 100%;
     padding: 10px;
+    font-family: "Trebuchet MS";
 }
 
 .containerBodyOperatorPage {
-    width: 87%;
+    width: 75%;
+    background: white;
     border-radius: 15px;
     padding: 10px;
-    border: 2px solid dodgerblue;
+    border: 2px solid lightgrey;
     margin-left: 10px;
     min-height: 550px;
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.1);
 }

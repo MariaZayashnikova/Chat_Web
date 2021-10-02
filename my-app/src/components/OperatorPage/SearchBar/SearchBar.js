@@ -65,7 +65,7 @@ function SearchBar({
                     type="search"
                     id="search"
                     className="search"
-                    onInput={debounce(searchStart, 2000)}
+                    onInput={debounce(searchStart, 1000)}
                 />
             </div>
             {result ? (

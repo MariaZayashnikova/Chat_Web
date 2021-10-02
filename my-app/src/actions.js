@@ -35,3 +35,8 @@ export const change_Value_Active_Cases = (value) => ({
     type: 'change_Value_Active_Cases',
     value,
 })
+export const Update_Data_In_Database = (value, idDialogue) => ({
+    type: 'Update_Data_In_Database',
+    value,
+    idDialogue,
+})

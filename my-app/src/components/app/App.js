@@ -18,6 +18,7 @@ import Error from '../Error/Error'
 import { connect } from 'react-redux'
 import ActiveCases from '../OperatorPage/AtiveCases/ActiveCases'
 import SettingsUser from '../OperatorPage/User/SettingsUser/SettingsUser'
+import Dialogue from '../OperatorPage/Dialogue/Dialogue'
 
 library.add(fab, fas)
 
@@ -51,6 +52,14 @@ function App({ user }) {
                     >
                         {!user ? <Redirect push to="/" /> : null}
                     </Route>
+                    <Route
+                        path="/OperatorPage/Dialogue/:id"
+                        render={({ match }) => {
+                            const { id } = match.params
+
+                            return <Dialogue itemId={id} />
+                        }}
+                    />
                     <Route
                         path="/OperatorPage/Settings"
                         exact

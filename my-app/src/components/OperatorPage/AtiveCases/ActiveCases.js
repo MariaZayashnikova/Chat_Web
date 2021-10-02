@@ -6,6 +6,7 @@ import SearchBar from '../SearchBar/SearchBar'
 import {
     change_Value_Active_Cases,
     fetch_Data_From_Database,
+    Update_Data_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
@@ -15,14 +16,15 @@ import moment from 'moment'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../../Spinner/Spinner'
+import { useHistory } from 'react-router-dom'
 
 function ActiveCases({
     fetch_Data_From_Database,
     dataFromDatabase,
-    user,
     change_Value_Active_Cases,
     valueActiveCases,
     loadingFromState,
+    Update_Data_In_Database,
 }) {
     if (!dataFromDatabase) {
         fetch_Data_From_Database()
@@ -85,6 +87,63 @@ function ActiveCases({
         hasMoreActiveCases = false
     }
 
+    const ViewResult = ({ arrResult }) => {
+        const history = useHistory()
+        return arrResult.map((elem) => {
+            let timestamp = moment(parseInt(elem.time, 10)).fromNow() /*.format(
+            'DD MMMM YYYY, HH:mm'
+        )*/
+
+            return (
+                <ListGroupItem key={elem.idDialog}>
+                    <div className="infoDialogue">
+                        <div className="infoDialogue-user">
+                            <FontAwesomeIcon
+                                icon={['fas', 'user-tie']}
+                                size="3x"
+                                color="darkblue"
+                                className="customIcon"
+                            />
+                            <p>{elem.client}</p>
+                        </div>
+                        <div className="infoDialogue-topic">
+                            <div>
+                                <p className="titleTopic">Тема:</p> {elem.topic}
+                            </div>
+                            <div>
+                                <p className="titleTopic">Подтема:</p>{' '}
+                                {elem.subtopic}
+                            </div>
+                        </div>
+                        <div className="contentMessage">{elem.content}</div>
+                        <div className="infoDialogue-time_button">
+                            <div className="infoDialogue-time">
+                                <div>{timestamp}</div>
+                            </div>
+                            <Button
+                                type="button"
+                                outline
+                                color="primary"
+                                size="sm"
+                                onClick={() => {
+                                    history.push(
+                                        `/OperatorPage/Dialogue/${elem.idDialog}`
+                                    )
+                                    Update_Data_In_Database(
+                                        { status: 'inWork' },
+                                        elem.idDialog
+                                    )
+                                }}
+                            >
+                                Войти в диалог
+                            </Button>
+                        </div>
+                    </div>
+                </ListGroupItem>
+            )
+        })
+    }
+
     let result =
         displayedFilterResults.length > 0 ? (
             <ViewResult arrResult={displayedFilterResults} />
@@ -121,57 +180,13 @@ function ActiveCases({
     )
 }
 
-const ViewResult = ({ arrResult }) => {
-    return arrResult.map((elem) => {
-        let timestamp = moment(parseInt(elem.time, 10)).fromNow() /*.format(
-            'DD MMMM YYYY, HH:mm'
-        )*/
-
-        return (
-            <ListGroupItem key={elem.idDialog}>
-                <div className="infoDialog">
-                    <div className="infoDialog-user">
-                        <FontAwesomeIcon
-                            icon={['fas', 'user-tie']}
-                            size="3x"
-                            color="darkblue"
-                            className="customIcon"
-                        />
-                        <p>{elem.client}</p>
-                    </div>
-                    <div className="infoDialog-topic">
-                        <div>
-                            <p className="titleTopic">Тема:</p> {elem.topic}
-                        </div>
-                        <div>
-                            <p className="titleTopic">Подтема:</p>{' '}
-                            {elem.subtopic}
-                        </div>
-                    </div>
-                    <div className="contentMessage">{elem.content}</div>
-                    <div className="infoDialog-time_button">
-                        <div className="infoDialog-time">
-                            <div>{timestamp}</div>
-                        </div>
-                        <Button outline color="primary" size="sm">
-                            Войти в диалог
-                        </Button>
-                    </div>
-                </div>
-            </ListGroupItem>
-        )
-    })
-}
-
 const mapStateToProps = ({
     dataFromDatabase,
-    user,
     valueActiveCases,
     loadingFromState,
 }) => {
     return {
         dataFromDatabase,
-        user,
         valueActiveCases,
         loadingFromState,
     }
@@ -180,6 +195,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
     fetch_Data_From_Database,
     change_Value_Active_Cases,
+    Update_Data_In_Database,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActiveCases)

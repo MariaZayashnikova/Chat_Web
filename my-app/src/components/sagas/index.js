@@ -157,6 +157,23 @@ function pushDataInDataBase(action) {
         .catch((err) => console.log(err))
 }
 
+function updateDataInDataBase(action) {
+    firebase
+        .database()
+        .ref('Chats/' + action.idDialogue)
+        .update(action.value)
+        .then(() => {
+            console.log('update')
+        })
+        .catch(() => {
+            console.log('error')
+        })
+}
+
+function* update_Data() {
+    yield takeLatest('Update_Data_In_Database', updateDataInDataBase)
+}
+
 function* push_Data() {
     yield takeLatest('push_Data', pushDataInDataBase)
 }
@@ -197,5 +214,6 @@ export default function* rootSaga() {
         Sign_Out_User(),
         fromDatabase(),
         push_Data(),
+        update_Data(),
     ])
 }

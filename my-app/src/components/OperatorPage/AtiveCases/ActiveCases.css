@@ -1,8 +1,8 @@
-.infoDialog   {
+.infoDialogue   {
     display: flex;
 }
 
-.infoDialog-user {
+.infoDialogue-user {
     width: 13%;
 }
 
@@ -36,10 +36,10 @@
     padding: 0 10px;
 }
 
-.infoDialog-time_button {
+.infoDialogue-time_button {
     width: 15%;
 }
 
-.infoDialog-time {
+.infoDialogue-time {
     margin-bottom: 10px;
 }

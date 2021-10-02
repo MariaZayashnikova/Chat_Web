@@ -82,6 +82,10 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 valueActiveCases: state.valueActiveCases + 5,
             }
+        case 'Update_Data_In_Database':
+            return {
+                ...state,
+            }
         default:
             return state
     }
