@@ -11,12 +11,23 @@ function NavBar() {
                 <NavItem className="navItem">
                     <Link to="/OperatorPage/Active" className="linkNav">
                         <FontAwesomeIcon
-                            icon={['fas', 'user-edit']}
+                            icon={['fas', 'users']}
                             size="3x"
                             color="darkblue"
                             className="customIcon"
                         />
                         <div>Активные</div>
+                    </Link>
+                </NavItem>
+                <NavItem className="navItem">
+                    <Link to="/OperatorPage/inWork" className="linkNav">
+                        <FontAwesomeIcon
+                            icon={['fas', 'user-edit']}
+                            size="3x"
+                            color="darkblue"
+                            className="customIcon"
+                        />
+                        <div>В работе</div>
                     </Link>
                 </NavItem>
                 <NavItem className="navItem">

@@ -19,6 +19,7 @@ import { connect } from 'react-redux'
 import ActiveCases from '../OperatorPage/AtiveCases/ActiveCases'
 import SettingsUser from '../OperatorPage/User/SettingsUser/SettingsUser'
 import Dialogue from '../OperatorPage/Dialogue/Dialogue'
+import InWorkCases from '../OperatorPage/InWorkCases/InWorkCases'
 
 library.add(fab, fas)
 
@@ -49,6 +50,13 @@ function App({ user }) {
                         path="/OperatorPage/Active"
                         exact
                         component={ActiveCases}
+                    >
+                        {!user ? <Redirect push to="/" /> : null}
+                    </Route>
+                    <Route
+                        path="/OperatorPage/inWork"
+                        exact
+                        component={InWorkCases}
                     >
                         {!user ? <Redirect push to="/" /> : null}
                     </Route>
