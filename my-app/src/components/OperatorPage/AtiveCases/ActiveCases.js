@@ -31,14 +31,19 @@ function ActiveCases({
         fetch_Data_From_Database()
     }
 
+    let timerId = setInterval(() => {
+        fetch_Data_From_Database()
+    }, 30000)
+
     let allResultFilter = []
 
     let hasMoreActiveCases = true
 
+    let displayedFilterResults = []
+
     function filterData() {
         for (let idDialog in dataFromDatabase) {
             let objDialogs = dataFromDatabase[idDialog]
-
             for (let elem in objDialogs) {
                 let contentDialog = objDialogs[elem]
                 let status = contentDialog.status
@@ -60,7 +65,7 @@ function ActiveCases({
             }
         }
     }
-    let displayedFilterResults = []
+
     function createDisplayedFilterResults() {
         let i = 0
         allResultFilter.forEach((elem) => {
@@ -127,6 +132,7 @@ function ActiveCases({
                                 color="primary"
                                 size="sm"
                                 onClick={() => {
+                                    clearInterval(timerId)
                                     history.push(
                                         `/OperatorPage/Dialogue/${elem.idDialog}`
                                     )

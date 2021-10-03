@@ -59,7 +59,6 @@ const reducer = (state = initialState, action) => {
         case 'fetch_Data_From_Database':
             return {
                 ...state,
-                loadingFromState: true,
             }
         case 'Data_From_Database':
             return {
@@ -75,7 +74,6 @@ const reducer = (state = initialState, action) => {
         case 'push_Data':
             return {
                 ...state,
-                loadingFromState: true,
             }
         case 'change_Value_Active_Cases':
             return {
