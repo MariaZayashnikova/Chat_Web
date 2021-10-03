@@ -106,7 +106,7 @@ function InWorkCases({
                                 <p className="titleTopic">Тема:</p> {elem.topic}
                             </div>
                             <div>
-                                <p className="titleTopic">Подтема:</p>{' '}
+                                <p className="titleTopic">Подтема:</p>
                                 {elem.subtopic}
                             </div>
                         </div>

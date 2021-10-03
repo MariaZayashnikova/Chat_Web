@@ -108,7 +108,7 @@ function SavedCases({
                                 <p className="titleTopic">Тема:</p> {elem.topic}
                             </div>
                             <div>
-                                <p className="titleTopic">Подтема:</p>{' '}
+                                <p className="titleTopic">Подтема:</p>
                                 {elem.subtopic}
                             </div>
                         </div>
@@ -144,7 +144,7 @@ function SavedCases({
                                     )
                                 }}
                             >
-                                Удалить
+                                Удалить из сохранённых
                             </Button>
                         </div>
                     </div>

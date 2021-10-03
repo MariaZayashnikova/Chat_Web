@@ -21,6 +21,7 @@ import SettingsUser from '../OperatorPage/User/SettingsUser/SettingsUser'
 import Dialogue from '../OperatorPage/Dialogue/Dialogue'
 import InWorkCases from '../OperatorPage/InWorkCases/InWorkCases'
 import SavedCases from '../OperatorPage/SavedCases/SavesCases'
+import FinishedCases from '../OperatorPage/FinishedCases/FinishedCases'
 
 library.add(fab, fas)
 
@@ -65,6 +66,13 @@ function App({ user }) {
                         path="/OperatorPage/Saved"
                         exact
                         component={SavedCases}
+                    >
+                        {!user ? <Redirect push to="/" /> : null}
+                    </Route>
+                    <Route
+                        path="/OperatorPage/Finished"
+                        exact
+                        component={FinishedCases}
                     >
                         {!user ? <Redirect push to="/" /> : null}
                     </Route>

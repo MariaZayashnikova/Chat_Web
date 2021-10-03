@@ -11,14 +11,15 @@ import {
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import './ActiveCases.css'
 import moment from 'moment'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../../Spinner/Spinner'
 import { useHistory } from 'react-router-dom'
+import './FinishedCases.css'
+import { ToastContainer } from 'react-toastify'
 
-function ActiveCases({
+function FinishedCases({
     fetch_Data_From_Database,
     dataFromDatabase,
     change_Value_Active_Cases,
@@ -35,6 +36,8 @@ function ActiveCases({
 
     let hasMoreActiveCases = true
 
+    let isSavedCase = false
+
     function filterData() {
         for (let idDialog in dataFromDatabase) {
             let objDialogs = dataFromDatabase[idDialog]
@@ -42,25 +45,28 @@ function ActiveCases({
             for (let elem in objDialogs) {
                 let contentDialog = objDialogs[elem]
                 let status = contentDialog.status
-                let timeMessage = contentDialog.messages
-                for (let elemMessage in timeMessage) {
-                    let message = timeMessage[elemMessage]
-                    if (status === 'active') {
-                        let objResult = {
-                            idDialog: elem,
-                            client: contentDialog.client,
-                            topic: contentDialog.topic,
-                            subtopic: contentDialog.subtopic,
-                            content: message.content,
-                            time: elemMessage,
-                        }
-                        allResultFilter.push(objResult)
+
+                let messages = contentDialog.messages
+                if (status === 'finished') {
+                    if (contentDialog.isSave) {
+                        isSavedCase = contentDialog.isSave
                     }
+                    let objResult = {
+                        idDialog: elem,
+                        client: contentDialog.client,
+                        topic: contentDialog.topic,
+                        subtopic: contentDialog.subtopic,
+                        content: Object.values(messages).pop().content,
+                        time: Object.keys(messages).pop(),
+                    }
+                    allResultFilter.push(objResult)
                 }
             }
         }
     }
+
     let displayedFilterResults = []
+
     function createDisplayedFilterResults() {
         let i = 0
         allResultFilter.forEach((elem) => {
@@ -91,10 +97,7 @@ function ActiveCases({
     const ViewResult = ({ arrResult }) => {
         const history = useHistory()
         return arrResult.map((elem) => {
-            let timestamp = moment(parseInt(elem.time, 10)).fromNow() /*.format(
-            'DD MMMM YYYY, HH:mm'
-        )*/
-
+            let timestamp = moment(parseInt(elem.time, 10)).fromNow()
             return (
                 <ListGroupItem key={elem.idDialog}>
                     <div className="infoDialogue">
@@ -117,30 +120,58 @@ function ActiveCases({
                             </div>
                         </div>
                         <div className="contentMessage">{elem.content}</div>
-                        <div className="infoDialogue-time_button">
+                        <div className="infoDialogue-time_buttons">
                             <div className="infoDialogue-time">
                                 <div>{timestamp}</div>
+                                <div>Оценка</div>
                             </div>
-                            <Button
-                                type="button"
-                                outline
-                                color="primary"
-                                size="sm"
-                                onClick={() => {
-                                    history.push(
-                                        `/OperatorPage/Dialogue/${elem.idDialog}`
-                                    )
-                                    Update_Data_In_Database(
-                                        {
-                                            status: 'inWork',
-                                            operatorUID: user.uid,
-                                        },
-                                        elem.idDialog
-                                    )
-                                }}
-                            >
-                                Войти в диалог
-                            </Button>
+                            <div>
+                                <Button
+                                    type="button"
+                                    outline
+                                    color="primary"
+                                    size="sm"
+                                    onClick={() => {
+                                        history.push(
+                                            `/OperatorPage/Dialogue/${elem.idDialog}`
+                                        )
+                                    }}
+                                >
+                                    Войти в диалог
+                                </Button>
+                                {isSavedCase ? (
+                                    <Button
+                                        type="button"
+                                        outline
+                                        color="danger"
+                                        size="sm"
+                                        className="infoDialogue-button"
+                                        onClick={() => {
+                                            Update_Data_In_Database(
+                                                { isSave: false },
+                                                elem.idDialog
+                                            )
+                                        }}
+                                    >
+                                        Удалить из сохранённых
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        outline
+                                        color="info"
+                                        size="sm"
+                                        className="infoDialogue-button"
+                                        onClick={() => {
+                                            Update_Data_In_Database(
+                                                { isSave: true },
+                                                elem.idDialog
+                                            )
+                                        }}
+                                    >
+                                        Сохранить диалог
+                                    </Button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </ListGroupItem>
@@ -159,10 +190,8 @@ function ActiveCases({
                 <User />
                 <div className="containerBody">
                     <SearchBar />
+                    <ToastContainer />
                     <div className="containerQueue">
-                        <div className="queue">
-                            Клиентов в очереди: {allResultFilter.length}
-                        </div>
                         {loadingFromState ? <Spinner /> : null}
                         <ListGroup id="scrollableDiv" className="listQueue">
                             <InfiniteScroll
@@ -204,4 +233,4 @@ const mapDispatchToProps = {
     Update_Data_In_Database,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActiveCases)
+export default connect(mapStateToProps, mapDispatchToProps)(FinishedCases)

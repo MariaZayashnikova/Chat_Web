@@ -31,12 +31,14 @@ function NavBar() {
                     </Link>
                 </NavItem>
                 <NavItem className="navItem">
-                    <FontAwesomeIcon
-                        icon={['fas', 'flag-checkered']}
-                        size="3x"
-                        color="darkblue"
-                    />
-                    <div>Завершенные</div>
+                    <Link to="/OperatorPage/Finished" className="linkNav">
+                        <FontAwesomeIcon
+                            icon={['fas', 'flag-checkered']}
+                            size="3x"
+                            color="darkblue"
+                        />
+                        <div>Завершенные</div>
+                    </Link>
                 </NavItem>
                 <NavItem className="navItem">
                     <Link to="/OperatorPage/Saved" className="linkNav">
