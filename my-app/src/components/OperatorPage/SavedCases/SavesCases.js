@@ -4,8 +4,9 @@ import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
 import {
-    change_Value_Active_Cases,
     fetch_Data_From_Database,
+    Update_Data_In_Database,
+    change_Value_Active_Cases,
 } from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
@@ -15,14 +16,17 @@ import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../../Spinner/Spinner'
 import { useHistory } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import './SavedCases.css'
 
-function InWorkCases({
+function SavedCases({
     fetch_Data_From_Database,
     dataFromDatabase,
-    change_Value_Active_Cases,
-    valueActiveCases,
     loadingFromState,
+    Update_Data_In_Database,
     user,
+    valueActiveCases,
+    change_Value_Active_Cases,
 }) {
     if (!dataFromDatabase) {
         fetch_Data_From_Database()
@@ -38,10 +42,9 @@ function InWorkCases({
 
             for (let elem in objDialogs) {
                 let contentDialog = objDialogs[elem]
-                let status = contentDialog.status
                 let operatorUID = contentDialog.operatorUID
                 let messages = contentDialog.messages
-                if (status === 'inWork' && user.uid === operatorUID) {
+                if (contentDialog.isSave === true && user.uid === operatorUID) {
                     let objResult = {
                         idDialog: elem,
                         client: contentDialog.client,
@@ -57,7 +60,6 @@ function InWorkCases({
     }
 
     let displayedFilterResults = []
-
     function createDisplayedFilterResults() {
         let i = 0
         allResultFilter.forEach((elem) => {
@@ -120,6 +122,7 @@ function InWorkCases({
                                 outline
                                 color="primary"
                                 size="sm"
+                                className="infoDialogue-buttons"
                                 onClick={() => {
                                     history.push(
                                         `/OperatorPage/Dialogue/${elem.idDialog}`
@@ -127,6 +130,21 @@ function InWorkCases({
                                 }}
                             >
                                 Войти в диалог
+                            </Button>
+                            <Button
+                                type="button"
+                                outline
+                                color="danger"
+                                size="sm"
+                                className="infoDialogue-buttons buttonDelete"
+                                onClick={() => {
+                                    Update_Data_In_Database(
+                                        { isSave: false },
+                                        elem.idDialog
+                                    )
+                                }}
+                            >
+                                Удалить
                             </Button>
                         </div>
                     </div>
@@ -146,6 +164,7 @@ function InWorkCases({
                 <User />
                 <div className="containerBody">
                     <SearchBar />
+                    <ToastContainer />
                     <div className="containerQueue">
                         {loadingFromState ? <Spinner /> : null}
                         <ListGroup id="scrollableDiv" className="listQueue">
@@ -170,21 +189,22 @@ function InWorkCases({
 
 const mapStateToProps = ({
     dataFromDatabase,
-    valueActiveCases,
     loadingFromState,
     user,
+    valueActiveCases,
 }) => {
     return {
         dataFromDatabase,
-        valueActiveCases,
         loadingFromState,
         user,
+        valueActiveCases,
     }
 }
 
 const mapDispatchToProps = {
     fetch_Data_From_Database,
+    Update_Data_In_Database,
     change_Value_Active_Cases,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InWorkCases)
+export default connect(mapStateToProps, mapDispatchToProps)(SavedCases)

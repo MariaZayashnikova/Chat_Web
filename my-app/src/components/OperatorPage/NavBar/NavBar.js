@@ -39,12 +39,14 @@ function NavBar() {
                     <div>Завершенные</div>
                 </NavItem>
                 <NavItem className="navItem">
-                    <FontAwesomeIcon
-                        icon={['fas', 'save']}
-                        size="3x"
-                        color="darkblue"
-                    />
-                    <div>Сохранённые</div>
+                    <Link to="/OperatorPage/Saved" className="linkNav">
+                        <FontAwesomeIcon
+                            icon={['fas', 'save']}
+                            size="3x"
+                            color="darkblue"
+                        />
+                        <div>Сохранённые</div>
+                    </Link>
                 </NavItem>
             </Nav>
         </div>

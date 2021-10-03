@@ -39,6 +39,8 @@ function Dialogue({
     let allResultFilter = []
     let nameClient
 
+    let isSavedCase = false
+
     function filterData() {
         for (let idDialog in dataFromDatabase) {
             let objDialogs = dataFromDatabase[idDialog]
@@ -46,6 +48,9 @@ function Dialogue({
                 if (elem === itemId) {
                     let contentDialog = objDialogs[elem]
                     nameClient = contentDialog.client
+                    if (contentDialog.isSave) {
+                        isSavedCase = contentDialog.isSave
+                    }
                     let messages = contentDialog.messages
                     for (let messageTime in messages) {
                         let contentMessage = messages[messageTime]
@@ -84,19 +89,36 @@ function Dialogue({
                     <div className="containerDialogue">
                         <div className="client">
                             {nameClient}
-                            <Button
-                                outline
-                                color="primary"
-                                size="sm"
-                                onClick={() => {
-                                    Update_Data_In_Database(
-                                        { isSave: true },
-                                        itemId
-                                    )
-                                }}
-                            >
-                                Сохранить диалог
-                            </Button>
+                            {isSavedCase ? (
+                                <Button
+                                    type="button"
+                                    outline
+                                    color="danger"
+                                    size="sm"
+                                    onClick={() => {
+                                        Update_Data_In_Database(
+                                            { isSave: false },
+                                            itemId
+                                        )
+                                    }}
+                                >
+                                    Удалить из сохранённых
+                                </Button>
+                            ) : (
+                                <Button
+                                    outline
+                                    color="primary"
+                                    size="sm"
+                                    onClick={() => {
+                                        Update_Data_In_Database(
+                                            { isSave: true },
+                                            itemId
+                                        )
+                                    }}
+                                >
+                                    Сохранить диалог
+                                </Button>
+                            )}
                         </div>
                         <div className="containerDialogueMessages">
                             {loadingFromState ? <Spinner /> : null}
