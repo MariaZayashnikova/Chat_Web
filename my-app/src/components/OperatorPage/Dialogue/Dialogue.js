@@ -3,7 +3,10 @@ import '../OperatorPage.css'
 import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
-import { fetch_Data_From_Database } from '../../../actions'
+import {
+    fetch_Data_From_Database,
+    Update_Data_In_Database,
+} from '../../../actions'
 import { connect } from 'react-redux'
 import {
     Toast,
@@ -21,12 +24,14 @@ import './Dialogue.css'
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Spinner from '../../Spinner/Spinner'
+import { ToastContainer } from 'react-toastify'
 
 function Dialogue({
     fetch_Data_From_Database,
     dataFromDatabase,
     loadingFromState,
     itemId,
+    Update_Data_In_Database,
 }) {
     if (!dataFromDatabase) {
         fetch_Data_From_Database()
@@ -57,7 +62,6 @@ function Dialogue({
     }
 
     if (dataFromDatabase) {
-        console.log(dataFromDatabase)
         filterData()
     }
 
@@ -76,10 +80,21 @@ function Dialogue({
                 <User />
                 <div className="containerBody">
                     <SearchBar />
+                    <ToastContainer />
                     <div className="containerDialogue">
                         <div className="client">
                             {nameClient}
-                            <Button outline color="primary" size="sm">
+                            <Button
+                                outline
+                                color="primary"
+                                size="sm"
+                                onClick={() => {
+                                    Update_Data_In_Database(
+                                        { isSave: true },
+                                        itemId
+                                    )
+                                }}
+                            >
                                 Сохранить диалог
                             </Button>
                         </div>
@@ -156,6 +171,7 @@ const mapStateToProps = ({ dataFromDatabase, loadingFromState }) => {
 
 const mapDispatchToProps = {
     fetch_Data_From_Database,
+    Update_Data_In_Database,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogue)

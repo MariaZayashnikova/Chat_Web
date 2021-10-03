@@ -64,6 +64,7 @@ function* fetchUserAuthorization(action) {
             name: response.user.displayName,
             email: response.user.email,
             token: response.user._lat,
+            uid: response.user.uid,
         }
         yield put({ type: 'FETCH_MESSAGES_SUCCESS', data })
     }
@@ -81,6 +82,7 @@ function* fetchUserAuthorizationViaGoogle(action) {
             name: response.user.displayName,
             email: response.user.email,
             token: response.user._lat,
+            uid: response.user.uid,
         }
         yield put({ type: 'FETCH_MESSAGES_SUCCESS', data })
     }
@@ -96,6 +98,7 @@ function* fetchUserRegistration(action) {
             name: response.user.displayName,
             email: response.user.email,
             token: response.user._lat,
+            uid: response.user.uid,
         }
         yield put({ type: 'FETCH_MESSAGES_SUCCESS', data })
     }
@@ -105,7 +108,7 @@ function* fetchUserRegistration(action) {
 }
 
 function* fetchResetPassword(action) {
-    const notify = () =>
+    const notifySuccess = () =>
         toast.success('Письмо отпралено на почту', {
             position: 'top-left',
             autoClose: 5000,
@@ -115,10 +118,11 @@ function* fetchResetPassword(action) {
             draggable: true,
             progress: undefined,
         })
+
     try {
         yield call(() => ResetPassword(action))
         yield put({ type: 'FETCH_MESSAGES_SUCCESS' })
-        notify()
+        notifySuccess()
     } catch {
         let error = {
             message: 'Что-то пошло не так... Попробуйте позже',
@@ -158,15 +162,35 @@ function pushDataInDataBase(action) {
 }
 
 function updateDataInDataBase(action) {
+    const notifySuccess = () =>
+        toast.success('Данные успешно обновлены!', {
+            position: 'top-left',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        })
+    const notifyError = () =>
+        toast.error('Произошла ошибка при обновлении данных...', {
+            position: 'top-left',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        })
     firebase
         .database()
         .ref('Chats/' + action.idDialogue)
         .update(action.value)
         .then(() => {
-            console.log('update')
+            notifySuccess()
         })
         .catch(() => {
-            console.log('error')
+            notifyError()
         })
 }
 

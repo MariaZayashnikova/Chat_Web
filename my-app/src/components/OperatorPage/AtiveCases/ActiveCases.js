@@ -25,6 +25,7 @@ function ActiveCases({
     valueActiveCases,
     loadingFromState,
     Update_Data_In_Database,
+    user,
 }) {
     if (!dataFromDatabase) {
         fetch_Data_From_Database()
@@ -130,7 +131,10 @@ function ActiveCases({
                                         `/OperatorPage/Dialogue/${elem.idDialog}`
                                     )
                                     Update_Data_In_Database(
-                                        { status: 'inWork' },
+                                        {
+                                            status: 'inWork',
+                                            operatorUID: user.uid,
+                                        },
                                         elem.idDialog
                                     )
                                 }}
@@ -184,11 +188,13 @@ const mapStateToProps = ({
     dataFromDatabase,
     valueActiveCases,
     loadingFromState,
+    user,
 }) => {
     return {
         dataFromDatabase,
         valueActiveCases,
         loadingFromState,
+        user,
     }
 }
 

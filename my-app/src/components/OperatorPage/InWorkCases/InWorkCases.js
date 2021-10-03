@@ -6,7 +6,6 @@ import SearchBar from '../SearchBar/SearchBar'
 import {
     change_Value_Active_Cases,
     fetch_Data_From_Database,
-    Update_Data_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
@@ -23,7 +22,6 @@ function InWorkCases({
     change_Value_Active_Cases,
     valueActiveCases,
     loadingFromState,
-    Update_Data_In_Database,
 }) {
     if (!dataFromDatabase) {
         fetch_Data_From_Database()
@@ -124,10 +122,6 @@ function InWorkCases({
                                     history.push(
                                         `/OperatorPage/Dialogue/${elem.idDialog}`
                                     )
-                                    Update_Data_In_Database(
-                                        { status: 'inWork' },
-                                        elem.idDialog
-                                    )
                                 }}
                             >
                                 Войти в диалог
@@ -187,7 +181,6 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
     fetch_Data_From_Database,
     change_Value_Active_Cases,
-    Update_Data_In_Database,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(InWorkCases)
