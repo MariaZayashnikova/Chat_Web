@@ -145,7 +145,7 @@ function InWorkCases({
             <div className="containerBodyOperatorPage">
                 <User />
                 <div className="containerBody">
-                    <SearchBar />
+                    <SearchBar status={'inWork'} />
                     <div className="containerQueue">
                         {loadingFromState ? <Spinner /> : null}
                         <ListGroup id="scrollableDiv" className="listQueue">

@@ -25,7 +25,6 @@
     width: 100%;
     top: 50px;
     height: 540px;
-    border: 1px solid blue;
     background: white;
     border-radius: 15px;
     overflow: auto;
@@ -35,4 +34,12 @@
 .resultSearch-infoDialog p {
     display: inline-block;
     width: 25%;
+}
+
+.resultSearch-infoDialog_nameClient {
+    font-weight: bold;
+}
+
+.itemResult:hover {
+    border: 3px solid lightblue;
 }

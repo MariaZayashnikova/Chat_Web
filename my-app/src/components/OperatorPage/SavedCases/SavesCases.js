@@ -163,7 +163,7 @@ function SavedCases({
             <div className="containerBodyOperatorPage">
                 <User />
                 <div className="containerBody">
-                    <SearchBar />
+                    <SearchBar isSave={true} />
                     <ToastContainer />
                     <div className="containerQueue">
                         {loadingFromState ? <Spinner /> : null}

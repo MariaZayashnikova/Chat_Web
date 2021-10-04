@@ -164,7 +164,7 @@ function ActiveCases({
             <div className="containerBodyOperatorPage">
                 <User />
                 <div className="containerBody">
-                    <SearchBar />
+                    <SearchBar status={'active'} />
                     <div className="containerQueue">
                         <div className="queue">
                             Клиентов в очереди: {allResultFilter.length}

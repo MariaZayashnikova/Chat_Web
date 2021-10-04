@@ -189,7 +189,7 @@ function FinishedCases({
             <div className="containerBodyOperatorPage">
                 <User />
                 <div className="containerBody">
-                    <SearchBar />
+                    <SearchBar status={'finished'} />
                     <ToastContainer />
                     <div className="containerQueue">
                         {loadingFromState ? <Spinner /> : null}
