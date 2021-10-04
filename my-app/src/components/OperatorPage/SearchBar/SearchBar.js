@@ -33,6 +33,7 @@ function SearchBar({
             let objDialogs = dataFromDatabase[idDialog]
             for (let elem in objDialogs) {
                 let contentDialog = objDialogs[elem]
+                let nameClient = contentDialog.client.toLowerCase()
                 let statusDialogue = contentDialog.status
                 let timeMessage = contentDialog.messages
                 if (isSave) {
@@ -40,6 +41,16 @@ function SearchBar({
                         contentDialog.isSave &&
                         contentDialog.operatorUID === user.uid
                     ) {
+                        if (nameClient.includes(valueSearch)) {
+                            let objResult = {
+                                idDialog: elem,
+                                client: contentDialog.client,
+                                topic: contentDialog.topic,
+                                subtopic: contentDialog.subtopic,
+                                content: null,
+                            }
+                            resultSearch.push(objResult)
+                        }
                         for (let elemMessage in timeMessage) {
                             let message = timeMessage[elemMessage]
                             if (message.content) {
@@ -61,6 +72,16 @@ function SearchBar({
                     }
                 } else {
                     if (statusDialogue === status) {
+                        if (nameClient.includes(valueSearch)) {
+                            let objResult = {
+                                idDialog: elem,
+                                client: contentDialog.client,
+                                topic: contentDialog.topic,
+                                subtopic: contentDialog.subtopic,
+                                content: null,
+                            }
+                            resultSearch.push(objResult)
+                        }
                         for (let elemMessage in timeMessage) {
                             let message = timeMessage[elemMessage]
                             if (message.content) {
