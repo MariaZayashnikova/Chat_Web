@@ -15,38 +15,44 @@ import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../../Spinner/Spinner'
 import { useHistory } from 'react-router-dom'
+import { createDisplayedFilterResults } from '../OperatorPage'
 
 function InWorkCases({
     fetch_Data_From_Database,
     dataFromDatabase,
     change_Value_Active_Cases,
     valueActiveCases,
-    loadingFromState,
     user,
 }) {
     if (!dataFromDatabase) {
         fetch_Data_From_Database()
     }
 
+    let timerId = setInterval(() => {
+        fetch_Data_From_Database()
+    }, 60000)
+
     let allResultFilter = []
+
+    let displayedFilterResults = []
 
     let hasMoreActiveCases = true
 
     function filterData() {
-        for (let idDialog in dataFromDatabase) {
-            let objDialogs = dataFromDatabase[idDialog]
-
-            for (let elem in objDialogs) {
-                let contentDialog = objDialogs[elem]
-                let status = contentDialog.status
-                let operatorUID = contentDialog.operatorUID
-                let messages = contentDialog.messages
-                if (status === 'inWork' && user.uid === operatorUID) {
+        for (let idDialogue in dataFromDatabase) {
+            let objDialogues = dataFromDatabase[idDialogue]
+            for (let elem in objDialogues) {
+                let contentDialogue = objDialogues[elem]
+                let messages = contentDialogue.messages
+                if (
+                    contentDialogue.status === 'inWork' &&
+                    user.uid === contentDialogue.operatorUID
+                ) {
                     let objResult = {
-                        idDialog: elem,
-                        client: contentDialog.client,
-                        topic: contentDialog.topic,
-                        subtopic: contentDialog.subtopic,
+                        idDialogue: elem,
+                        client: contentDialogue.client,
+                        topic: contentDialogue.topic,
+                        subtopic: contentDialogue.subtopic,
                         content: Object.values(messages).pop().content,
                         time: Object.keys(messages).pop(),
                     }
@@ -56,23 +62,13 @@ function InWorkCases({
         }
     }
 
-    let displayedFilterResults = []
-
-    function createDisplayedFilterResults() {
-        let i = 0
-        allResultFilter.forEach((elem) => {
-            i++
-            if (i > valueActiveCases) {
-                return
-            } else {
-                displayedFilterResults.push(elem)
-            }
-        })
-    }
-
     if (dataFromDatabase) {
         filterData()
-        createDisplayedFilterResults()
+        createDisplayedFilterResults(
+            allResultFilter,
+            displayedFilterResults,
+            valueActiveCases
+        )
     }
 
     function loadFunc() {
@@ -90,29 +86,31 @@ function InWorkCases({
         return arrResult.map((elem) => {
             let timestamp = moment(parseInt(elem.time, 10)).fromNow()
             return (
-                <ListGroupItem key={elem.idDialog}>
-                    <div className="infoDialogue">
-                        <div className="infoDialogue-user">
+                <ListGroupItem key={elem.idDialogue}>
+                    <div className="dialogue">
+                        <div className="dialogue__user">
                             <FontAwesomeIcon
                                 icon={['fas', 'user-tie']}
                                 size="3x"
                                 color="darkblue"
-                                className="customIcon"
                             />
                             <p>{elem.client}</p>
                         </div>
-                        <div className="infoDialogue-topic">
+                        <div className="dialogue__topic">
                             <div>
-                                <p className="titleTopic">Тема:</p> {elem.topic}
+                                <p className="dialogue__topic_title">Тема:</p>{' '}
+                                {elem.topic}
                             </div>
                             <div>
-                                <p className="titleTopic">Подтема:</p>
+                                <p className="dialogue__topic_title">
+                                    Подтема:
+                                </p>
                                 {elem.subtopic}
                             </div>
                         </div>
-                        <div className="contentMessage">{elem.content}</div>
-                        <div className="infoDialogue-time_button">
-                            <div className="infoDialogue-time">
+                        <div className="dialogue__message">{elem.content}</div>
+                        <div className="dialogue__actions">
+                            <div className="dialogue__actions_time">
                                 <div>{timestamp}</div>
                             </div>
                             <Button
@@ -121,8 +119,9 @@ function InWorkCases({
                                 color="primary"
                                 size="sm"
                                 onClick={() => {
+                                    clearInterval(timerId)
                                     history.push(
-                                        `/OperatorPage/Dialogue/${elem.idDialog}`
+                                        `/OperatorPage/Dialogue/${elem.idDialogue}`
                                     )
                                 }}
                             >
@@ -139,16 +138,19 @@ function InWorkCases({
         displayedFilterResults.length > 0 ? (
             <ViewResult arrResult={displayedFilterResults} />
         ) : null
+
     return (
         <div className="OperatorPage">
             <NavBar />
             <div className="containerBodyOperatorPage">
                 <User />
-                <div className="containerBody">
+                <div className="body">
                     <SearchBar status={'inWork'} />
-                    <div className="containerQueue">
-                        {loadingFromState ? <Spinner /> : null}
-                        <ListGroup id="scrollableDiv" className="listQueue">
+                    <div className="queue">
+                        <ListGroup
+                            id="scrollableDiv"
+                            className="containerQueue"
+                        >
                             <InfiniteScroll
                                 dataLength={displayedFilterResults.length}
                                 pageStart={0}
@@ -168,16 +170,10 @@ function InWorkCases({
     )
 }
 
-const mapStateToProps = ({
-    dataFromDatabase,
-    valueActiveCases,
-    loadingFromState,
-    user,
-}) => {
+const mapStateToProps = ({ dataFromDatabase, valueActiveCases, user }) => {
     return {
         dataFromDatabase,
         valueActiveCases,
-        loadingFromState,
         user,
     }
 }

@@ -13,7 +13,7 @@ function fetchAuthorization(action) {
         .catch((error) => ({ error }))
 }
 
-function fetchAuthorizationViaGoogle(action) {
+function fetchAuthorizationViaGoogle() {
     let provider = new firebase.auth.GoogleAuthProvider()
     return fb
         .auth()
@@ -42,7 +42,7 @@ function ResetPassword(action) {
 }
 
 function user_Logged_Out() {
-    return fb.auth().signOut()
+    fb.auth().signOut()
 }
 
 function* userLoggedOut() {
@@ -121,7 +121,6 @@ function* fetchResetPassword(action) {
 
     try {
         yield call(() => ResetPassword(action))
-        yield put({ type: 'FETCH_MESSAGES_SUCCESS' })
         notifySuccess()
     } catch {
         let error = {
@@ -137,18 +136,21 @@ function fetchDataFromDatabase() {
         .ref()
         .once('value')
         .then((snapshot) => ({ snapshot }))
+        .catch((error) => ({ error }))
 }
 
 function* dataFromDatabase() {
-    try {
-        const { snapshot } = yield call(() => fetchDataFromDatabase())
+    const { snapshot, error } = yield call(() => fetchDataFromDatabase())
+    if (snapshot) {
         const data = snapshot.val()
         yield put({ type: 'Data_From_Database', data })
-    } catch {
-        let error = {
+    }
+    if (error) {
+        let err = {
             message: 'Что-то пошло не так... Попробуйте позже',
         }
-        yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
+        console.log(error)
+        yield put({ type: 'FETCH_MESSAGES_FAILURE', err })
     }
 }
 

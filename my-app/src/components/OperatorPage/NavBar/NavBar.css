@@ -19,16 +19,11 @@
     color: darkblue;
 }
 
-.customIcon {
-    margin-top: 10px;
+.activeItem {
+    text-decoration: underline;
 }
 
-.nav {
-    width: 50%;
-    margin: 0 auto;
-}
-
-.linkNav {
+.navItem__link {
     color: darkblue;
     text-decoration: none;
 }

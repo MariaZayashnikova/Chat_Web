@@ -22,6 +22,7 @@ function SearchBar({
     user,
 }) {
     let resultSearch = []
+
     function searchStart(e) {
         fetch_Data_From_Database()
         resultSearch = []
@@ -29,24 +30,23 @@ function SearchBar({
     }
 
     function search() {
-        for (let idDialog in dataFromDatabase) {
-            let objDialogs = dataFromDatabase[idDialog]
-            for (let elem in objDialogs) {
-                let contentDialog = objDialogs[elem]
-                let nameClient = contentDialog.client.toLowerCase()
-                let statusDialogue = contentDialog.status
-                let timeMessage = contentDialog.messages
+        for (let idDialogue in dataFromDatabase) {
+            let objDialogues = dataFromDatabase[idDialogue]
+            for (let elem in objDialogues) {
+                let contentDialogue = objDialogues[elem]
+                let nameClient = contentDialogue.client.toLowerCase()
+                let timeMessage = contentDialogue.messages
                 if (isSave) {
                     if (
-                        contentDialog.isSave &&
-                        contentDialog.operatorUID === user.uid
+                        contentDialogue.isSave &&
+                        contentDialogue.operatorUID === user.uid
                     ) {
                         if (nameClient.includes(valueSearch)) {
                             let objResult = {
                                 idDialog: elem,
-                                client: contentDialog.client,
-                                topic: contentDialog.topic,
-                                subtopic: contentDialog.subtopic,
+                                client: contentDialogue.client,
+                                topic: contentDialogue.topic,
+                                subtopic: contentDialogue.subtopic,
                                 content: null,
                             }
                             resultSearch.push(objResult)
@@ -55,14 +55,12 @@ function SearchBar({
                             let message = timeMessage[elemMessage]
                             if (message.content) {
                                 let content = message.content.toLowerCase()
-                                let res = content.includes(valueSearch)
-
-                                if (res) {
+                                if (content.includes(valueSearch)) {
                                     let objResult = {
-                                        idDialog: elem,
-                                        client: contentDialog.client,
-                                        topic: contentDialog.topic,
-                                        subtopic: contentDialog.subtopic,
+                                        idDialogue: elem,
+                                        client: contentDialogue.client,
+                                        topic: contentDialogue.topic,
+                                        subtopic: contentDialogue.subtopic,
                                         content: message.content,
                                     }
                                     resultSearch.push(objResult)
@@ -71,13 +69,13 @@ function SearchBar({
                         }
                     }
                 } else {
-                    if (statusDialogue === status) {
+                    if (contentDialogue.status === status) {
                         if (nameClient.includes(valueSearch)) {
                             let objResult = {
-                                idDialog: elem,
-                                client: contentDialog.client,
-                                topic: contentDialog.topic,
-                                subtopic: contentDialog.subtopic,
+                                idDialogue: elem,
+                                client: contentDialogue.client,
+                                topic: contentDialogue.topic,
+                                subtopic: contentDialogue.subtopic,
                                 content: null,
                             }
                             resultSearch.push(objResult)
@@ -86,14 +84,12 @@ function SearchBar({
                             let message = timeMessage[elemMessage]
                             if (message.content) {
                                 let content = message.content.toLowerCase()
-                                let res = content.includes(valueSearch)
-
-                                if (res) {
+                                if (content.includes(valueSearch)) {
                                     let objResult = {
-                                        idDialog: elem,
-                                        client: contentDialog.client,
-                                        topic: contentDialog.topic,
-                                        subtopic: contentDialog.subtopic,
+                                        idDialogue: elem,
+                                        client: contentDialogue.client,
+                                        topic: contentDialogue.topic,
+                                        subtopic: contentDialogue.subtopic,
                                         content: message.content,
                                     }
                                     resultSearch.push(objResult)
@@ -115,23 +111,26 @@ function SearchBar({
         return arrResult.map((elem) => {
             return (
                 <ListGroupItem
-                    key={elem.idDialog}
-                    className="itemResult"
+                    key={elem.idDialogue}
+                    className="resultSearch__item"
                     onClick={() => {
-                        history.push(`/OperatorPage/Dialogue/${elem.idDialog}`)
+                        Set_Value_Search(null)
+                        history.push(
+                            `/OperatorPage/Dialogue/${elem.idDialogue}`
+                        )
                         if (status === 'active') {
                             Update_Data_In_Database(
                                 {
                                     status: 'inWork',
                                     operatorUID: user.uid,
                                 },
-                                elem.idDialog
+                                elem.idDialogue
                             )
                         }
                     }}
                 >
-                    <div className="resultSearch-infoDialog">
-                        <p className="resultSearch-infoDialog_nameClient">
+                    <div className="resultSearch__dialogue">
+                        <p className="resultSearch__dialogue_nameClient">
                             {elem.client}
                         </p>
                         <p>{elem.topic}</p>
@@ -162,7 +161,7 @@ function SearchBar({
                 <Input
                     type="search"
                     id="search"
-                    className="search"
+                    className="containerSearch__search"
                     onInput={debounce(searchStart, 1000)}
                 />
             </div>

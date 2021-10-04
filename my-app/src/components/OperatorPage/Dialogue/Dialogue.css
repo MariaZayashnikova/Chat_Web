@@ -1,16 +1,21 @@
 .containerDialogue {
     padding: 10px;
     border-radius: 15px;
+    margin-top: 10px;
 }
-.client {
+
+.containerDialogue__client {
     display: flex;
-    justify-content: space-between;
     font-weight: bold;
     font-size: 24px;
     margin-bottom: 10px;
     padding: 5px 15px;
     border-radius: 10px;
     box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.1);
+}
+
+.containerDialogue__client button {
+    margin-left: 15px;
 }
 
 .infoMessage {
@@ -23,7 +28,7 @@
     right: 0.75rem;
 }
 
-.containerDialogueMessages .listMessages {
+.containerDialogue__containerMessages .containerDialogue__containerMessages_messages {
     margin-bottom: 10px;
     height: 500px;
     overflow: auto;
@@ -33,7 +38,7 @@
     border-radius: 15px;
 }
 
-.containerAnswer {
+.containerDialogue__Answers {
     display: flex;
     justify-content: space-between;
     padding: 10px;
@@ -41,33 +46,33 @@
     border-radius: 10px;
 }
 
-.containerAnswer .answer {
+.containerDialogue__Answers .containerDialogue__Answers_answer {
     width: 40%;
 }
 
-.readyAnswersSettings {
+.containerDialogue__readyAnswers_settings {
     display: flex;
     justify-content: space-between;
     padding: 2px;
 }
 
-.containerAnswer .readyAnswers  {
+.containerDialogue__Answers .containerDialogue__readyAnswers  {
     width: 25%;
 }
 
-.containerAnswer .dropdownCustom {
+.containerDialogue__Answers .dropdownCustom {
     background: transparent;
     color: black;
     width: 60%;
 }
 
-.listMessages .operatorMessage {
+.containerDialogue__containerMessages_messages .operatorMessage {
     align-self: flex-end;
     margin-bottom: 5px;
     background: dodgerblue;
     color: white;
 }
 
-.listMessages .clientMessage {
+.containerDialogue__containerMessages_messages .clientMessage {
     background: lightgrey;
 }

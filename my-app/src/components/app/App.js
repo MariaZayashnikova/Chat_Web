@@ -14,7 +14,7 @@ import React from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
-import Error from '../Error/Error'
+import ErrorRoute from '../ErrorRoute/ErrorRoute'
 import { connect } from 'react-redux'
 import ActiveCases from '../OperatorPage/AtiveCases/ActiveCases'
 import SettingsUser from '../OperatorPage/User/SettingsUser/SettingsUser'
@@ -83,14 +83,18 @@ function App({ user }) {
 
                             return <Dialogue itemId={id} />
                         }}
-                    />
+                    >
+                        {!user ? <Redirect push to="/" /> : null}
+                    </Route>
                     <Route
                         path="/OperatorPage/Settings"
                         exact
                         component={SettingsUser}
-                    />
+                    >
+                        {!user ? <Redirect push to="/" /> : null}
+                    </Route>
                     <Route path="*">
-                        <Error />
+                        <ErrorRoute />
                     </Route>
                 </Switch>
             </div>

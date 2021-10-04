@@ -10,16 +10,6 @@
     padding: 5px;
 }
 
-.error {
-    color: red;
-    font-size: 18px;
-    margin: 5px auto;
-    border-radius: 15px;
-    padding: 3px 10px;
-    text-align: center;
-    background: rgba(204, 255, 255, 0.8);
-}
-
 .Page .btnCustomNet {
     width: 30%;
     border: none;

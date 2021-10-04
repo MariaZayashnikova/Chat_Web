@@ -64,7 +64,6 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 dataFromDatabase: action.data,
-                loadingFromState: false,
             }
         case 'Set_Value_Search':
             return {

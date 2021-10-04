@@ -1,25 +1,25 @@
-.pageFinished-contentMessage {
+.dialogue__messageFinished {
     width: 50%;
 }
 
-.containerInfo {
+.dialogueFinished__actions {
     display: flex;
     width: 30%;
 }
 
-.timeAndStar {
+.dialogueFinished__info {
     width: 60%;
 }
 
-.timeAndStar div {
+.dialogueFinished__info div {
     text-align: center;
     margin-bottom: 5px;
 }
 
-.buttons {
+.dialogueFinished__buttons {
     width: 30%;
 }
 
-.buttons button {
+.dialogueFinished__buttons button {
     margin-bottom: 5px;
 }

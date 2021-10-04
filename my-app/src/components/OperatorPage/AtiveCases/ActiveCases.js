@@ -1,5 +1,4 @@
 import React from 'react'
-import '../OperatorPage.css'
 import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
@@ -12,18 +11,20 @@ import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './ActiveCases.css'
+import '../OperatorPage.css'
 import moment from 'moment'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../../Spinner/Spinner'
 import { useHistory } from 'react-router-dom'
+import { createDisplayedFilterResults } from '../OperatorPage'
 
 function ActiveCases({
     fetch_Data_From_Database,
     dataFromDatabase,
     change_Value_Active_Cases,
     valueActiveCases,
-    loadingFromState,
+    errorFromState,
     Update_Data_In_Database,
     user,
 }) {
@@ -42,22 +43,21 @@ function ActiveCases({
     let displayedFilterResults = []
 
     function filterData() {
-        for (let idDialog in dataFromDatabase) {
-            let objDialogs = dataFromDatabase[idDialog]
-            for (let elem in objDialogs) {
-                let contentDialog = objDialogs[elem]
-                let status = contentDialog.status
-                let timeMessage = contentDialog.messages
-                for (let elemMessage in timeMessage) {
-                    let message = timeMessage[elemMessage]
-                    if (status === 'active') {
+        for (let idDialogue in dataFromDatabase) {
+            let objDialogues = dataFromDatabase[idDialogue]
+            for (let elem in objDialogues) {
+                let contentDialogue = objDialogues[elem]
+                let messages = contentDialogue.messages
+                for (let timeMessage in messages) {
+                    let message = messages[timeMessage]
+                    if (contentDialogue.status === 'active') {
                         let objResult = {
-                            idDialog: elem,
-                            client: contentDialog.client,
-                            topic: contentDialog.topic,
-                            subtopic: contentDialog.subtopic,
+                            idDialogue: elem,
+                            client: contentDialogue.client,
+                            topic: contentDialogue.topic,
+                            subtopic: contentDialogue.subtopic,
                             content: message.content,
-                            time: elemMessage,
+                            time: parseInt(timeMessage, 10),
                         }
                         allResultFilter.push(objResult)
                     }
@@ -66,21 +66,13 @@ function ActiveCases({
         }
     }
 
-    function createDisplayedFilterResults() {
-        let i = 0
-        allResultFilter.forEach((elem) => {
-            i++
-            if (i > valueActiveCases) {
-                return
-            } else {
-                displayedFilterResults.push(elem)
-            }
-        })
-    }
-
     if (dataFromDatabase) {
         filterData()
-        createDisplayedFilterResults()
+        createDisplayedFilterResults(
+            allResultFilter,
+            displayedFilterResults,
+            valueActiveCases
+        )
     }
 
     function loadFunc() {
@@ -96,34 +88,36 @@ function ActiveCases({
     const ViewResult = ({ arrResult }) => {
         const history = useHistory()
         return arrResult.map((elem) => {
-            let timestamp = moment(parseInt(elem.time, 10)).fromNow() /*.format(
+            let timestamp = moment(elem.time).fromNow() /*.format(
             'DD MMMM YYYY, HH:mm'
         )*/
 
             return (
-                <ListGroupItem key={elem.idDialog}>
-                    <div className="infoDialogue">
-                        <div className="infoDialogue-user">
+                <ListGroupItem key={elem.idDialogue}>
+                    <div className="dialogue">
+                        <div className="dialogue__user">
                             <FontAwesomeIcon
                                 icon={['fas', 'user-tie']}
                                 size="3x"
                                 color="darkblue"
-                                className="customIcon"
                             />
                             <p>{elem.client}</p>
                         </div>
-                        <div className="infoDialogue-topic">
+                        <div className="dialogue__topic">
                             <div>
-                                <p className="titleTopic">Тема:</p> {elem.topic}
+                                <p className="dialogue__topic_title">Тема:</p>{' '}
+                                {elem.topic}
                             </div>
                             <div>
-                                <p className="titleTopic">Подтема:</p>
+                                <p className="dialogue__topic_title">
+                                    Подтема:
+                                </p>
                                 {elem.subtopic}
                             </div>
                         </div>
-                        <div className="contentMessage">{elem.content}</div>
-                        <div className="infoDialogue-time_button">
-                            <div className="infoDialogue-time">
+                        <div className="dialogue__message">{elem.content}</div>
+                        <div className="dialogue__actions">
+                            <div className="dialogue__actions_time">
                                 <div>{timestamp}</div>
                             </div>
                             <Button
@@ -134,14 +128,14 @@ function ActiveCases({
                                 onClick={() => {
                                     clearInterval(timerId)
                                     history.push(
-                                        `/OperatorPage/Dialogue/${elem.idDialog}`
+                                        `/OperatorPage/Dialogue/${elem.idDialogue}`
                                     )
                                     Update_Data_In_Database(
                                         {
                                             status: 'inWork',
                                             operatorUID: user.uid,
                                         },
-                                        elem.idDialog
+                                        elem.idDialogue
                                     )
                                 }}
                             >
@@ -158,19 +152,25 @@ function ActiveCases({
         displayedFilterResults.length > 0 ? (
             <ViewResult arrResult={displayedFilterResults} />
         ) : null
+
     return (
         <div className="OperatorPage">
             <NavBar />
             <div className="containerBodyOperatorPage">
                 <User />
-                <div className="containerBody">
+                <div className="body">
                     <SearchBar status={'active'} />
-                    <div className="containerQueue">
-                        <div className="queue">
+                    <div className="queue">
+                        <div className="queueQuantity">
                             Клиентов в очереди: {allResultFilter.length}
                         </div>
-                        {loadingFromState ? <Spinner /> : null}
-                        <ListGroup id="scrollableDiv" className="listQueue">
+                        {errorFromState ? (
+                            <div className="error">{errorFromState}</div>
+                        ) : null}
+                        <ListGroup
+                            id="scrollableDiv"
+                            className="containerQueue"
+                        >
                             <InfiniteScroll
                                 dataLength={displayedFilterResults.length}
                                 pageStart={0}
@@ -193,14 +193,14 @@ function ActiveCases({
 const mapStateToProps = ({
     dataFromDatabase,
     valueActiveCases,
-    loadingFromState,
     user,
+    errorFromState,
 }) => {
     return {
         dataFromDatabase,
         valueActiveCases,
-        loadingFromState,
         user,
+        errorFromState,
     }
 }
 

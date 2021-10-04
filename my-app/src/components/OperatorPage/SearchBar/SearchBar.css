@@ -10,7 +10,7 @@
     margin-bottom: 10px;
 }
 
-.searchBar .search {
+.searchBar .containerSearch__search {
     display: inline-block;
     width: 40%;
     margin-left: 15px;
@@ -31,15 +31,15 @@
     z-index: 10;
 }
 
-.resultSearch-infoDialog p {
+.resultSearch__dialogue p {
     display: inline-block;
     width: 25%;
 }
 
-.resultSearch-infoDialog_nameClient {
+.resultSearch__dialogue_nameClient {
     font-weight: bold;
 }
 
-.itemResult:hover {
+.resultSearch__item:hover {
     border: 3px solid lightblue;
 }

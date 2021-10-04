@@ -1,46 +1,5 @@
-.infoDialogue   {
-    display: flex;
-}
-
-.infoDialogue-user {
-    width: 13%;
-}
-
-.infoDialog-topic {
-    width: 10%;
-}
-
-.titleTopic {
-    color: darkblue;
-    margin: 0;
-    font-weight: bold;
-}
-
-.containerQueue {
-    z-index: 2;
-}
-
-.queue {
+.queueQuantity {
     color: darkblue;
     font-size: 20px;
     font-weight: bold;
-}
-
-.listQueue {
-    height: 500px;
-    overflow: auto;
-}
-
-.contentMessage {
-    width: 70%;
-    padding: 0 10px;
-}
-
-.infoDialogue-time_button {
-    width: 15%;
-}
-
-.infoDialogue-time {
-    margin: 10px;
-
 }

@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
-import '../OperatorPage.css'
 import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
-import SearchBar from '../SearchBar/SearchBar'
 import {
     fetch_Data_From_Database,
     Update_Data_In_Database,
@@ -23,13 +21,11 @@ import 'moment/locale/ru.js'
 import './Dialogue.css'
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Spinner from '../../Spinner/Spinner'
 import { ToastContainer } from 'react-toastify'
 
 function Dialogue({
     fetch_Data_From_Database,
     dataFromDatabase,
-    loadingFromState,
     itemId,
     Update_Data_In_Database,
 }) {
@@ -37,21 +33,22 @@ function Dialogue({
         fetch_Data_From_Database()
     }
     let allResultFilter = []
+
     let nameClient
 
     let isSavedCase = false
 
     function filterData() {
-        for (let idDialog in dataFromDatabase) {
-            let objDialogs = dataFromDatabase[idDialog]
-            for (let elem in objDialogs) {
+        for (let idDialogue in dataFromDatabase) {
+            let objDialogues = dataFromDatabase[idDialogue]
+            for (let elem in objDialogues) {
                 if (elem === itemId) {
-                    let contentDialog = objDialogs[elem]
-                    nameClient = contentDialog.client
-                    if (contentDialog.isSave) {
-                        isSavedCase = contentDialog.isSave
+                    let contentDialogue = objDialogues[elem]
+                    nameClient = contentDialogue.client
+                    if (contentDialogue.isSave) {
+                        isSavedCase = contentDialogue.isSave
                     }
-                    let messages = contentDialog.messages
+                    let messages = contentDialogue.messages
                     for (let messageTime in messages) {
                         let contentMessage = messages[messageTime]
                         let obj = {
@@ -78,16 +75,16 @@ function Dialogue({
         allResultFilter.length > 0 ? (
             <ViewResult arrResult={allResultFilter} />
         ) : null
+
     return (
         <div className="OperatorPage">
             <NavBar />
             <div className="containerBodyOperatorPage">
                 <User />
-                <div className="containerBody">
-                    <SearchBar />
+                <div className="body">
                     <ToastContainer />
                     <div className="containerDialogue">
-                        <div className="client">
+                        <div className="containerDialogue__client">
                             {nameClient}
                             {isSavedCase ? (
                                 <Button
@@ -120,17 +117,18 @@ function Dialogue({
                                 </Button>
                             )}
                         </div>
-                        <div className="containerDialogueMessages">
-                            {loadingFromState ? <Spinner /> : null}
-                            <div className="listMessages">{result}</div>
+                        <div className="containerDialogue__containerMessages">
+                            <div className="containerDialogue__containerMessages_messages">
+                                {result}
+                            </div>
                         </div>
-                        <div className="containerAnswer">
-                            <div className="answer">
+                        <div className="containerDialogue__Answers">
+                            <div className="containerDialogue__Answers_answer">
                                 Введите ответ:
                                 <Input />
                             </div>
-                            <div className="readyAnswers">
-                                <div className="readyAnswersSettings">
+                            <div className="containerDialogue__readyAnswers">
+                                <div className="containerDialogue__readyAnswers_settings">
                                     <div>Или выберете из готовых:</div>
                                     <FontAwesomeIcon
                                         icon={['fas', 'cog']}
@@ -184,10 +182,9 @@ const ViewResult = ({ arrResult }) => {
     })
 }
 
-const mapStateToProps = ({ dataFromDatabase, loadingFromState }) => {
+const mapStateToProps = ({ dataFromDatabase }) => {
     return {
         dataFromDatabase,
-        loadingFromState,
     }
 }
 

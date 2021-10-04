@@ -5,9 +5,10 @@ import './User.css'
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
+import Spinner from '../../Spinner/Spinner'
 
-function User({ user, SignOut_User, push_Data }) {
-    function addDialogCustom() {
+function User({ user, SignOut_User, push_Data, loadingFromState }) {
+    function addDialogueCustom() {
         let name = prompt('Ваше имя')
         let content = prompt('Тест обращения')
         let time = new Date().getTime()
@@ -29,24 +30,25 @@ function User({ user, SignOut_User, push_Data }) {
 
     return (
         <div className="containerUser">
-            <h2 className="nameUser">
+            <h2 className="containerUser__name">
                 <FontAwesomeIcon
                     icon={['fas', 'user']}
                     color="darkblue"
-                    className="iconUser"
+                    className="containerUser__icon"
                 />
                 {user.email}
                 <Link to="/OperatorPage/Settings">
                     <FontAwesomeIcon
                         icon={['fas', 'cog']}
                         color="blue"
-                        className="iconUser settingsUser"
+                        className="containerUser__icon containerUser__icon_settings"
                     />
                 </Link>
             </h2>
-            <Button outline color="secondary" onClick={addDialogCustom}>
+            <Button outline color="secondary" onClick={addDialogueCustom}>
                 Добавить
             </Button>
+            {loadingFromState ? <Spinner /> : null}
             <Button
                 className="btnCustom"
                 outline
@@ -59,8 +61,9 @@ function User({ user, SignOut_User, push_Data }) {
     )
 }
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({ user, loadingFromState }) => {
     return {
+        loadingFromState,
         user,
     }
 }

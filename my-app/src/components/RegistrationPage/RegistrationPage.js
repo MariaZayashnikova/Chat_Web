@@ -5,7 +5,6 @@ import { validate } from '../AuthorizationPage/AuthorizationPage'
 import { Link } from 'react-router-dom'
 import {
     FETCH_MESSAGES_FAILURE,
-    FETCH_MESSAGES_SUCCESS,
     FETCH_Registration_REQUEST,
     REMOVE_FAILURE,
 } from '../../actions'
@@ -170,7 +169,6 @@ const mapStateToProps = ({ loadingFromState, errorFromState }) => {
 
 const mapDispatchToProps = {
     FETCH_Registration_REQUEST,
-    FETCH_MESSAGES_SUCCESS,
     FETCH_MESSAGES_FAILURE,
     REMOVE_FAILURE,
 }

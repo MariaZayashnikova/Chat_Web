@@ -5,17 +5,11 @@ import { useFormik } from 'formik'
 import { validate } from '../AuthorizationPage/AuthorizationPage'
 import { RESET_PASSWORD, REMOVE_FAILURE } from '../../actions'
 import { connect } from 'react-redux'
-import Spinner from '../Spinner/Spinner'
 import './ResetPasswordPage.css'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-function ResetPasswordPage({
-    loadingFromState,
-    errorFromState,
-    RESET_PASSWORD,
-    REMOVE_FAILURE,
-}) {
+function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -75,7 +69,6 @@ function ResetPasswordPage({
                     Отправить ссылку для восстановления пароля
                 </Button>
             </div>
-            {loadingFromState ? <Spinner /> : null}
             {errorFromState ? (
                 <div className="error">{errorFromState}</div>
             ) : null}
@@ -110,9 +103,8 @@ function ResetPasswordPage({
     )
 }
 
-const mapStateToProps = ({ loadingFromState, errorFromState }) => {
+const mapStateToProps = ({ errorFromState }) => {
     return {
-        loadingFromState,
         errorFromState,
     }
 }

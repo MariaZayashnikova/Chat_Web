@@ -1,5 +1,4 @@
 import React from 'react'
-import '../OperatorPage.css'
 import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
@@ -17,16 +16,16 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../../Spinner/Spinner'
 import { useHistory } from 'react-router-dom'
 import './FinishedCases.css'
+import '../OperatorPage.css'
 import { ToastContainer } from 'react-toastify'
+import { createDisplayedFilterResults } from '../OperatorPage'
 
 function FinishedCases({
     fetch_Data_From_Database,
     dataFromDatabase,
     change_Value_Active_Cases,
     valueActiveCases,
-    loadingFromState,
     Update_Data_In_Database,
-    user,
 }) {
     if (!dataFromDatabase) {
         fetch_Data_From_Database()
@@ -36,26 +35,25 @@ function FinishedCases({
 
     let hasMoreActiveCases = true
 
+    let displayedFilterResults = []
+
     let isSavedCase = false
 
     function filterData() {
-        for (let idDialog in dataFromDatabase) {
-            let objDialogs = dataFromDatabase[idDialog]
-
-            for (let elem in objDialogs) {
-                let contentDialog = objDialogs[elem]
-                let status = contentDialog.status
-
-                let messages = contentDialog.messages
-                if (status === 'finished') {
-                    if (contentDialog.isSave) {
-                        isSavedCase = contentDialog.isSave
+        for (let idDialogue in dataFromDatabase) {
+            let objDialogues = dataFromDatabase[idDialogue]
+            for (let elem in objDialogues) {
+                let contentDialogue = objDialogues[elem]
+                let messages = contentDialogue.messages
+                if (contentDialogue.status === 'finished') {
+                    if (contentDialogue.isSave) {
+                        isSavedCase = contentDialogue.isSave
                     }
                     let objResult = {
-                        idDialog: elem,
-                        client: contentDialog.client,
-                        topic: contentDialog.topic,
-                        subtopic: contentDialog.subtopic,
+                        idDialogue: elem,
+                        client: contentDialogue.client,
+                        topic: contentDialogue.topic,
+                        subtopic: contentDialogue.subtopic,
                         content: Object.values(messages).pop().content,
                         time: Object.keys(messages).pop(),
                     }
@@ -65,24 +63,18 @@ function FinishedCases({
         }
     }
 
-    let displayedFilterResults = []
-
-    function createDisplayedFilterResults() {
-        let i = 0
-        allResultFilter.forEach((elem) => {
-            i++
-            if (i > valueActiveCases) {
-                return
-            } else {
-                displayedFilterResults.push(elem)
-            }
-        })
-    }
-
     if (dataFromDatabase) {
         filterData()
-        createDisplayedFilterResults()
+        createDisplayedFilterResults(
+            allResultFilter,
+            displayedFilterResults,
+            valueActiveCases
+        )
     }
+
+    let timerId = setInterval(() => {
+        fetch_Data_From_Database()
+    }, 60000)
 
     function loadFunc() {
         setTimeout(() => {
@@ -99,31 +91,33 @@ function FinishedCases({
         return arrResult.map((elem) => {
             let timestamp = moment(parseInt(elem.time, 10)).fromNow()
             return (
-                <ListGroupItem key={elem.idDialog}>
-                    <div className="infoDialogue">
-                        <div className="infoDialogue-user">
+                <ListGroupItem key={elem.idDialogue}>
+                    <div className="dialogue">
+                        <div className="dialogue__user">
                             <FontAwesomeIcon
                                 icon={['fas', 'user-tie']}
                                 size="3x"
                                 color="darkblue"
-                                className="customIcon"
                             />
                             <p>{elem.client}</p>
                         </div>
-                        <div className="infoDialogue-topic">
+                        <div className="dialogue__topic">
                             <div>
-                                <p className="titleTopic">Тема:</p> {elem.topic}
+                                <p className="dialogue__topic_title">Тема:</p>{' '}
+                                {elem.topic}
                             </div>
                             <div>
-                                <p className="titleTopic">Подтема:</p>
+                                <p className="dialogue__topic_title">
+                                    Подтема:
+                                </p>
                                 {elem.subtopic}
                             </div>
                         </div>
-                        <div className="pageFinished-contentMessage">
+                        <div className="dialogue__messageFinished">
                             {elem.content}
                         </div>
-                        <div className="containerInfo">
-                            <div className="timeAndStar">
+                        <div className="dialogueFinished__actions">
+                            <div className="dialogueFinished__info">
                                 <div>{timestamp}</div>
                                 <div>
                                     <div>Оценка</div>
@@ -149,15 +143,16 @@ function FinishedCases({
                                     />
                                 </div>
                             </div>
-                            <div className="buttons">
+                            <div className="dialogueFinished__buttons">
                                 <Button
                                     type="button"
                                     outline
                                     color="primary"
                                     size="sm"
                                     onClick={() => {
+                                        clearInterval(timerId)
                                         history.push(
-                                            `/OperatorPage/Dialogue/${elem.idDialog}`
+                                            `/OperatorPage/Dialogue/${elem.idDialogue}`
                                         )
                                     }}
                                 >
@@ -172,7 +167,7 @@ function FinishedCases({
                                         onClick={() => {
                                             Update_Data_In_Database(
                                                 { isSave: false },
-                                                elem.idDialog
+                                                elem.idDialogue
                                             )
                                         }}
                                     >
@@ -186,7 +181,7 @@ function FinishedCases({
                                         onClick={() => {
                                             Update_Data_In_Database(
                                                 { isSave: true },
-                                                elem.idDialog
+                                                elem.idDialogue
                                             )
                                         }}
                                     >
@@ -205,17 +200,20 @@ function FinishedCases({
         displayedFilterResults.length > 0 ? (
             <ViewResult arrResult={displayedFilterResults} />
         ) : null
+
     return (
         <div className="OperatorPage">
             <NavBar />
             <div className="containerBodyOperatorPage">
                 <User />
-                <div className="containerBody">
+                <div className="body">
                     <SearchBar status={'finished'} />
                     <ToastContainer />
-                    <div className="containerQueue">
-                        {loadingFromState ? <Spinner /> : null}
-                        <ListGroup id="scrollableDiv" className="listQueue">
+                    <div className="queue">
+                        <ListGroup
+                            id="scrollableDiv"
+                            className="containerQueue"
+                        >
                             <InfiniteScroll
                                 dataLength={displayedFilterResults.length}
                                 pageStart={0}
@@ -235,17 +233,10 @@ function FinishedCases({
     )
 }
 
-const mapStateToProps = ({
-    dataFromDatabase,
-    valueActiveCases,
-    loadingFromState,
-    user,
-}) => {
+const mapStateToProps = ({ dataFromDatabase, valueActiveCases }) => {
     return {
         dataFromDatabase,
         valueActiveCases,
-        loadingFromState,
-        user,
     }
 }
 
