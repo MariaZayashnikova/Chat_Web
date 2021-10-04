@@ -1,10 +1,25 @@
-.infoDialogue-time_buttons {
-    width: 20%;
-    display: flex;
-    justify-content: space-between;
+.pageFinished-contentMessage {
+    width: 50%;
 }
 
-.infoDialogue-button {
-    width: auto;
-    margin-top: 10px;
+.containerInfo {
+    display: flex;
+    width: 30%;
+}
+
+.timeAndStar {
+    width: 60%;
+}
+
+.timeAndStar div {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.buttons {
+    width: 30%;
+}
+
+.buttons button {
+    margin-bottom: 5px;
 }

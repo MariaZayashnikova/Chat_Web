@@ -119,13 +119,37 @@ function FinishedCases({
                                 {elem.subtopic}
                             </div>
                         </div>
-                        <div className="contentMessage">{elem.content}</div>
-                        <div className="infoDialogue-time_buttons">
-                            <div className="infoDialogue-time">
+                        <div className="pageFinished-contentMessage">
+                            {elem.content}
+                        </div>
+                        <div className="containerInfo">
+                            <div className="timeAndStar">
                                 <div>{timestamp}</div>
-                                <div>Оценка</div>
+                                <div>
+                                    <div>Оценка</div>
+                                    <FontAwesomeIcon
+                                        icon={['fas', 'star']}
+                                        color="yellow"
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={['fas', 'star']}
+                                        color="yellow"
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={['fas', 'star']}
+                                        color="yellow"
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={['fas', 'star']}
+                                        color="yellow"
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={['fas', 'star']}
+                                        color="yellow"
+                                    />
+                                </div>
                             </div>
-                            <div>
+                            <div className="buttons">
                                 <Button
                                     type="button"
                                     outline
@@ -145,7 +169,6 @@ function FinishedCases({
                                         outline
                                         color="danger"
                                         size="sm"
-                                        className="infoDialogue-button"
                                         onClick={() => {
                                             Update_Data_In_Database(
                                                 { isSave: false },
@@ -160,7 +183,6 @@ function FinishedCases({
                                         outline
                                         color="info"
                                         size="sm"
-                                        className="infoDialogue-button"
                                         onClick={() => {
                                             Update_Data_In_Database(
                                                 { isSave: true },
