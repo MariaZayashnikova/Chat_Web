@@ -5,7 +5,6 @@ import { useFormik } from 'formik'
 import { validate } from '../AuthorizationPage/AuthorizationPage'
 import { RESET_PASSWORD, REMOVE_FAILURE } from '../../actions'
 import { connect } from 'react-redux'
-import './ResetPasswordPage.css'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -27,18 +26,21 @@ function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
     }
 
     return (
-        <div className="Page">
-            <h2 className="TitlePage">Восстановить пароль</h2>
-            <div className="containerForm">
+        <div className="pageLogin">
+            <h2 className="pageLogin__titlePage">Восстановить пароль</h2>
+            <div className="pageLogin__containerForm">
                 <FormGroup className="position-relative">
-                    <Label className="colorWhite" for="email">
+                    <Label
+                        className="pageLogin__containerForm_colorWhite"
+                        for="email"
+                    >
                         Email
                     </Label>
                     <Input
                         className={
                             formik.touched.email && formik.errors.email
-                                ? 'input inputError'
-                                : 'input'
+                                ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
+                                : 'pageLogin__containerForm_input'
                         }
                         id="email"
                         name="email"
@@ -59,7 +61,7 @@ function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
                     </FormFeedback>
                 </FormGroup>
                 <Button
-                    className="btnCustom"
+                    className="pageLogin__containerForm_btn"
                     color="primary"
                     type="submit"
                     onClick={() => {
@@ -74,10 +76,10 @@ function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
             ) : null}
             <ToastContainer />
             <div className="containerLinks">
-                <div className="container">
+                <div className="containerLinks__link">
                     <Link
                         to="/"
-                        className="customLink"
+                        className="containerLinks__link_custom"
                         onClick={() => {
                             if (errorFromState) {
                                 REMOVE_FAILURE()
@@ -88,7 +90,7 @@ function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
                     </Link>
                     <Link
                         to="/Registration"
-                        className="customLink"
+                        className="containerLinks__link_custom"
                         onClick={() => {
                             if (errorFromState) {
                                 REMOVE_FAILURE()

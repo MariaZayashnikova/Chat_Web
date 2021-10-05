@@ -3,7 +3,7 @@ import './SearchBar.css'
 import { Input, Label } from 'reactstrap'
 import debounce from 'lodash.debounce'
 import {
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
     Set_Value_Search,
     Update_Data_In_Database,
 } from '../../../actions'
@@ -12,8 +12,8 @@ import { ListGroup, ListGroupItem } from 'reactstrap'
 import { useHistory } from 'react-router-dom'
 
 function SearchBar({
-    fetch_Data_From_Database,
-    dataFromDatabase,
+    fetch_Dialogues_From_Database,
+    dialogues,
     valueSearch,
     Set_Value_Search,
     status,
@@ -24,76 +24,73 @@ function SearchBar({
     let resultSearch = []
 
     function searchStart(e) {
-        fetch_Data_From_Database()
+        fetch_Dialogues_From_Database()
         resultSearch = []
         Set_Value_Search(e.target.value.toLowerCase())
     }
 
     function search() {
-        for (let idDialogue in dataFromDatabase) {
-            let objDialogues = dataFromDatabase[idDialogue]
-            for (let elem in objDialogues) {
-                let contentDialogue = objDialogues[elem]
-                let nameClient = contentDialogue.client.toLowerCase()
-                let timeMessage = contentDialogue.messages
-                if (isSave) {
-                    if (
-                        contentDialogue.isSave &&
-                        contentDialogue.operatorUID === user.uid
-                    ) {
-                        if (nameClient.includes(valueSearch)) {
-                            let objResult = {
-                                idDialog: elem,
-                                client: contentDialogue.client,
-                                topic: contentDialogue.topic,
-                                subtopic: contentDialogue.subtopic,
-                                content: null,
-                            }
-                            resultSearch.push(objResult)
+        for (let objDialogue in dialogues) {
+            let contentDialogue = dialogues[objDialogue]
+            let nameClient = contentDialogue.client.toLowerCase()
+            let timeMessage = contentDialogue.messages
+            if (isSave) {
+                if (
+                    contentDialogue.isSave &&
+                    contentDialogue.operatorUID === user.uid
+                ) {
+                    if (nameClient.includes(valueSearch)) {
+                        let objResult = {
+                            idDialog: objDialogue,
+                            client: contentDialogue.client,
+                            topic: contentDialogue.topic,
+                            subtopic: contentDialogue.subtopic,
+                            content: null,
                         }
-                        for (let elemMessage in timeMessage) {
-                            let message = timeMessage[elemMessage]
-                            if (message.content) {
-                                let content = message.content.toLowerCase()
-                                if (content.includes(valueSearch)) {
-                                    let objResult = {
-                                        idDialogue: elem,
-                                        client: contentDialogue.client,
-                                        topic: contentDialogue.topic,
-                                        subtopic: contentDialogue.subtopic,
-                                        content: message.content,
-                                    }
-                                    resultSearch.push(objResult)
+                        resultSearch.push(objResult)
+                    }
+                    for (let elemMessage in timeMessage) {
+                        let message = timeMessage[elemMessage]
+                        if (message.content) {
+                            let content = message.content.toLowerCase()
+                            if (content.includes(valueSearch)) {
+                                let objResult = {
+                                    idDialogue: objDialogue,
+                                    client: contentDialogue.client,
+                                    topic: contentDialogue.topic,
+                                    subtopic: contentDialogue.subtopic,
+                                    content: message.content,
                                 }
+                                resultSearch.push(objResult)
                             }
                         }
                     }
-                } else {
-                    if (contentDialogue.status === status) {
-                        if (nameClient.includes(valueSearch)) {
-                            let objResult = {
-                                idDialogue: elem,
-                                client: contentDialogue.client,
-                                topic: contentDialogue.topic,
-                                subtopic: contentDialogue.subtopic,
-                                content: null,
-                            }
-                            resultSearch.push(objResult)
+                }
+            } else {
+                if (contentDialogue.status === status) {
+                    if (nameClient.includes(valueSearch)) {
+                        let objResult = {
+                            idDialogue: objDialogue,
+                            client: contentDialogue.client,
+                            topic: contentDialogue.topic,
+                            subtopic: contentDialogue.subtopic,
+                            content: null,
                         }
-                        for (let elemMessage in timeMessage) {
-                            let message = timeMessage[elemMessage]
-                            if (message.content) {
-                                let content = message.content.toLowerCase()
-                                if (content.includes(valueSearch)) {
-                                    let objResult = {
-                                        idDialogue: elem,
-                                        client: contentDialogue.client,
-                                        topic: contentDialogue.topic,
-                                        subtopic: contentDialogue.subtopic,
-                                        content: message.content,
-                                    }
-                                    resultSearch.push(objResult)
+                        resultSearch.push(objResult)
+                    }
+                    for (let elemMessage in timeMessage) {
+                        let message = timeMessage[elemMessage]
+                        if (message.content) {
+                            let content = message.content.toLowerCase()
+                            if (content.includes(valueSearch)) {
+                                let objResult = {
+                                    idDialogue: objDialogue,
+                                    client: contentDialogue.client,
+                                    topic: contentDialogue.topic,
+                                    subtopic: contentDialogue.subtopic,
+                                    content: message.content,
                                 }
+                                resultSearch.push(objResult)
                             }
                         }
                     }
@@ -102,7 +99,7 @@ function SearchBar({
         }
     }
 
-    if (dataFromDatabase && valueSearch) {
+    if (dialogues && valueSearch) {
         search()
     }
 
@@ -148,7 +145,7 @@ function SearchBar({
         ) : null
 
     let noResult =
-        dataFromDatabase && valueSearch && resultSearch.length === 0 ? (
+        dialogues && valueSearch && resultSearch.length === 0 ? (
             <ListGroupItem>Ничего не найдено</ListGroupItem>
         ) : null
 
@@ -173,16 +170,16 @@ function SearchBar({
     )
 }
 
-const mapStateToProps = ({ dataFromDatabase, valueSearch, user }) => {
+const mapStateToProps = ({ dialogues, valueSearch, user }) => {
     return {
-        dataFromDatabase,
+        dialogues,
         valueSearch,
         user,
     }
 }
 
 const mapDispatchToProps = {
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
     Set_Value_Search,
     Update_Data_In_Database,
 }

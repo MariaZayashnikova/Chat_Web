@@ -4,7 +4,7 @@ import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
 import {
     change_Value_Active_Cases,
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
     Update_Data_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
@@ -20,20 +20,20 @@ import { useHistory } from 'react-router-dom'
 import { createDisplayedFilterResults } from '../OperatorPage'
 
 function ActiveCases({
-    fetch_Data_From_Database,
-    dataFromDatabase,
+    fetch_Dialogues_From_Database,
+    dialogues,
     change_Value_Active_Cases,
     valueActiveCases,
     errorFromState,
     Update_Data_In_Database,
     user,
 }) {
-    if (!dataFromDatabase) {
-        fetch_Data_From_Database()
+    if (!dialogues) {
+        fetch_Dialogues_From_Database()
     }
 
     let timerId = setInterval(() => {
-        fetch_Data_From_Database()
+        fetch_Dialogues_From_Database()
     }, 30000)
 
     let allResultFilter = []
@@ -43,30 +43,27 @@ function ActiveCases({
     let displayedFilterResults = []
 
     function filterData() {
-        for (let idDialogue in dataFromDatabase) {
-            let objDialogues = dataFromDatabase[idDialogue]
-            for (let elem in objDialogues) {
-                let contentDialogue = objDialogues[elem]
-                let messages = contentDialogue.messages
-                for (let timeMessage in messages) {
-                    let message = messages[timeMessage]
-                    if (contentDialogue.status === 'active') {
-                        let objResult = {
-                            idDialogue: elem,
-                            client: contentDialogue.client,
-                            topic: contentDialogue.topic,
-                            subtopic: contentDialogue.subtopic,
-                            content: message.content,
-                            time: parseInt(timeMessage, 10),
-                        }
-                        allResultFilter.push(objResult)
+        for (let objDialogue in dialogues) {
+            let contentDialogue = dialogues[objDialogue]
+            let messages = contentDialogue.messages
+            for (let timeMessage in messages) {
+                let message = messages[timeMessage]
+                if (contentDialogue.status === 'active') {
+                    let objResult = {
+                        idDialogue: objDialogue,
+                        client: contentDialogue.client,
+                        topic: contentDialogue.topic,
+                        subtopic: contentDialogue.subtopic,
+                        content: message.content,
+                        time: parseInt(timeMessage, 10),
                     }
+                    allResultFilter.push(objResult)
                 }
             }
         }
     }
 
-    if (dataFromDatabase) {
+    if (dialogues) {
         filterData()
         createDisplayedFilterResults(
             allResultFilter,
@@ -191,13 +188,13 @@ function ActiveCases({
 }
 
 const mapStateToProps = ({
-    dataFromDatabase,
+    dialogues,
     valueActiveCases,
     user,
     errorFromState,
 }) => {
     return {
-        dataFromDatabase,
+        dialogues,
         valueActiveCases,
         user,
         errorFromState,
@@ -205,7 +202,7 @@ const mapStateToProps = ({
 }
 
 const mapDispatchToProps = {
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
     change_Value_Active_Cases,
     Update_Data_In_Database,
 }

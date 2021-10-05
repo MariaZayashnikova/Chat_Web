@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import {
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
     Update_Data_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
@@ -24,13 +24,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ToastContainer } from 'react-toastify'
 
 function Dialogue({
-    fetch_Data_From_Database,
-    dataFromDatabase,
+    fetch_Dialogues_From_Database,
+    dialogues,
     itemId,
     Update_Data_In_Database,
 }) {
-    if (!dataFromDatabase) {
-        fetch_Data_From_Database()
+    if (!dialogues) {
+        fetch_Dialogues_From_Database()
     }
     let allResultFilter = []
 
@@ -39,31 +39,28 @@ function Dialogue({
     let isSavedCase = false
 
     function filterData() {
-        for (let idDialogue in dataFromDatabase) {
-            let objDialogues = dataFromDatabase[idDialogue]
-            for (let elem in objDialogues) {
-                if (elem === itemId) {
-                    let contentDialogue = objDialogues[elem]
-                    nameClient = contentDialogue.client
-                    if (contentDialogue.isSave) {
-                        isSavedCase = contentDialogue.isSave
+        for (let objDialogue in dialogues) {
+            if (objDialogue === itemId) {
+                let contentDialogue = dialogues[objDialogue]
+                nameClient = contentDialogue.client
+                if (contentDialogue.isSave) {
+                    isSavedCase = contentDialogue.isSave
+                }
+                let messages = contentDialogue.messages
+                for (let messageTime in messages) {
+                    let contentMessage = messages[messageTime]
+                    let obj = {
+                        time: parseInt(messageTime, 10),
+                        content: contentMessage.content,
+                        isOperator: contentMessage.isOperator,
                     }
-                    let messages = contentDialogue.messages
-                    for (let messageTime in messages) {
-                        let contentMessage = messages[messageTime]
-                        let obj = {
-                            time: parseInt(messageTime, 10),
-                            content: contentMessage.content,
-                            isOperator: contentMessage.isOperator,
-                        }
-                        allResultFilter.push(obj)
-                    }
+                    allResultFilter.push(obj)
                 }
             }
         }
     }
 
-    if (dataFromDatabase) {
+    if (dialogues) {
         filterData()
     }
 
@@ -182,14 +179,14 @@ const ViewResult = ({ arrResult }) => {
     })
 }
 
-const mapStateToProps = ({ dataFromDatabase }) => {
+const mapStateToProps = ({ dialogues }) => {
     return {
-        dataFromDatabase,
+        dialogues,
     }
 }
 
 const mapDispatchToProps = {
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
     Update_Data_In_Database,
 }
 

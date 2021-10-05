@@ -3,7 +3,7 @@ import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
 import {
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
     Update_Data_In_Database,
     change_Value_Active_Cases,
 } from '../../../actions'
@@ -21,15 +21,15 @@ import '../OperatorPage.css'
 import { createDisplayedFilterResults } from '../OperatorPage'
 
 function SavedCases({
-    fetch_Data_From_Database,
-    dataFromDatabase,
+    fetch_Dialogues_From_Database,
+    dialogues,
     Update_Data_In_Database,
     user,
     valueActiveCases,
     change_Value_Active_Cases,
 }) {
-    if (!dataFromDatabase) {
-        fetch_Data_From_Database()
+    if (!dialogues) {
+        fetch_Dialogues_From_Database()
     }
 
     let allResultFilter = []
@@ -39,30 +39,27 @@ function SavedCases({
     let hasMoreActiveCases = true
 
     function filterData() {
-        for (let idDialogue in dataFromDatabase) {
-            let objDialogues = dataFromDatabase[idDialogue]
-            for (let elem in objDialogues) {
-                let contentDialogue = objDialogues[elem]
-                let messages = contentDialogue.messages
-                if (
-                    contentDialogue.isSave === true &&
-                    user.uid === contentDialogue.operatorUID
-                ) {
-                    let objResult = {
-                        idDialogue: elem,
-                        client: contentDialogue.client,
-                        topic: contentDialogue.topic,
-                        subtopic: contentDialogue.subtopic,
-                        content: Object.values(messages).pop().content,
-                        time: Object.keys(messages).pop(),
-                    }
-                    allResultFilter.push(objResult)
+        for (let objDialogue in dialogues) {
+            let contentDialogue = dialogues[objDialogue]
+            let messages = contentDialogue.messages
+            if (
+                contentDialogue.isSave === true &&
+                user.uid === contentDialogue.operatorUID
+            ) {
+                let objResult = {
+                    idDialogue: objDialogue,
+                    client: contentDialogue.client,
+                    topic: contentDialogue.topic,
+                    subtopic: contentDialogue.subtopic,
+                    content: Object.values(messages).pop().content,
+                    time: Object.keys(messages).pop(),
                 }
+                allResultFilter.push(objResult)
             }
         }
     }
 
-    if (dataFromDatabase) {
+    if (dialogues) {
         filterData()
         createDisplayedFilterResults(
             allResultFilter,
@@ -72,7 +69,7 @@ function SavedCases({
     }
 
     let timerId = setInterval(() => {
-        fetch_Data_From_Database()
+        fetch_Dialogues_From_Database()
     }, 60000)
 
     function loadFunc() {
@@ -191,16 +188,16 @@ function SavedCases({
     )
 }
 
-const mapStateToProps = ({ dataFromDatabase, user, valueActiveCases }) => {
+const mapStateToProps = ({ dialogues, user, valueActiveCases }) => {
     return {
-        dataFromDatabase,
+        dialogues,
         user,
         valueActiveCases,
     }
 }
 
 const mapDispatchToProps = {
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
     Update_Data_In_Database,
     change_Value_Active_Cases,
 }

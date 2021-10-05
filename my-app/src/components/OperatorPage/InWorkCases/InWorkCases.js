@@ -5,7 +5,7 @@ import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
 import {
     change_Value_Active_Cases,
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
@@ -18,18 +18,18 @@ import { useHistory } from 'react-router-dom'
 import { createDisplayedFilterResults } from '../OperatorPage'
 
 function InWorkCases({
-    fetch_Data_From_Database,
-    dataFromDatabase,
+    fetch_Dialogues_From_Database,
+    dialogues,
     change_Value_Active_Cases,
     valueActiveCases,
     user,
 }) {
-    if (!dataFromDatabase) {
-        fetch_Data_From_Database()
+    if (!dialogues) {
+        fetch_Dialogues_From_Database()
     }
 
     let timerId = setInterval(() => {
-        fetch_Data_From_Database()
+        fetch_Dialogues_From_Database()
     }, 60000)
 
     let allResultFilter = []
@@ -39,30 +39,27 @@ function InWorkCases({
     let hasMoreActiveCases = true
 
     function filterData() {
-        for (let idDialogue in dataFromDatabase) {
-            let objDialogues = dataFromDatabase[idDialogue]
-            for (let elem in objDialogues) {
-                let contentDialogue = objDialogues[elem]
-                let messages = contentDialogue.messages
-                if (
-                    contentDialogue.status === 'inWork' &&
-                    user.uid === contentDialogue.operatorUID
-                ) {
-                    let objResult = {
-                        idDialogue: elem,
-                        client: contentDialogue.client,
-                        topic: contentDialogue.topic,
-                        subtopic: contentDialogue.subtopic,
-                        content: Object.values(messages).pop().content,
-                        time: Object.keys(messages).pop(),
-                    }
-                    allResultFilter.push(objResult)
+        for (let objDialogue in dialogues) {
+            let contentDialogue = dialogues[objDialogue]
+            let messages = contentDialogue.messages
+            if (
+                contentDialogue.status === 'inWork' &&
+                user.uid === contentDialogue.operatorUID
+            ) {
+                let objResult = {
+                    idDialogue: objDialogue,
+                    client: contentDialogue.client,
+                    topic: contentDialogue.topic,
+                    subtopic: contentDialogue.subtopic,
+                    content: Object.values(messages).pop().content,
+                    time: Object.keys(messages).pop(),
                 }
+                allResultFilter.push(objResult)
             }
         }
     }
 
-    if (dataFromDatabase) {
+    if (dialogues) {
         filterData()
         createDisplayedFilterResults(
             allResultFilter,
@@ -170,16 +167,16 @@ function InWorkCases({
     )
 }
 
-const mapStateToProps = ({ dataFromDatabase, valueActiveCases, user }) => {
+const mapStateToProps = ({ dialogues, valueActiveCases, user }) => {
     return {
-        dataFromDatabase,
+        dialogues,
         valueActiveCases,
         user,
     }
 }
 
 const mapDispatchToProps = {
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
     change_Value_Active_Cases,
 }
 

@@ -6,7 +6,7 @@ function Spinner() {
     return (
         <div className="block-spinner">
             <FontAwesomeIcon
-                className="custom-icon fa-spin"
+                className="block-spinner__icon fa-spin"
                 icon={['fas', 'spinner']}
                 size="3x"
             />

@@ -4,7 +4,7 @@ import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
 import {
     change_Value_Active_Cases,
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
     Update_Data_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
@@ -21,14 +21,14 @@ import { ToastContainer } from 'react-toastify'
 import { createDisplayedFilterResults } from '../OperatorPage'
 
 function FinishedCases({
-    fetch_Data_From_Database,
-    dataFromDatabase,
+    fetch_Dialogues_From_Database,
+    dialogues,
     change_Value_Active_Cases,
     valueActiveCases,
     Update_Data_In_Database,
 }) {
-    if (!dataFromDatabase) {
-        fetch_Data_From_Database()
+    if (!dialogues) {
+        fetch_Dialogues_From_Database()
     }
 
     let allResultFilter = []
@@ -40,30 +40,27 @@ function FinishedCases({
     let isSavedCase = false
 
     function filterData() {
-        for (let idDialogue in dataFromDatabase) {
-            let objDialogues = dataFromDatabase[idDialogue]
-            for (let elem in objDialogues) {
-                let contentDialogue = objDialogues[elem]
-                let messages = contentDialogue.messages
-                if (contentDialogue.status === 'finished') {
-                    if (contentDialogue.isSave) {
-                        isSavedCase = contentDialogue.isSave
-                    }
-                    let objResult = {
-                        idDialogue: elem,
-                        client: contentDialogue.client,
-                        topic: contentDialogue.topic,
-                        subtopic: contentDialogue.subtopic,
-                        content: Object.values(messages).pop().content,
-                        time: Object.keys(messages).pop(),
-                    }
-                    allResultFilter.push(objResult)
+        for (let objDialogue in dialogues) {
+            let contentDialogue = dialogues[objDialogue]
+            let messages = contentDialogue.messages
+            if (contentDialogue.status === 'finished') {
+                if (contentDialogue.isSave) {
+                    isSavedCase = contentDialogue.isSave
                 }
+                let objResult = {
+                    idDialogue: objDialogue,
+                    client: contentDialogue.client,
+                    topic: contentDialogue.topic,
+                    subtopic: contentDialogue.subtopic,
+                    content: Object.values(messages).pop().content,
+                    time: Object.keys(messages).pop(),
+                }
+                allResultFilter.push(objResult)
             }
         }
     }
 
-    if (dataFromDatabase) {
+    if (dialogues) {
         filterData()
         createDisplayedFilterResults(
             allResultFilter,
@@ -73,7 +70,7 @@ function FinishedCases({
     }
 
     let timerId = setInterval(() => {
-        fetch_Data_From_Database()
+        fetch_Dialogues_From_Database()
     }, 60000)
 
     function loadFunc() {
@@ -233,15 +230,15 @@ function FinishedCases({
     )
 }
 
-const mapStateToProps = ({ dataFromDatabase, valueActiveCases }) => {
+const mapStateToProps = ({ dialogues, valueActiveCases }) => {
     return {
-        dataFromDatabase,
+        dialogues,
         valueActiveCases,
     }
 }
 
 const mapDispatchToProps = {
-    fetch_Data_From_Database,
+    fetch_Dialogues_From_Database,
     change_Value_Active_Cases,
     Update_Data_In_Database,
 }

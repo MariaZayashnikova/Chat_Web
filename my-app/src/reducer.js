@@ -2,7 +2,7 @@ const initialState = {
     loadingFromState: false,
     errorFromState: false,
     user: null,
-    dataFromDatabase: null,
+    dialogues: null,
     valueSearch: null,
     valueActiveCases: 5,
 }
@@ -56,14 +56,14 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loadingFromState: true,
             }
-        case 'fetch_Data_From_Database':
+        case 'fetch_Dialogues_From_Database':
             return {
                 ...state,
             }
-        case 'Data_From_Database':
+        case 'Dialogues_From_Database':
             return {
                 ...state,
-                dataFromDatabase: action.data,
+                dialogues: action.data,
             }
         case 'Set_Value_Search':
             return {

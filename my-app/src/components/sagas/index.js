@@ -133,7 +133,7 @@ function* fetchResetPassword(action) {
 function fetchDataFromDatabase() {
     return firebase
         .database()
-        .ref()
+        .ref('Chats/')
         .once('value')
         .then((snapshot) => ({ snapshot }))
         .catch((error) => ({ error }))
@@ -143,7 +143,7 @@ function* dataFromDatabase() {
     const { snapshot, error } = yield call(() => fetchDataFromDatabase())
     if (snapshot) {
         const data = snapshot.val()
-        yield put({ type: 'Data_From_Database', data })
+        yield put({ type: 'Dialogues_From_Database', data })
     }
     if (error) {
         let err = {
@@ -228,7 +228,7 @@ function* Sign_Out_User() {
 }
 
 function* fromDatabase() {
-    yield takeLatest('fetch_Data_From_Database', dataFromDatabase)
+    yield takeLatest('fetch_Dialogues_From_Database', dataFromDatabase)
 }
 
 export default function* rootSaga() {

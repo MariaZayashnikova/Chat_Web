@@ -1,16 +1,4 @@
-.TitlePage {
-    width: 90%;
-    margin: 10px auto;
-    color: white;
-}
-
-.containerForm {
-    width: 90%;
-    margin: 10px auto;
-    padding: 5px;
-}
-
-.Page .btnCustomNet {
+.pageLogin .containerLinks__link_btnGoogle {
     width: 30%;
     border: none;
     text-align: center;
@@ -21,11 +9,9 @@
     color: white;
 }
 
-.colorWhite {
-    color: white;
+.containerLinks__link_icon {
+    display: block;
+    margin: 0 auto;
 }
 
-.containerLinks {
-    margin: 5px 0 15px 0;
-}
 

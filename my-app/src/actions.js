@@ -22,11 +22,11 @@ export const REMOVE_FAILURE = () => ({ type: 'REMOVE_FAILURE' })
 export const RESET_PASSWORD = (data) => ({ type: 'RESET_PASSWORD', data })
 export const SignOut_User = () => ({ type: 'SignOut_User' })
 export const user_Logged_Out = () => ({ type: 'user_Logged_Out' })
-export const fetch_Data_From_Database = () => ({
-    type: 'fetch_Data_From_Database',
+export const fetch_Dialogues_From_Database = () => ({
+    type: 'fetch_Dialogues_From_Database',
 })
-export const Data_From_Database = (data) => ({
-    type: 'Data_From_Database',
+export const Dialogues_From_Database = (data) => ({
+    type: 'Dialogues_From_Database',
     data,
 })
 export const Set_Value_Search = (value) => ({ type: 'Set_Value_Search', value })

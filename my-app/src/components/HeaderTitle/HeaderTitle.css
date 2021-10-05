@@ -1,4 +1,4 @@
-.TitleLogin {
+.headerTitle {
     color: white;
     text-align: center;
     background-image: linear-gradient(to right bottom, #00bfff, blue);
@@ -7,6 +7,6 @@
     font-family: "Trebuchet MS";
 }
 
-.icons {
+.headerTitle__icon {
     margin: 0 5px;
 }
