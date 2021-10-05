@@ -1,0 +1,17 @@
+.containerUser {
+    display: flex;
+    justify-content: space-between;
+}
+
+.containerUser__name {
+    font-size: 26px;
+    color: darkblue;
+}
+
+.containerUser__icon {
+    margin: 0 5px;
+}
+
+.containerUser__icon_settings {
+    cursor: pointer;
+}

@@ -13,18 +13,18 @@ code {
     monospace;
 }
 
-.customLink {
+.containerLinks__link_custom {
   text-decoration: none;
   color: white;
 }
 
-.customLink:hover {
+.containerLinks__link_custom:hover {
   color: white;
   font-weight: 600;
   text-decoration: underline;
 }
 
-.Page {
+.pageLogin {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -35,7 +35,23 @@ code {
   box-shadow: 1px 1px 20px -3px grey;
 }
 
-.Page .btnCustom {
+.pageLogin__titlePage {
+  width: 90%;
+  margin: 10px auto;
+  color: white;
+}
+
+.pageLogin__containerForm {
+  width: 90%;
+  margin: 10px auto;
+  padding: 5px;
+}
+
+.pageLogin__containerForm_colorWhite {
+  color: white;
+}
+
+.pageLogin .pageLogin__containerForm_btn {
   width: 100%;
   display: block;
   margin: 15px auto;
@@ -47,7 +63,7 @@ code {
   background: transparent;
 }
 
-.input {
+.pageLogin__containerForm_input {
   display: block;
   margin: 10px auto;
   border-radius: 15px;
@@ -57,18 +73,28 @@ code {
   padding: 2px 10px;
   line-height: 16px;
 }
-.Page .inputError {
+
+.pageLogin .pageLogin__containerForm_inputError {
   border: 2px solid red;
 }
 
-.container {
+.error {
+  color: red;
+  font-size: 18px;
+  margin: 5px auto;
+  border-radius: 15px;
+  padding: 3px 10px;
+  text-align: center;
+  background: rgba(204, 255, 255, 0.8);
+}
+
+.containerLinks {
+  margin: 5px 0 15px 0;
+}
+
+.containerLinks__link {
   display: flex;
   padding: 5px;
   justify-content: space-around;
   margin: 5px 0;
-}
-
-.custom-icon {
-  display: block;
-  margin: 0 auto;
 }

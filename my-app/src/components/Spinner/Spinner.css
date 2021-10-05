@@ -1,4 +1,8 @@
 .block-spinner {
     text-align: center;
-    color: white;
+}
+
+.block-spinner__icon {
+    display: block;
+    margin: 0 auto;
 }

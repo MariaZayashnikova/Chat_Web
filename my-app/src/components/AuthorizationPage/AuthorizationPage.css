@@ -1,26 +1,4 @@
-.TitlePage {
-    width: 90%;
-    margin: 10px auto;
-    color: white;
-}
-
-.containerForm {
-    width: 90%;
-    margin: 10px auto;
-    padding: 5px;
-}
-
-.error {
-    color: red;
-    font-size: 18px;
-    margin: 5px auto;
-    border-radius: 15px;
-    padding: 3px 10px;
-    text-align: center;
-    background: rgba(204, 255, 255, 0.8);
-}
-
-.Page .btnCustomNet {
+.pageLogin .containerLinks__link_btnGoogle {
     width: 30%;
     border: none;
     text-align: center;
@@ -31,11 +9,9 @@
     color: white;
 }
 
-.colorWhite {
-    color: white;
+.containerLinks__link_icon {
+    display: block;
+    margin: 0 auto;
 }
 
-.containerLinks {
-    margin: 5px 0 15px 0;
-}
 

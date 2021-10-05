@@ -9,12 +9,9 @@ import {
     REMOVE_FAILURE,
 } from '../../actions'
 import { connect } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Spinner from '../Spinner/Spinner'
-import 'firebase/auth'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { fb } from '../Firebase/componentFirebase'
 
 const validate = (values) => {
     const errors = {}
@@ -68,28 +65,23 @@ function AuthorizationPage({
         FETCH_AuthorizationViaGoogle_REQUEST()
     }
 
-    const [user, loading] = useAuthState(fb.auth())
-
-    if (loading) {
-        return <Spinner />
-    }
-    if (!loading && user) {
-        return <Redirect to="/OperatorPage" />
-    }
     return (
-        <div className="Page">
-            <h2 className="TitlePage">Авторизация</h2>
-            <div className="containerForm">
+        <div className="pageLogin">
+            <h2 className="pageLogin__titlePage">Авторизация</h2>
+            <div className="pageLogin__containerForm">
                 <Form onSubmit={formik.handleSubmit}>
                     <FormGroup className="position-relative">
-                        <Label className="colorWhite" for="email">
+                        <Label
+                            className="pageLogin__containerForm_colorWhite"
+                            for="email"
+                        >
                             Email
                         </Label>
                         <Input
                             className={
                                 formik.touched.email && formik.errors.email
-                                    ? 'input inputError'
-                                    : 'input'
+                                    ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
+                                    : 'pageLogin__containerForm_input'
                             }
                             id="email"
                             name="email"
@@ -110,15 +102,18 @@ function AuthorizationPage({
                         </FormFeedback>
                     </FormGroup>
                     <FormGroup>
-                        <Label className="colorWhite" for="password">
+                        <Label
+                            className="pageLogin__containerForm_colorWhite"
+                            for="password"
+                        >
                             Пароль
                         </Label>
                         <Input
                             className={
                                 formik.touched.password &&
                                 formik.errors.password
-                                    ? 'input inputError'
-                                    : 'input'
+                                    ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
+                                    : 'pageLogin__containerForm_input'
                             }
                             type="password"
                             id="password"
@@ -128,7 +123,11 @@ function AuthorizationPage({
                             value={formik.values.password}
                         />
                     </FormGroup>
-                    <Button className="btnCustom" color="primary" type="submit">
+                    <Button
+                        className="pageLogin__containerForm_btn"
+                        color="primary"
+                        type="submit"
+                    >
                         Войти
                     </Button>
                 </Form>
@@ -138,19 +137,22 @@ function AuthorizationPage({
                 ) : null}
             </div>
             <div className="containerLinks">
-                <div className="container">
-                    <button onClick={onSignIn} className="btnCustomNet">
+                <div className="containerLinks__link">
+                    <button
+                        onClick={onSignIn}
+                        className="containerLinks__link_btnGoogle"
+                    >
                         <FontAwesomeIcon
-                            className="custom-icon"
+                            className="containerLinks__link_icon"
                             icon={['fab', 'google']}
                         />
                         Войти через Google
                     </button>
                 </div>
-                <div className="container">
+                <div className="containerLinks__link">
                     <Link
                         to="/Registration"
-                        className="customLink"
+                        className="containerLinks__link_custom"
                         onClick={() => {
                             if (errorFromState) {
                                 REMOVE_FAILURE()
@@ -161,7 +163,7 @@ function AuthorizationPage({
                     </Link>
                     <Link
                         to="/ResetPassword"
-                        className="customLink"
+                        className="containerLinks__link_custom"
                         onClick={() => {
                             if (errorFromState) {
                                 REMOVE_FAILURE()

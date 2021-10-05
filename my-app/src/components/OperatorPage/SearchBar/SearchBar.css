@@ -1,0 +1,45 @@
+.searchBar {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+    position: relative;
+}
+
+.containerSearch {
+    margin-bottom: 10px;
+}
+
+.searchBar .containerSearch__search {
+    display: inline-block;
+    width: 40%;
+    margin-left: 15px;
+}
+
+.searchBar .labelSearch {
+    padding-top: 5px;
+}
+
+.resultSearch {
+    position: absolute;
+    width: 100%;
+    top: 50px;
+    height: 540px;
+    background: white;
+    border-radius: 15px;
+    overflow: auto;
+    z-index: 10;
+}
+
+.resultSearch__dialogue p {
+    display: inline-block;
+    width: 25%;
+}
+
+.resultSearch__dialogue_nameClient {
+    font-weight: bold;
+}
+
+.resultSearch__item:hover {
+    border: 3px solid lightblue;
+}

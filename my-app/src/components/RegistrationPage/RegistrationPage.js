@@ -2,16 +2,13 @@ import React from 'react'
 import { Form, FormGroup, Input, FormFeedback, Label, Button } from 'reactstrap'
 import { useFormik } from 'formik'
 import { validate } from '../AuthorizationPage/AuthorizationPage'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
     FETCH_MESSAGES_FAILURE,
-    FETCH_MESSAGES_SUCCESS,
     FETCH_Registration_REQUEST,
     REMOVE_FAILURE,
 } from '../../actions'
 import { connect } from 'react-redux'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { fb } from '../Firebase/componentFirebase'
 import Spinner from '../Spinner/Spinner'
 
 function RegistrationPage({
@@ -42,26 +39,24 @@ function RegistrationPage({
             }
         },
     })
-    const [user] = useAuthState(fb.auth())
-
-    if (user) {
-        return <Redirect to="/OperatorPage" />
-    }
 
     return (
-        <div className="Page">
-            <h2 className="TitlePage">Регистрация</h2>
-            <div className="containerForm">
+        <div className="pageLogin">
+            <h2 className="pageLogin__titlePage">Регистрация</h2>
+            <div className="pageLogin__containerForm">
                 <Form onSubmit={formik.handleSubmit}>
                     <FormGroup className="position-relative">
-                        <Label className="colorWhite" for="email">
+                        <Label
+                            className="pageLogin__containerForm_colorWhite"
+                            for="email"
+                        >
                             Email
                         </Label>
                         <Input
                             className={
                                 formik.touched.email && formik.errors.email
-                                    ? 'input inputError'
-                                    : 'input'
+                                    ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
+                                    : 'pageLogin__containerForm_input'
                             }
                             id="email"
                             name="email"
@@ -82,15 +77,18 @@ function RegistrationPage({
                         </FormFeedback>
                     </FormGroup>
                     <FormGroup className="position-relative">
-                        <Label className="colorWhite" for="password">
+                        <Label
+                            className="pageLogin__containerForm_colorWhite"
+                            for="password"
+                        >
                             Пароль
                         </Label>
                         <Input
                             className={
                                 formik.touched.password &&
                                 formik.errors.password
-                                    ? 'input inputError'
-                                    : 'input'
+                                    ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
+                                    : 'pageLogin__containerForm_input'
                             }
                             type="password"
                             id="password"
@@ -111,15 +109,18 @@ function RegistrationPage({
                         </FormFeedback>
                     </FormGroup>
                     <FormGroup className="position-relative">
-                        <Label className="colorWhite" for="password">
+                        <Label
+                            className="pageLogin__containerForm_colorWhite"
+                            for="password"
+                        >
                             Подтверждение пароля
                         </Label>
                         <Input
                             className={
                                 formik.touched.passwordConfirmation &&
                                 formik.errors.password
-                                    ? 'input inputError'
-                                    : 'input'
+                                    ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
+                                    : 'pageLogin__containerForm_input'
                             }
                             type="password"
                             id="passwordConfirmation"
@@ -129,7 +130,11 @@ function RegistrationPage({
                             value={formik.values.passwordConfirmation}
                         />
                     </FormGroup>
-                    <Button className="btnCustom" color="primary" type="submit">
+                    <Button
+                        className="pageLogin__containerForm_btn"
+                        color="primary"
+                        type="submit"
+                    >
                         Регистрация
                     </Button>
                 </Form>
@@ -139,10 +144,10 @@ function RegistrationPage({
                 ) : null}
             </div>
             <div className="containerLinks">
-                <div className="container">
+                <div className="containerLinks__link">
                     <Link
                         to="/"
-                        className="customLink"
+                        className="containerLinks__link_custom"
                         onClick={() => {
                             if (errorFromState) {
                                 REMOVE_FAILURE()
@@ -153,7 +158,7 @@ function RegistrationPage({
                     </Link>
                     <Link
                         to="/ResetPassword"
-                        className="customLink"
+                        className="containerLinks__link_custom"
                         onClick={() => {
                             if (errorFromState) {
                                 REMOVE_FAILURE()
@@ -177,7 +182,6 @@ const mapStateToProps = ({ loadingFromState, errorFromState }) => {
 
 const mapDispatchToProps = {
     FETCH_Registration_REQUEST,
-    FETCH_MESSAGES_SUCCESS,
     FETCH_MESSAGES_FAILURE,
     REMOVE_FAILURE,
 }

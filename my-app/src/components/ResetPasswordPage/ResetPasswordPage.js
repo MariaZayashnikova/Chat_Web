@@ -5,17 +5,10 @@ import { useFormik } from 'formik'
 import { validate } from '../AuthorizationPage/AuthorizationPage'
 import { RESET_PASSWORD, REMOVE_FAILURE } from '../../actions'
 import { connect } from 'react-redux'
-import Spinner from '../Spinner/Spinner'
-import './ResetPasswordPage.css'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-function ResetPasswordPage({
-    loadingFromState,
-    errorFromState,
-    RESET_PASSWORD,
-    REMOVE_FAILURE,
-}) {
+function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -33,18 +26,21 @@ function ResetPasswordPage({
     }
 
     return (
-        <div className="Page">
-            <h2 className="TitlePage">Восстановить пароль</h2>
-            <div className="containerForm">
+        <div className="pageLogin">
+            <h2 className="pageLogin__titlePage">Восстановить пароль</h2>
+            <div className="pageLogin__containerForm">
                 <FormGroup className="position-relative">
-                    <Label className="colorWhite" for="email">
+                    <Label
+                        className="pageLogin__containerForm_colorWhite"
+                        for="email"
+                    >
                         Email
                     </Label>
                     <Input
                         className={
                             formik.touched.email && formik.errors.email
-                                ? 'input inputError'
-                                : 'input'
+                                ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
+                                : 'pageLogin__containerForm_input'
                         }
                         id="email"
                         name="email"
@@ -65,7 +61,7 @@ function ResetPasswordPage({
                     </FormFeedback>
                 </FormGroup>
                 <Button
-                    className="btnCustom"
+                    className="pageLogin__containerForm_btn"
                     color="primary"
                     type="submit"
                     onClick={() => {
@@ -75,16 +71,15 @@ function ResetPasswordPage({
                     Отправить ссылку для восстановления пароля
                 </Button>
             </div>
-            {loadingFromState ? <Spinner /> : null}
             {errorFromState ? (
                 <div className="error">{errorFromState}</div>
             ) : null}
             <ToastContainer />
             <div className="containerLinks">
-                <div className="container">
+                <div className="containerLinks__link">
                     <Link
                         to="/"
-                        className="customLink"
+                        className="containerLinks__link_custom"
                         onClick={() => {
                             if (errorFromState) {
                                 REMOVE_FAILURE()
@@ -95,7 +90,7 @@ function ResetPasswordPage({
                     </Link>
                     <Link
                         to="/Registration"
-                        className="customLink"
+                        className="containerLinks__link_custom"
                         onClick={() => {
                             if (errorFromState) {
                                 REMOVE_FAILURE()
@@ -110,9 +105,8 @@ function ResetPasswordPage({
     )
 }
 
-const mapStateToProps = ({ loadingFromState, errorFromState }) => {
+const mapStateToProps = ({ errorFromState }) => {
     return {
-        loadingFromState,
         errorFromState,
     }
 }

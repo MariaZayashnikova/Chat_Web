@@ -1,0 +1,78 @@
+.containerDialogue {
+    padding: 10px;
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
+.containerDialogue__client {
+    display: flex;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+    padding: 5px 15px;
+    border-radius: 10px;
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.1);
+}
+
+.containerDialogue__client button {
+    margin-left: 15px;
+}
+
+.infoMessage {
+    position: relative;
+}
+
+.timeMessage {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+}
+
+.containerDialogue__containerMessages .containerDialogue__containerMessages_messages {
+    margin-bottom: 10px;
+    height: 500px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 7px;
+    border-radius: 15px;
+}
+
+.containerDialogue__Answers {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: rgba(173, 170, 170, 0.2);;
+    border-radius: 10px;
+}
+
+.containerDialogue__Answers .containerDialogue__Answers_answer {
+    width: 40%;
+}
+
+.containerDialogue__readyAnswers_settings {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px;
+}
+
+.containerDialogue__Answers .containerDialogue__readyAnswers  {
+    width: 25%;
+}
+
+.containerDialogue__Answers .dropdownCustom {
+    background: transparent;
+    color: black;
+    width: 60%;
+}
+
+.containerDialogue__containerMessages_messages .operatorMessage {
+    align-self: flex-end;
+    margin-bottom: 5px;
+    background: dodgerblue;
+    color: white;
+}
+
+.containerDialogue__containerMessages_messages .clientMessage {
+    background: lightgrey;
+}
