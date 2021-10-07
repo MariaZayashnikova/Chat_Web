@@ -154,7 +154,7 @@ function* dataFromDatabase() {
     }
 }
 
-function pushDataInDataBase(action) {
+function pushNewDialogueInDataBase(action) {
     let post = firebase.database().ref('Chats/')
     let newPost = post.push()
     newPost
@@ -163,7 +163,7 @@ function pushDataInDataBase(action) {
         .catch((err) => console.log(err))
 }
 
-function updateDataInDataBase(action) {
+function updateDialogueInDataBase(action) {
     const notifySuccess = () =>
         toast.success('Данные успешно обновлены!', {
             position: 'top-left',
@@ -196,12 +196,30 @@ function updateDataInDataBase(action) {
         })
 }
 
-function* update_Data() {
-    yield takeLatest('Update_Data_In_Database', updateDataInDataBase)
+function pushNewMessageInDataBase(action) {
+    console.log(action)
+    firebase
+        .database()
+        .ref('Chats/' + action.idDialogue + '/messages/')
+        .update(action.value)
+        .then(() => {
+            console.log('ok')
+        })
+        .catch(() => {
+            console.log('no ok')
+        })
 }
 
-function* push_Data() {
-    yield takeLatest('push_Data', pushDataInDataBase)
+function* update_Dialogue() {
+    yield takeLatest('Update_Data_In_Database', updateDialogueInDataBase)
+}
+
+function* pushNewMessage() {
+    yield takeLatest('push_NewMessage_In_Database', pushNewMessageInDataBase)
+}
+
+function* push_Dialogue() {
+    yield takeLatest('push_Dialogue', pushNewDialogueInDataBase)
 }
 
 function* FETCH_Authorization() {
@@ -239,7 +257,8 @@ export default function* rootSaga() {
         FETCH_Reset_Password(),
         Sign_Out_User(),
         fromDatabase(),
-        push_Data(),
-        update_Data(),
+        push_Dialogue(),
+        update_Dialogue(),
+        pushNewMessage(),
     ])
 }

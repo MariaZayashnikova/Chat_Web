@@ -46,8 +46,16 @@
     border-radius: 10px;
 }
 
-.containerDialogue__Answers .containerDialogue__Answers_answer {
-    width: 40%;
+.containerDialogue__Answers .containerDialogue__Answer {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+.containerDialogue__Answer_btn {
+    width: 20%;
+    align-self: flex-end;
+    margin-top: 5px;
 }
 
 .containerDialogue__readyAnswers_settings {
@@ -75,4 +83,18 @@
 
 .containerDialogue__containerMessages_messages .clientMessage {
     background: lightgrey;
+}
+
+.containerDialogue__containerMessages_image {
+    width: 100%;
+    cursor: pointer;
+}
+
+body .containerDialogue__containerMessages_modal {
+   max-width: 50%;
+}
+
+.containerDialogue__containerMessages_modalBtnClose {
+    position: absolute;
+    right: 10px;
 }

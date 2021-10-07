@@ -3,7 +3,8 @@ import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import {
     fetch_Dialogues_From_Database,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
+    push_NewMessage_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
 import {
@@ -16,18 +17,25 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
+    FormGroup,
+    Label,
+    Form,
+    Modal,
+    ModalBody,
 } from 'reactstrap'
 import 'moment/locale/ru.js'
 import './Dialogue.css'
-import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ToastContainer } from 'react-toastify'
+import { useFormik } from 'formik'
+import { calculateDate } from '../OperatorPage'
 
 function Dialogue({
     fetch_Dialogues_From_Database,
     dialogues,
     itemId,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
+    push_NewMessage_In_Database,
 }) {
     if (!dialogues) {
         fetch_Dialogues_From_Database()
@@ -64,9 +72,111 @@ function Dialogue({
         filterData()
     }
 
+    const formik = useFormik({
+        initialValues: {
+            answer: '',
+        },
+        onSubmit: (values, { resetForm }) => {
+            if (!values.answer) return
+            let time = new Date().getTime()
+            let newMessage = {
+                [time]: {
+                    content: values.answer,
+                    isOperator: true,
+                },
+            }
+            push_NewMessage_In_Database(newMessage, itemId)
+            resetForm()
+        },
+    })
+
+    function analyzeContent(str) {
+        let options = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg']
+        let res
+        let index
+        let startSrt
+        let endStr
+
+        options.forEach((elem) => {
+            let reg = new RegExp(`(http|https)://.*.${elem}`, 'gi')
+            if (reg.test(str)) {
+                res = str.match(reg)
+                index = str.indexOf(res[0])
+                startSrt = str.slice(0, index)
+                endStr = str.slice(res[0].length + index)
+            }
+        })
+
+        return { res, startSrt, endStr }
+    }
+
+    const [modal, setModal] = useState(false)
+
+    const toggleModal = () => setModal(!modal)
+
     const [dropdownOpen, setDropdownOpen] = useState(false)
 
-    let toggle = () => setDropdownOpen((dropdownOpen) => !dropdownOpen)
+    let toggleDropdown = () => setDropdownOpen((dropdownOpen) => !dropdownOpen)
+
+    const ViewResult = ({ arrResult }) => {
+        arrResult.reverse()
+        return arrResult.map((elem) => {
+            let timestamp = calculateDate(elem.time)
+            let { res, startSrt, endStr } = analyzeContent(elem.content)
+            return (
+                <Toast
+                    className={
+                        elem.isOperator ? 'operatorMessage' : 'clientMessage'
+                    }
+                    key={elem.time}
+                >
+                    <ToastHeader className="infoMessage">
+                        {elem.isOperator ? 'Вы:' : 'Клиент:'}
+                        <div className="timeMessage">{timestamp}</div>
+                    </ToastHeader>
+                    <ToastBody>
+                        {res ? (
+                            <>
+                                <div>{startSrt}</div>
+                                <img
+                                    src={res[0]}
+                                    alt="img"
+                                    className="containerDialogue__containerMessages_image"
+                                    onClick={toggleModal}
+                                ></img>
+                                <div>{endStr}</div>
+                                <Modal
+                                    isOpen={modal}
+                                    toggle={toggleModal}
+                                    className="containerDialogue__containerMessages_modal"
+                                >
+                                    <ModalBody>
+                                        <Button
+                                            color="primary"
+                                            onClick={toggleModal}
+                                            className="containerDialogue__containerMessages_modalBtnClose"
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={['fas', 'times']}
+                                                color="white"
+                                            />
+                                        </Button>
+                                        <img
+                                            src={res[0]}
+                                            alt="img"
+                                            width="100%"
+                                        ></img>
+                                    </ModalBody>
+                                </Modal>
+                            </>
+                        ) : (
+                            elem.content
+                        )}
+                    </ToastBody>
+                </Toast>
+            )
+        })
+    }
 
     let result =
         allResultFilter.length > 0 ? (
@@ -90,7 +200,7 @@ function Dialogue({
                                     color="danger"
                                     size="sm"
                                     onClick={() => {
-                                        Update_Data_In_Database(
+                                        Update_Dialogue_In_Database(
                                             { isSave: false },
                                             itemId
                                         )
@@ -104,7 +214,7 @@ function Dialogue({
                                     color="primary"
                                     size="sm"
                                     onClick={() => {
-                                        Update_Data_In_Database(
+                                        Update_Dialogue_In_Database(
                                             { isSave: true },
                                             itemId
                                         )
@@ -120,10 +230,30 @@ function Dialogue({
                             </div>
                         </div>
                         <div className="containerDialogue__Answers">
-                            <div className="containerDialogue__Answers_answer">
-                                Введите ответ:
-                                <Input />
-                            </div>
+                            <Form
+                                onSubmit={formik.handleSubmit}
+                                className="containerDialogue__Answer"
+                            >
+                                <FormGroup className="position-relative">
+                                    <Label for="answer">Введите ответ:</Label>
+                                    <Input
+                                        id="answer"
+                                        name="answer"
+                                        type="text"
+                                        onChange={(e) => {
+                                            formik.values.answer =
+                                                e.target.value
+                                        }}
+                                    />
+                                </FormGroup>
+                                <Button
+                                    className="containerDialogue__Answer_btn"
+                                    color="primary"
+                                    type="submit"
+                                >
+                                    Отправить
+                                </Button>
+                            </Form>
                             <div className="containerDialogue__readyAnswers">
                                 <div className="containerDialogue__readyAnswers_settings">
                                     <div>Или выберете из готовых:</div>
@@ -134,7 +264,7 @@ function Dialogue({
                                 </div>
                                 <Dropdown
                                     isOpen={dropdownOpen}
-                                    toggle={toggle}
+                                    toggle={toggleDropdown}
                                     size="sm"
                                 >
                                     <DropdownToggle
@@ -158,27 +288,6 @@ function Dialogue({
     )
 }
 
-const ViewResult = ({ arrResult }) => {
-    arrResult.reverse()
-    return arrResult.map((elem) => {
-        let timestamp = moment(elem.time).fromNow()
-        return (
-            <Toast
-                className={
-                    elem.isOperator ? 'operatorMessage' : 'clientMessage'
-                }
-                key={elem.time}
-            >
-                <ToastHeader className="infoMessage">
-                    {elem.isOperator ? 'Вы:' : 'Клиент:'}
-                    <div className="timeMessage">{timestamp}</div>
-                </ToastHeader>
-                <ToastBody>{elem.content}</ToastBody>
-            </Toast>
-        )
-    })
-}
-
 const mapStateToProps = ({ dialogues }) => {
     return {
         dialogues,
@@ -187,7 +296,8 @@ const mapStateToProps = ({ dialogues }) => {
 
 const mapDispatchToProps = {
     fetch_Dialogues_From_Database,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
+    push_NewMessage_In_Database,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogue)

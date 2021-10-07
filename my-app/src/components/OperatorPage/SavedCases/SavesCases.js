@@ -4,13 +4,12 @@ import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
 import {
     fetch_Dialogues_From_Database,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
     change_Value_Active_Cases,
 } from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import moment from 'moment'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../../Spinner/Spinner'
@@ -18,12 +17,12 @@ import { useHistory } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import './SavedCases.css'
 import '../OperatorPage.css'
-import { createDisplayedFilterResults } from '../OperatorPage'
+import { calculateDate, createDisplayedFilterResults } from '../OperatorPage'
 
 function SavedCases({
     fetch_Dialogues_From_Database,
     dialogues,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
     user,
     valueActiveCases,
     change_Value_Active_Cases,
@@ -85,7 +84,7 @@ function SavedCases({
     const ViewResult = ({ arrResult }) => {
         const history = useHistory()
         return arrResult.map((elem) => {
-            let timestamp = moment(parseInt(elem.time, 10)).fromNow()
+            let timestamp = calculateDate(parseInt(elem.time, 10))
             return (
                 <ListGroupItem key={elem.idDialogue}>
                     <div className="dialogue">
@@ -136,7 +135,7 @@ function SavedCases({
                                 size="sm"
                                 className="dialogue__actions_button dialogue__actions_buttonDelete"
                                 onClick={() => {
-                                    Update_Data_In_Database(
+                                    Update_Dialogue_In_Database(
                                         { isSave: false },
                                         elem.idDialogue
                                     )
@@ -198,7 +197,7 @@ const mapStateToProps = ({ dialogues, user, valueActiveCases }) => {
 
 const mapDispatchToProps = {
     fetch_Dialogues_From_Database,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
     change_Value_Active_Cases,
 }
 

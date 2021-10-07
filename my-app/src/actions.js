@@ -30,13 +30,18 @@ export const Dialogues_From_Database = (data) => ({
     data,
 })
 export const Set_Value_Search = (value) => ({ type: 'Set_Value_Search', value })
-export const push_Data = (value) => ({ type: 'push_Data', value })
+export const push_Dialogue = (value) => ({ type: 'push_Dialogue', value })
 export const change_Value_Active_Cases = (value) => ({
     type: 'change_Value_Active_Cases',
     value,
 })
-export const Update_Data_In_Database = (value, idDialogue) => ({
-    type: 'Update_Data_In_Database',
+export const Update_Dialogue_In_Database = (value, idDialogue) => ({
+    type: 'Update_Dialogue_In_Database',
+    value,
+    idDialogue,
+})
+export const push_NewMessage_In_Database = (value, idDialogue) => ({
+    type: 'push_NewMessage_In_Database',
     value,
     idDialogue,
 })

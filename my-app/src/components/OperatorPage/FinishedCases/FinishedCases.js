@@ -5,12 +5,11 @@ import SearchBar from '../SearchBar/SearchBar'
 import {
     change_Value_Active_Cases,
     fetch_Dialogues_From_Database,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import moment from 'moment'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../../Spinner/Spinner'
@@ -18,14 +17,14 @@ import { useHistory } from 'react-router-dom'
 import './FinishedCases.css'
 import '../OperatorPage.css'
 import { ToastContainer } from 'react-toastify'
-import { createDisplayedFilterResults } from '../OperatorPage'
+import { calculateDate, createDisplayedFilterResults } from '../OperatorPage'
 
 function FinishedCases({
     fetch_Dialogues_From_Database,
     dialogues,
     change_Value_Active_Cases,
     valueActiveCases,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
 }) {
     if (!dialogues) {
         fetch_Dialogues_From_Database()
@@ -86,7 +85,7 @@ function FinishedCases({
     const ViewResult = ({ arrResult }) => {
         const history = useHistory()
         return arrResult.map((elem) => {
-            let timestamp = moment(parseInt(elem.time, 10)).fromNow()
+            let timestamp = calculateDate(parseInt(elem.time, 10))
             return (
                 <ListGroupItem key={elem.idDialogue}>
                     <div className="dialogue">
@@ -100,7 +99,7 @@ function FinishedCases({
                         </div>
                         <div className="dialogue__topic">
                             <div>
-                                <p className="dialogue__topic_title">Тема:</p>{' '}
+                                <p className="dialogue__topic_title">Тема:</p>
                                 {elem.topic}
                             </div>
                             <div>
@@ -162,7 +161,7 @@ function FinishedCases({
                                         color="danger"
                                         size="sm"
                                         onClick={() => {
-                                            Update_Data_In_Database(
+                                            Update_Dialogue_In_Database(
                                                 { isSave: false },
                                                 elem.idDialogue
                                             )
@@ -176,7 +175,7 @@ function FinishedCases({
                                         color="info"
                                         size="sm"
                                         onClick={() => {
-                                            Update_Data_In_Database(
+                                            Update_Dialogue_In_Database(
                                                 { isSave: true },
                                                 elem.idDialogue
                                             )
@@ -240,7 +239,7 @@ const mapStateToProps = ({ dialogues, valueActiveCases }) => {
 const mapDispatchToProps = {
     fetch_Dialogues_From_Database,
     change_Value_Active_Cases,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FinishedCases)

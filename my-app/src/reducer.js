@@ -70,7 +70,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 valueSearch: action.value,
             }
-        case 'push_Data':
+        case 'push_Dialogue':
             return {
                 ...state,
             }
@@ -79,7 +79,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 valueActiveCases: state.valueActiveCases + 5,
             }
-        case 'Update_Data_In_Database':
+        case 'Update_Dialogue_In_Database':
+            return {
+                ...state,
+            }
+        case 'push_NewMessage_In_Database':
             return {
                 ...state,
             }
