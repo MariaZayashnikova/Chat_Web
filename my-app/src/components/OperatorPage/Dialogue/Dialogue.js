@@ -27,7 +27,6 @@ import 'moment/locale/ru.js'
 import './Dialogue.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ToastContainer } from 'react-toastify'
-import { useFormik } from 'formik'
 import { calculateDate } from '../OperatorPage'
 
 function Dialogue({
@@ -72,23 +71,19 @@ function Dialogue({
         filterData()
     }
 
-    const formik = useFormik({
-        initialValues: {
-            answer: '',
-        },
-        onSubmit: (values, { resetForm }) => {
-            if (!values.answer) return
-            let time = new Date().getTime()
-            let newMessage = {
-                [time]: {
-                    content: values.answer,
-                    isOperator: true,
-                },
-            }
-            push_NewMessage_In_Database(newMessage, itemId)
-            resetForm()
-        },
-    })
+    let valueInput
+
+    function submitNewMessage() {
+        if (!valueInput) return
+        let time = new Date().getTime()
+        let newMessage = {
+            [time]: {
+                content: valueInput,
+                isOperator: true,
+            },
+        }
+        push_NewMessage_In_Database(newMessage, itemId)
+    }
 
     function analyzeContent(str) {
         let options = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg']
@@ -231,7 +226,11 @@ function Dialogue({
                         </div>
                         <div className="containerDialogue__Answers">
                             <Form
-                                onSubmit={formik.handleSubmit}
+                                onSubmit={(e) => {
+                                    e.preventDefault()
+                                    submitNewMessage()
+                                    e.target[0].value = ''
+                                }}
                                 className="containerDialogue__Answer"
                             >
                                 <FormGroup className="position-relative">
@@ -241,8 +240,7 @@ function Dialogue({
                                         name="answer"
                                         type="text"
                                         onChange={(e) => {
-                                            formik.values.answer =
-                                                e.target.value
+                                            valueInput = e.target.value
                                         }}
                                     />
                                 </FormGroup>
