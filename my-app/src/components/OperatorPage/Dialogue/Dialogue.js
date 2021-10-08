@@ -23,6 +23,7 @@ import {
     Modal,
     ModalBody,
 } from 'reactstrap'
+import moment from 'moment'
 import 'moment/locale/ru.js'
 import './Dialogue.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -45,11 +46,18 @@ function Dialogue({
 
     let isSavedCase = false
 
+    let objResultDialogue = {}
+
     function filterData() {
         for (let objDialogue in dialogues) {
             if (objDialogue === itemId) {
                 let contentDialogue = dialogues[objDialogue]
                 nameClient = contentDialogue.client
+                if (contentDialogue.status) {
+                    objResultDialogue.completionTime =
+                        contentDialogue.completionTime
+                    objResultDialogue.grade = contentDialogue.grade
+                }
                 if (contentDialogue.isSave) {
                     isSavedCase = contentDialogue.isSave
                 }
@@ -113,6 +121,35 @@ function Dialogue({
 
     let toggleDropdown = () => setDropdownOpen((dropdownOpen) => !dropdownOpen)
 
+    const ViewResultFinishedDialogue = () => {
+        let CalcStars = () => {
+            let arr = []
+            for (let i = 0; i < objResultDialogue.grade; i++) {
+                arr.push(
+                    <FontAwesomeIcon
+                        icon={['fas', 'star']}
+                        key={i}
+                        color="yellow"
+                        size="3x"
+                    />
+                )
+            }
+            return arr
+        }
+        return (
+            <div className="containerDialogue__resultFinishedDialogue">
+                <div className="containerDialogue__resultFinishedDialogue_stars">
+                    <CalcStars />
+                </div>
+
+                <p>
+                    Диалог завершился &nbsp;
+                    {moment(objResultDialogue.completionTime).fromNow()}
+                </p>
+            </div>
+        )
+    }
+
     const ViewResult = ({ arrResult }) => {
         arrResult.reverse()
         return arrResult.map((elem) => {
@@ -173,6 +210,10 @@ function Dialogue({
         })
     }
 
+    let resultFinishedDialogue = objResultDialogue.completionTime ? (
+        <ViewResultFinishedDialogue />
+    ) : null
+
     let result =
         allResultFilter.length > 0 ? (
             <ViewResult arrResult={allResultFilter} />
@@ -224,6 +265,7 @@ function Dialogue({
                                 {result}
                             </div>
                         </div>
+                        {resultFinishedDialogue}
                         <div className="containerDialogue__Answers">
                             <Form
                                 onSubmit={(e) => {

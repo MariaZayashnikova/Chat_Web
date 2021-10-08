@@ -52,7 +52,8 @@ function FinishedCases({
                     topic: contentDialogue.topic,
                     subtopic: contentDialogue.subtopic,
                     content: Object.values(messages).pop().content,
-                    time: Object.keys(messages).pop(),
+                    time: contentDialogue.completionTime,
+                    grade: contentDialogue.grade,
                 }
                 allResultFilter.push(objResult)
             }
@@ -86,6 +87,19 @@ function FinishedCases({
         const history = useHistory()
         return arrResult.map((elem) => {
             let timestamp = calculateDate(parseInt(elem.time, 10))
+            let CalcStars = () => {
+                let arr = []
+                for (let i = 0; i < elem.grade; i++) {
+                    arr.push(
+                        <FontAwesomeIcon
+                            icon={['fas', 'star']}
+                            key={i}
+                            color="yellow"
+                        />
+                    )
+                }
+                return arr
+            }
             return (
                 <ListGroupItem key={elem.idDialogue}>
                     <div className="dialogue">
@@ -117,26 +131,7 @@ function FinishedCases({
                                 <div>{timestamp}</div>
                                 <div>
                                     <div>Оценка</div>
-                                    <FontAwesomeIcon
-                                        icon={['fas', 'star']}
-                                        color="yellow"
-                                    />
-                                    <FontAwesomeIcon
-                                        icon={['fas', 'star']}
-                                        color="yellow"
-                                    />
-                                    <FontAwesomeIcon
-                                        icon={['fas', 'star']}
-                                        color="yellow"
-                                    />
-                                    <FontAwesomeIcon
-                                        icon={['fas', 'star']}
-                                        color="yellow"
-                                    />
-                                    <FontAwesomeIcon
-                                        icon={['fas', 'star']}
-                                        color="yellow"
-                                    />
+                                    <CalcStars />
                                 </div>
                             </div>
                             <div className="dialogueFinished__buttons">

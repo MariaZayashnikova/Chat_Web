@@ -30,7 +30,8 @@
 
 .containerDialogue__containerMessages .containerDialogue__containerMessages_messages {
     margin-bottom: 10px;
-    height: 500px;
+    min-height: 400px;
+    max-height: 550px;
     overflow: auto;
     display: flex;
     flex-direction: column-reverse;
@@ -88,6 +89,17 @@
 .containerDialogue__containerMessages_image {
     width: 100%;
     cursor: pointer;
+}
+
+.containerDialogue__resultFinishedDialogue {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.containerDialogue__resultFinishedDialogue_stars {
+    margin: 10px 0;
 }
 
 body .containerDialogue__containerMessages_modal {
