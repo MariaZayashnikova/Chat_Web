@@ -5,6 +5,27 @@ import 'firebase/database'
 import { toast } from 'react-toastify'
 import { fb } from '../Firebase/componentFirebase'
 
+const notifySuccess = (text) =>
+    toast.success(text, {
+        position: 'top-left',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    })
+const notifyError = (text) =>
+    toast.error(text, {
+        position: 'top-left',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    })
+
 function fetchAuthorization(action) {
     return fb
         .auth()
@@ -108,20 +129,9 @@ function* fetchUserRegistration(action) {
 }
 
 function* fetchResetPassword(action) {
-    const notifySuccess = () =>
-        toast.success('Письмо отпралено на почту', {
-            position: 'top-left',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        })
-
     try {
         yield call(() => ResetPassword(action))
-        notifySuccess()
+        notifySuccess('Письмо отпралено на почту')
     } catch {
         let error = {
             message: 'Что-то пошло не так... Попробуйте позже',
@@ -164,54 +174,31 @@ function pushNewDialogueInDataBase(action) {
 }
 
 function updateDialogueInDataBase(action) {
-    const notifySuccess = () =>
-        toast.success('Данные успешно обновлены!', {
-            position: 'top-left',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        })
-    const notifyError = () =>
-        toast.error('Произошла ошибка при обновлении данных...', {
-            position: 'top-left',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        })
     firebase
         .database()
         .ref('Chats/' + action.idDialogue)
         .update(action.value)
         .then(() => {
-            notifySuccess()
+            notifySuccess('Данные успешно обновлены!')
         })
         .catch(() => {
-            notifyError()
+            notifyError('Произошла ошибка при обновлении данных...')
         })
 }
 
 function pushNewMessageInDataBase(action) {
-    console.log(action)
     firebase
         .database()
         .ref('Chats/' + action.idDialogue + '/messages/')
         .update(action.value)
-        .then(() => {
-            console.log('ok')
-        })
+        .then()
         .catch(() => {
-            console.log('no ok')
+            notifyError('Произошла ошибка, попробуйте позже...')
         })
 }
 
 function* update_Dialogue() {
-    yield takeLatest('Update_Data_In_Database', updateDialogueInDataBase)
+    yield takeLatest('Update_Dialogue_In_Database', updateDialogueInDataBase)
 }
 
 function* pushNewMessage() {

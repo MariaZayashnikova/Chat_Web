@@ -4,7 +4,6 @@ import User from '../User/User'
 import {
     fetch_Dialogues_From_Database,
     Update_Dialogue_In_Database,
-    push_NewMessage_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
 import {
@@ -12,14 +11,6 @@ import {
     ToastBody,
     ToastHeader,
     Button,
-    Input,
-    Dropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    FormGroup,
-    Label,
-    Form,
     Modal,
     ModalBody,
 } from 'reactstrap'
@@ -29,13 +20,13 @@ import './Dialogue.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ToastContainer } from 'react-toastify'
 import { calculateDate } from '../OperatorPage'
+import OperatorAnswerAnswer from './OperatorAnswer'
 
 function Dialogue({
     fetch_Dialogues_From_Database,
     dialogues,
     itemId,
     Update_Dialogue_In_Database,
-    push_NewMessage_In_Database,
 }) {
     if (!dialogues) {
         fetch_Dialogues_From_Database()
@@ -79,20 +70,6 @@ function Dialogue({
         filterData()
     }
 
-    let valueInput
-
-    function submitNewMessage() {
-        if (!valueInput) return
-        let time = new Date().getTime()
-        let newMessage = {
-            [time]: {
-                content: valueInput,
-                isOperator: true,
-            },
-        }
-        push_NewMessage_In_Database(newMessage, itemId)
-    }
-
     function analyzeContent(str) {
         let options = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg']
         let res
@@ -116,10 +93,6 @@ function Dialogue({
     const [modal, setModal] = useState(false)
 
     const toggleModal = () => setModal(!modal)
-
-    const [dropdownOpen, setDropdownOpen] = useState(false)
-
-    let toggleDropdown = () => setDropdownOpen((dropdownOpen) => !dropdownOpen)
 
     const ViewResultFinishedDialogue = () => {
         let CalcStars = () => {
@@ -240,6 +213,7 @@ function Dialogue({
                                             { isSave: false },
                                             itemId
                                         )
+                                        fetch_Dialogues_From_Database()
                                     }}
                                 >
                                     Удалить из сохранённых
@@ -254,6 +228,7 @@ function Dialogue({
                                             { isSave: true },
                                             itemId
                                         )
+                                        fetch_Dialogues_From_Database()
                                     }}
                                 >
                                     Сохранить диалог
@@ -266,61 +241,7 @@ function Dialogue({
                             </div>
                         </div>
                         {resultFinishedDialogue}
-                        <div className="containerDialogue__Answers">
-                            <Form
-                                onSubmit={(e) => {
-                                    e.preventDefault()
-                                    submitNewMessage()
-                                    e.target[0].value = ''
-                                }}
-                                className="containerDialogue__Answer"
-                            >
-                                <FormGroup className="position-relative">
-                                    <Label for="answer">Введите ответ:</Label>
-                                    <Input
-                                        id="answer"
-                                        name="answer"
-                                        type="text"
-                                        onChange={(e) => {
-                                            valueInput = e.target.value
-                                        }}
-                                    />
-                                </FormGroup>
-                                <Button
-                                    className="containerDialogue__Answer_btn"
-                                    color="primary"
-                                    type="submit"
-                                >
-                                    Отправить
-                                </Button>
-                            </Form>
-                            <div className="containerDialogue__readyAnswers">
-                                <div className="containerDialogue__readyAnswers_settings">
-                                    <div>Или выберете из готовых:</div>
-                                    <FontAwesomeIcon
-                                        icon={['fas', 'cog']}
-                                        color="grey"
-                                    />
-                                </div>
-                                <Dropdown
-                                    isOpen={dropdownOpen}
-                                    toggle={toggleDropdown}
-                                    size="sm"
-                                >
-                                    <DropdownToggle
-                                        className="dropdownCustom"
-                                        caret
-                                    >
-                                        Варианты
-                                    </DropdownToggle>
-                                    <DropdownMenu>
-                                        <DropdownItem>Foo Action</DropdownItem>
-                                        <DropdownItem>Bar Action</DropdownItem>
-                                        <DropdownItem>Quo Action</DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                            </div>
-                        </div>
+                        <OperatorAnswerAnswer itemId={itemId} />
                     </div>
                 </div>
             </div>
@@ -337,7 +258,6 @@ const mapStateToProps = ({ dialogues }) => {
 const mapDispatchToProps = {
     fetch_Dialogues_From_Database,
     Update_Dialogue_In_Database,
-    push_NewMessage_In_Database,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogue)

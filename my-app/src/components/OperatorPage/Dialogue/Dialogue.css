@@ -47,6 +47,21 @@
     border-radius: 10px;
 }
 
+.containerDialogue__input_emoji {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    font-size: 26px;
+    color: cornflowerblue;
+    cursor: pointer;
+}
+
+.containerDialogue__input_emojiPicker {
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+}
+
 .containerDialogue__Answers .containerDialogue__Answer {
     width: 60%;
     display: flex;
@@ -56,7 +71,7 @@
 .containerDialogue__Answer_btn {
     width: 20%;
     align-self: flex-end;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 .containerDialogue__readyAnswers_settings {
