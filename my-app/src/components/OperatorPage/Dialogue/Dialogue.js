@@ -64,6 +64,10 @@ function Dialogue({
         filterData()
     }
 
+    setInterval(() => {
+        fetch_Dialogues_From_Database()
+    }, 30000)
+
     function analyzeContent(str) {
         let options = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg']
         let res
