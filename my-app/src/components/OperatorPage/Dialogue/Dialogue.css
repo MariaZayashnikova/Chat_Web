@@ -125,3 +125,11 @@ body .containerDialogue__containerMessages_modal {
     position: absolute;
     right: 10px;
 }
+
+.messageInfo {
+    height: 25px;
+    width: 100%;
+    text-align: center;
+    margin: 5px 0;
+    font-style: italic;
+}

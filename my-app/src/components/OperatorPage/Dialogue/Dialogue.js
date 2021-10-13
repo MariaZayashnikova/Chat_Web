@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import {
@@ -6,14 +6,7 @@ import {
     Update_Dialogue_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
-import {
-    Toast,
-    ToastBody,
-    ToastHeader,
-    Button,
-    Modal,
-    ModalBody,
-} from 'reactstrap'
+import { Toast, ToastBody, ToastHeader, Button } from 'reactstrap'
 import moment from 'moment'
 import 'moment/locale/ru.js'
 import './Dialogue.css'
@@ -21,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ToastContainer } from 'react-toastify'
 import { calculateDate } from '../OperatorPage'
 import OperatorAnswerAnswer from './OperatorAnswer'
+import PictureInMessage from './PictureInMessage'
 
 function Dialogue({
     fetch_Dialogues_From_Database,
@@ -90,10 +84,6 @@ function Dialogue({
         return { res, startSrt, endStr }
     }
 
-    const [modal, setModal] = useState(false)
-
-    const toggleModal = () => setModal(!modal)
-
     const ViewResultFinishedDialogue = () => {
         let CalcStars = () => {
             let arr = []
@@ -143,36 +133,8 @@ function Dialogue({
                         {res ? (
                             <>
                                 <div>{startSrt}</div>
-                                <img
-                                    src={res[0]}
-                                    alt="img"
-                                    className="containerDialogue__containerMessages_image"
-                                    onClick={toggleModal}
-                                ></img>
+                                <PictureInMessage srcImg={res[0]} />
                                 <div>{endStr}</div>
-                                <Modal
-                                    isOpen={modal}
-                                    toggle={toggleModal}
-                                    className="containerDialogue__containerMessages_modal"
-                                >
-                                    <ModalBody>
-                                        <Button
-                                            color="primary"
-                                            onClick={toggleModal}
-                                            className="containerDialogue__containerMessages_modalBtnClose"
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={['fas', 'times']}
-                                                color="white"
-                                            />
-                                        </Button>
-                                        <img
-                                            src={res[0]}
-                                            alt="img"
-                                            width="100%"
-                                        ></img>
-                                    </ModalBody>
-                                </Modal>
                             </>
                         ) : (
                             elem.content
