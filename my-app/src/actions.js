@@ -45,3 +45,12 @@ export const push_NewMessage_In_Database = (value, idDialogue) => ({
     value,
     idDialogue,
 })
+export const Update_Password = (value) => ({ type: 'Update_Password', value })
+export const fetch_Update_User_Name = (value) => ({
+    type: 'fetch_Update_User_Name',
+    value,
+})
+export const Update_User_Name = (value) => ({
+    type: 'Update_User_Name',
+    value,
+})

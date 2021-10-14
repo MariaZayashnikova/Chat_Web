@@ -34,50 +34,6 @@ function fetchAuthorization(action) {
         .catch((error) => ({ error }))
 }
 
-function fetchAuthorizationViaGoogle() {
-    let provider = new firebase.auth.GoogleAuthProvider()
-    return fb
-        .auth()
-        .signInWithPopup(provider)
-        .then((response) => ({ response }))
-        .catch((error) => ({ error }))
-}
-
-function fetchRegistration(action) {
-    return fb
-        .auth()
-        .createUserWithEmailAndPassword(
-            action.value.email,
-            action.value.password
-        )
-        .then((response) => ({ response }))
-        .catch((error) => ({ error }))
-}
-
-function ResetPassword(action) {
-    let actionCodeSettings = {
-        url: process.env.REACT_APP_url_for_redirect,
-        handleCodeInApp: false,
-    }
-    return fb.auth().sendPasswordResetEmail(action.data, actionCodeSettings)
-}
-
-function user_Logged_Out() {
-    fb.auth().signOut()
-}
-
-function* userLoggedOut() {
-    try {
-        yield call(() => user_Logged_Out())
-        yield put({ type: 'user_Logged_Out' })
-    } catch {
-        let error = {
-            message: 'Что-то пошло не так... Попробуйте позже',
-        }
-        yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
-    }
-}
-
 function* fetchUserAuthorization(action) {
     const { response, error } = yield call(() => fetchAuthorization(action))
     if (response) {
@@ -92,6 +48,15 @@ function* fetchUserAuthorization(action) {
     if (error) {
         yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
     }
+}
+
+function fetchAuthorizationViaGoogle() {
+    let provider = new firebase.auth.GoogleAuthProvider()
+    return fb
+        .auth()
+        .signInWithPopup(provider)
+        .then((response) => ({ response }))
+        .catch((error) => ({ error }))
 }
 
 function* fetchUserAuthorizationViaGoogle(action) {
@@ -112,6 +77,17 @@ function* fetchUserAuthorizationViaGoogle(action) {
     }
 }
 
+function fetchRegistration(action) {
+    return fb
+        .auth()
+        .createUserWithEmailAndPassword(
+            action.value.email,
+            action.value.password
+        )
+        .then((response) => ({ response }))
+        .catch((error) => ({ error }))
+}
+
 function* fetchUserRegistration(action) {
     const { response, error } = yield call(() => fetchRegistration(action))
     if (response) {
@@ -128,10 +104,34 @@ function* fetchUserRegistration(action) {
     }
 }
 
+function ResetPassword(action) {
+    let actionCodeSettings = {
+        url: process.env.REACT_APP_url_for_redirect,
+        handleCodeInApp: false,
+    }
+    return fb.auth().sendPasswordResetEmail(action.data, actionCodeSettings)
+}
+
 function* fetchResetPassword(action) {
     try {
         yield call(() => ResetPassword(action))
         notifySuccess('Письмо отпралено на почту')
+    } catch {
+        let error = {
+            message: 'Что-то пошло не так... Попробуйте позже',
+        }
+        yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
+    }
+}
+
+function user_Logged_Out() {
+    fb.auth().signOut()
+}
+
+function* userLoggedOut() {
+    try {
+        yield call(() => user_Logged_Out())
+        yield put({ type: 'user_Logged_Out' })
     } catch {
         let error = {
             message: 'Что-то пошло не так... Попробуйте позже',
@@ -197,6 +197,46 @@ function pushNewMessageInDataBase(action) {
         })
 }
 
+function updatePassword(action) {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            let newPassword = action.value
+
+            user.updatePassword(newPassword)
+                .then(() => {
+                    notifySuccess('Данные успешно обновлены!')
+                })
+                .catch((error) => {
+                    notifyError('Произошла ошибка при обновлении данных...')
+                })
+        }
+    })
+}
+
+function updateUserName(action) {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            user.updateProfile({
+                displayName: `${action.value}`,
+            })
+                .then(() => {
+                    notifySuccess('Данные успешно обновлены!')
+                })
+                .catch((error) => {
+                    notifyError('Произошла ошибка при обновлении данных...')
+                })
+        }
+    })
+}
+
+function* update_User_Name() {
+    yield takeLatest('fetch_Update_User_Name', updateUserName)
+}
+
+function* update_Password() {
+    yield takeLatest('Update_Password', updatePassword)
+}
+
 function* update_Dialogue() {
     yield takeLatest('Update_Dialogue_In_Database', updateDialogueInDataBase)
 }
@@ -247,5 +287,7 @@ export default function* rootSaga() {
         push_Dialogue(),
         update_Dialogue(),
         pushNewMessage(),
+        update_Password(),
+        update_User_Name(),
     ])
 }

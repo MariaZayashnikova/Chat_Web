@@ -17,7 +17,6 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import ErrorRoute from '../ErrorRoute/ErrorRoute'
 import { connect } from 'react-redux'
 import ActiveCases from '../OperatorPage/AtiveCases/ActiveCases'
-import SettingsUser from '../OperatorPage/User/SettingsUser/SettingsUser'
 import Dialogue from '../OperatorPage/Dialogue/Dialogue'
 import InWorkCases from '../OperatorPage/InWorkCases/InWorkCases'
 import SavedCases from '../OperatorPage/SavedCases/SavesCases'
@@ -83,13 +82,6 @@ function App({ user }) {
 
                             return <Dialogue itemId={id} />
                         }}
-                    >
-                        {!user ? <Redirect push to="/" /> : null}
-                    </Route>
-                    <Route
-                        path="/OperatorPage/Settings"
-                        exact
-                        component={SettingsUser}
                     >
                         {!user ? <Redirect push to="/" /> : null}
                     </Route>

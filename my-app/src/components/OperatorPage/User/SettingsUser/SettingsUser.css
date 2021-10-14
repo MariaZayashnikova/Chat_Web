@@ -1,0 +1,9 @@
+.containerSettings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.containerSettings__btnClose {
+    align-self: flex-end;
+}

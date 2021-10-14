@@ -32,6 +32,7 @@ const reducer = (state = initialState, action) => {
             }
         case 'FETCH_MESSAGES_FAILURE':
             return {
+                ...state,
                 loadingFromState: false,
                 errorFromState: action.error.message,
             }
@@ -86,6 +87,19 @@ const reducer = (state = initialState, action) => {
         case 'push_NewMessage_In_Database':
             return {
                 ...state,
+            }
+        case 'Update_Password':
+            return {
+                ...state,
+            }
+        case 'fetch_Update_User_Name':
+            return {
+                ...state,
+            }
+        case 'Update_User_Name':
+            return {
+                ...state,
+                user: action.value,
             }
         default:
             return state

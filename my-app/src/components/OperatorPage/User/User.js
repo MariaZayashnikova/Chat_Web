@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import './User.css'
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Link } from 'react-router-dom'
 import Spinner from '../../Spinner/Spinner'
+import SettingsUser from './SettingsUser/SettingsUser'
 
 function User({ user, SignOut_User, push_Dialogue, loadingFromState }) {
     function addDialogueCustom() {
@@ -36,14 +36,8 @@ function User({ user, SignOut_User, push_Dialogue, loadingFromState }) {
                     color="darkblue"
                     className="containerUser__icon"
                 />
-                {user.email}
-                <Link to="/OperatorPage/Settings">
-                    <FontAwesomeIcon
-                        icon={['fas', 'cog']}
-                        color="blue"
-                        className="containerUser__icon containerUser__icon_settings"
-                    />
-                </Link>
+                {user.name ? user.name : user.email}
+                <SettingsUser />
             </h2>
             <Button outline color="secondary" onClick={addDialogueCustom}>
                 Добавить
