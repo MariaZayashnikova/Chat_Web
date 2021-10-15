@@ -41,7 +41,9 @@ function App({ user }) {
                         path="/Registration"
                         exact
                         component={RegistrationPage}
-                    />
+                    >
+                        {user ? <Redirect push to="/" /> : <RegistrationPage />}
+                    </Route>
                     <Route
                         path="/ResetPassword"
                         exact

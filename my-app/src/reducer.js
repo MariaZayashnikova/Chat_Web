@@ -5,6 +5,7 @@ const initialState = {
     dialogues: null,
     valueSearch: null,
     valueActiveCases: 5,
+    settingsUser: null,
 }
 
 const reducer = (state = initialState, action) => {
@@ -100,6 +101,19 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 user: action.value,
+            }
+        case 'set_New_Settings_Dialogue':
+            return {
+                ...state,
+            }
+        case 'fetch_User_Settings':
+            return {
+                ...state,
+            }
+        case 'User_Settings':
+            return {
+                ...state,
+                settingsUser: action.data,
             }
         default:
             return state

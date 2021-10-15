@@ -54,3 +54,13 @@ export const Update_User_Name = (value) => ({
     type: 'Update_User_Name',
     value,
 })
+export const set_New_Settings_Dialogue = (value, userUID) => ({
+    type: 'set_New_Settings_Dialogue',
+    value,
+    userUID,
+})
+export const fetch_User_Settings = (value) => ({
+    type: 'fetch_User_Settings',
+    value,
+})
+export const User_Settings = (value) => ({ type: 'User_Settings', value })

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Modal from 'react-modal'
 import SettingsProfile from './Profile/SettingsProfile'
 import { Button } from 'reactstrap'
+import SettingsUserDialogues from './Dialogues/SettingsUserDialogues'
 
 function SettingsUser({ REMOVE_FAILURE }) {
     const [modalIsOpen, setIsOpen] = useState(false)
@@ -43,6 +44,7 @@ function SettingsUser({ REMOVE_FAILURE }) {
                         />
                     </Button>
                     <SettingsProfile closeModal={closeModal} />
+                    <SettingsUserDialogues />
                 </div>
             </Modal>
         </>
