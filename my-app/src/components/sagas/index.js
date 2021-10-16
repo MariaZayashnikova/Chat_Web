@@ -107,9 +107,11 @@ function* fetchUserRegistration(action) {
         yield put({ type: 'FETCH_MESSAGES_SUCCESS', data })
         yield call(() =>
             setStandardPhrasesUser(data.uid, {
-                0: 'Сейчас проверю, одну минуту',
-                1: 'Давайте я уточню, с чем это связано, и вернусь ...',
-                2: 'Минутку, проверяю ваши данные',
+                phrases: {
+                    0: 'Сейчас проверю, одну минуту',
+                    1: 'Давайте я уточню, с чем это связано, и вернусь ...',
+                    2: 'Минутку, проверяю ваши данные',
+                },
             })
         )
     }
@@ -282,6 +284,36 @@ function setNewSettingsUserDialogues(action) {
         })
 }
 
+function fetchTopics() {
+    return firebase
+        .database()
+        .ref('topics/')
+        .once('value')
+        .then((snapshot) => ({ snapshot }))
+        .catch((error) => ({ error }))
+}
+
+function* topicsFromDB() {
+    const { snapshot, error } = yield call(() => fetchTopics())
+
+    if (snapshot) {
+        const data = snapshot.val()
+        yield put({ type: 'set_Topics', data })
+    }
+
+    if (error) {
+        let err = {
+            message: 'Что-то пошло не так... Попробуйте позже',
+        }
+        console.log(error)
+        yield put({ type: 'FETCH_MESSAGES_FAILURE', err })
+    }
+}
+
+function* fetch_Topics() {
+    yield takeLatest('get_Topics_From_DB', topicsFromDB)
+}
+
 function* fetch_Settings() {
     yield takeLatest('fetch_User_Settings', UserSettings)
 }
@@ -352,5 +384,6 @@ export default function* rootSaga() {
         update_User_Name(),
         set_New_Settings(),
         fetch_Settings(),
+        fetch_Topics(),
     ])
 }

@@ -8,7 +8,7 @@ import SettingsProfile from './Profile/SettingsProfile'
 import { Button } from 'reactstrap'
 import SettingsUserDialogues from './Dialogues/SettingsUserDialogues'
 
-function SettingsUser({ REMOVE_FAILURE }) {
+function SettingsUser({ REMOVE_FAILURE, settingsUser }) {
     const [modalIsOpen, setIsOpen] = useState(false)
 
     function openModal() {
@@ -21,12 +21,15 @@ function SettingsUser({ REMOVE_FAILURE }) {
     }
     return (
         <>
-            <FontAwesomeIcon
-                icon={['fas', 'cog']}
-                color="blue"
-                className="containerUser__icon containerUser__icon_settings"
-                onClick={openModal}
-            />
+            {settingsUser ? (
+                <FontAwesomeIcon
+                    icon={['fas', 'cog']}
+                    color="blue"
+                    className="containerUser__icon containerUser__icon_settings"
+                    onClick={openModal}
+                />
+            ) : null}
+
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
@@ -51,8 +54,14 @@ function SettingsUser({ REMOVE_FAILURE }) {
     )
 }
 
+const mapStateToProps = ({ settingsUser }) => {
+    return {
+        settingsUser,
+    }
+}
+
 const mapDispatchToProps = {
     REMOVE_FAILURE,
 }
 
-export default connect(null, mapDispatchToProps)(SettingsUser)
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsUser)

@@ -35,3 +35,7 @@
 .max-height {
     max-height: 25px;
 }
+
+.settingsDialogue__containerTopics {
+    padding: 5px;
+}

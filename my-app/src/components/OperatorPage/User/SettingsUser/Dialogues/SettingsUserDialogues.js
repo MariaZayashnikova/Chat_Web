@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Formik, Form, Field, FieldArray } from 'formik'
 import './SettingsUserDialogue.css'
-import { Button, Input } from 'reactstrap'
+import { Button, Input, Fade, ListGroup, ListGroupItem } from 'reactstrap'
 import { connect } from 'react-redux'
 import {
     fetch_User_Settings,
@@ -14,13 +14,64 @@ function SettingsUserDialogues({
     user,
     settingsUser,
     fetch_User_Settings,
+    topics,
 }) {
-    if (!settingsUser) {
-        fetch_User_Settings(user.uid)
-    }
-
     const [showInput, setShowInput] = useState(false)
     const [valueInput, setValueInput] = useState('')
+    const [valueInputAutomaticGreeting, setValueInputAutomaticGreeting] =
+        useState(
+            settingsUser.automaticGreeting ? settingsUser.automaticGreeting : ''
+        )
+    const [showBtnSubmit, setShowBtnSubmit] = useState(false)
+
+    const [fadeIn, setFadeIn] = useState(true)
+    const [subtopics, setSubtopics] = useState(Object.values(topics)[0])
+    const [currentIndex, setCurrentIndex] = useState(0)
+
+    const toggle = (topic, i) => {
+        if (i === currentIndex) {
+            setFadeIn(false)
+        } else {
+            setFadeIn(true)
+            setCurrentIndex(i)
+            for (let elem in topics) {
+                if (elem === topic) {
+                    let newSubtopics = topics[elem]
+                    setSubtopics(newSubtopics)
+                }
+            }
+        }
+    }
+
+    const ViewTopics = () => {
+        let arrTopics = Object.keys(topics)
+        return arrTopics.map((elem, i) => {
+            return (
+                <ListGroup key={i}>
+                    <ListGroupItem
+                        active={i === currentIndex ? true : false}
+                        tag="button"
+                        action
+                        onClick={() => toggle(elem, i)}
+                    >
+                        {elem}
+                    </ListGroupItem>
+                </ListGroup>
+            )
+        })
+    }
+
+    const ViewSubtopics = () => {
+        return subtopics.map((elem, i) => {
+            return (
+                <div key={i}>
+                    <Fade in={fadeIn} tag="div" className="mt-3">
+                        {elem}
+                    </Fade>
+                </div>
+            )
+        })
+    }
 
     return (
         <div className="containerSettingsDialogues">
@@ -32,19 +83,34 @@ function SettingsUserDialogues({
                         {settingsUser ? (
                             <Formik
                                 initialValues={{
-                                    phrases: settingsUser,
+                                    phrases: settingsUser.phrases,
+                                    automaticGreeting:
+                                        settingsUser.automaticGreeting,
                                 }}
                                 onSubmit={(values) => {
                                     if (valueInput) {
-                                        let obj = {}
-                                        values.phrases.forEach(
-                                            (elem, index) => {
-                                                obj[index] = elem
-                                            }
-                                        )
+                                        let obj = {
+                                            automaticGreeting:
+                                                values.automaticGreeting,
+                                            phrases: values.phrases,
+                                        }
                                         set_New_Settings_Dialogue(obj, user.uid)
                                         setShowInput(false)
                                         setValueInput('')
+                                        fetch_User_Settings(user.uid)
+                                    }
+
+                                    if (
+                                        values.automaticGreeting !==
+                                        valueInputAutomaticGreeting
+                                    ) {
+                                        let obj = {
+                                            automaticGreeting:
+                                                valueInputAutomaticGreeting,
+                                            phrases: values.phrases,
+                                        }
+                                        set_New_Settings_Dialogue(obj, user.uid)
+                                        setShowBtnSubmit(false)
                                         fetch_User_Settings(user.uid)
                                     }
                                 }}
@@ -87,23 +153,28 @@ function SettingsUserDialogues({
                                                                                   index
                                                                               )
                                                                               let obj =
-                                                                                  {}
+                                                                                  {
+                                                                                      automaticGreeting:
+                                                                                          values.automaticGreeting,
+                                                                                  }
                                                                               values.phrases.forEach(
                                                                                   (
                                                                                       elem,
                                                                                       i
                                                                                   ) => {
                                                                                       if (
-                                                                                          i !==
+                                                                                          i ===
                                                                                           index
                                                                                       ) {
-                                                                                          obj[
-                                                                                              i
-                                                                                          ] =
-                                                                                              elem
+                                                                                          values.phrases.splice(
+                                                                                              i,
+                                                                                              1
+                                                                                          )
                                                                                       }
                                                                                   }
                                                                               )
+                                                                              obj.phrases =
+                                                                                  values.phrases
                                                                               set_New_Settings_Dialogue(
                                                                                   obj,
                                                                                   user.uid
@@ -180,30 +251,52 @@ function SettingsUserDialogues({
                                                 </div>
                                             )}
                                         />
+                                        <div className="settingsDialogue__greetings">
+                                            <div>
+                                                Автоматическое приветствие:
+                                            </div>
+                                            <Input
+                                                value={
+                                                    valueInputAutomaticGreeting
+                                                }
+                                                onChange={(e) => {
+                                                    setValueInputAutomaticGreeting(
+                                                        e.target.value
+                                                    )
+                                                    setShowBtnSubmit(true)
+                                                }}
+                                            />
+                                            {showBtnSubmit ? (
+                                                <Button
+                                                    color="success"
+                                                    type="submit"
+                                                    className="settingsDialogue__readyPhrases_phraseBtn"
+                                                >
+                                                    <FontAwesomeIcon
+                                                        icon={['fas', 'check']}
+                                                        color="white"
+                                                    />
+                                                </Button>
+                                            ) : null}
+                                        </div>
                                     </Form>
                                 )}
                             </Formik>
                         ) : null}
                     </div>
-                    <div className="settingsDialogue__greetings">
-                        <div>Автоматическое приветствие:</div>
-                        <Input />
-                    </div>
                 </div>
                 <div className="settingsDialogue__block">
                     <div>
                         <h4>Список тем</h4>
-                        <div>Тема 2</div>
-                        <div>Тема 2</div>
-                        <div>Тема 2</div>
-                        <div>Тема 2</div>
+                        <div className="settingsDialogue__containerTopics">
+                            <ViewTopics />
+                        </div>
                     </div>
                     <div>
                         <h4>Список подтем</h4>
-                        <div>Тема 2</div>
-                        <div>Тема 2</div>
-                        <div>Тема 2</div>
-                        <div>Тема 2</div>
+                        <div className="settingsDialogue__containerTopics">
+                            <ViewSubtopics />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -211,10 +304,11 @@ function SettingsUserDialogues({
     )
 }
 
-const mapStateToProps = ({ user, settingsUser }) => {
+const mapStateToProps = ({ user, settingsUser, topics }) => {
     return {
         user,
         settingsUser,
+        topics,
     }
 }
 

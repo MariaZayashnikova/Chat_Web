@@ -64,3 +64,5 @@ export const fetch_User_Settings = (value) => ({
     value,
 })
 export const User_Settings = (value) => ({ type: 'User_Settings', value })
+export const get_Topics_From_DB = () => ({ type: 'get_Topics_From_DB' })
+export const set_Topics = (value) => ({ type: 'set_Topics', value })
