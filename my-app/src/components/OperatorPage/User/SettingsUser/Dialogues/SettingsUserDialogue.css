@@ -1,0 +1,41 @@
+.containerSettingsDialogues {
+    width: 70%;
+    font-family: "Trebuchet MS";
+}
+
+.settingsDialogue {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.settingsDialogue__block {
+    width: 50%;
+    padding: 5px;
+}
+
+.settingsDialogue__greetings {
+    display: flex;
+    margin: 10px 0;
+}
+
+.settingsDialogue__readyPhrases_phrase {
+    display: flex;
+    margin: 10px 0;
+}
+
+.settingsDialogue__readyPhrases_phraseBtn {
+    margin: 0 10px;
+}
+
+.settingsDialogue__readyPhrases_containerAdd {
+    display: flex;
+}
+
+.max-height {
+    max-height: 25px;
+}
+
+.settingsDialogue__containerTopics {
+    padding: 5px;
+}

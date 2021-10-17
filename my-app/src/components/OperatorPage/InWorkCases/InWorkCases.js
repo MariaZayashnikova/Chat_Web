@@ -10,12 +10,11 @@ import {
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import moment from 'moment'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../../Spinner/Spinner'
 import { useHistory } from 'react-router-dom'
-import { createDisplayedFilterResults } from '../OperatorPage'
+import { calculateDate, createDisplayedFilterResults } from '../OperatorPage'
 
 function InWorkCases({
     fetch_Dialogues_From_Database,
@@ -81,7 +80,7 @@ function InWorkCases({
     const ViewResult = ({ arrResult }) => {
         const history = useHistory()
         return arrResult.map((elem) => {
-            let timestamp = moment(parseInt(elem.time, 10)).fromNow()
+            let timestamp = calculateDate(parseInt(elem.time, 10))
             return (
                 <ListGroupItem key={elem.idDialogue}>
                     <div className="dialogue">

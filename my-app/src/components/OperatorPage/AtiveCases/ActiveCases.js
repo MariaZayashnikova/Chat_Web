@@ -5,19 +5,18 @@ import SearchBar from '../SearchBar/SearchBar'
 import {
     change_Value_Active_Cases,
     fetch_Dialogues_From_Database,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './ActiveCases.css'
 import '../OperatorPage.css'
-import moment from 'moment'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../../Spinner/Spinner'
 import { useHistory } from 'react-router-dom'
-import { createDisplayedFilterResults } from '../OperatorPage'
+import { calculateDate, createDisplayedFilterResults } from '../OperatorPage'
 
 function ActiveCases({
     fetch_Dialogues_From_Database,
@@ -25,7 +24,7 @@ function ActiveCases({
     change_Value_Active_Cases,
     valueActiveCases,
     errorFromState,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
     user,
 }) {
     if (!dialogues) {
@@ -85,9 +84,7 @@ function ActiveCases({
     const ViewResult = ({ arrResult }) => {
         const history = useHistory()
         return arrResult.map((elem) => {
-            let timestamp = moment(elem.time).fromNow() /*.format(
-            'DD MMMM YYYY, HH:mm'
-        )*/
+            let timestamp = calculateDate(elem.time)
 
             return (
                 <ListGroupItem key={elem.idDialogue}>
@@ -127,7 +124,7 @@ function ActiveCases({
                                     history.push(
                                         `/OperatorPage/Dialogue/${elem.idDialogue}`
                                     )
-                                    Update_Data_In_Database(
+                                    Update_Dialogue_In_Database(
                                         {
                                             status: 'inWork',
                                             operatorUID: user.uid,
@@ -204,7 +201,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
     fetch_Dialogues_From_Database,
     change_Value_Active_Cases,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActiveCases)

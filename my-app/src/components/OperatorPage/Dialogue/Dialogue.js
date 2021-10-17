@@ -1,33 +1,26 @@
-import React, { useState } from 'react'
+import React from 'react'
 import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import {
     fetch_Dialogues_From_Database,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
-import {
-    Toast,
-    ToastBody,
-    ToastHeader,
-    Button,
-    Input,
-    Dropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-} from 'reactstrap'
+import { Toast, ToastBody, ToastHeader, Button } from 'reactstrap'
+import moment from 'moment'
 import 'moment/locale/ru.js'
 import './Dialogue.css'
-import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ToastContainer } from 'react-toastify'
+import { calculateDate } from '../OperatorPage'
+import OperatorAnswerAnswer from './OperatorAnswer'
+import PictureInMessage from './PictureInMessage'
 
 function Dialogue({
     fetch_Dialogues_From_Database,
     dialogues,
     itemId,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
 }) {
     if (!dialogues) {
         fetch_Dialogues_From_Database()
@@ -38,11 +31,18 @@ function Dialogue({
 
     let isSavedCase = false
 
+    let objResultDialogue = {}
+
     function filterData() {
         for (let objDialogue in dialogues) {
             if (objDialogue === itemId) {
                 let contentDialogue = dialogues[objDialogue]
                 nameClient = contentDialogue.client
+                if (contentDialogue.status) {
+                    objResultDialogue.completionTime =
+                        contentDialogue.completionTime
+                    objResultDialogue.grade = contentDialogue.grade
+                }
                 if (contentDialogue.isSave) {
                     isSavedCase = contentDialogue.isSave
                 }
@@ -64,9 +64,94 @@ function Dialogue({
         filterData()
     }
 
-    const [dropdownOpen, setDropdownOpen] = useState(false)
+    setInterval(() => {
+        fetch_Dialogues_From_Database()
+    }, 30000)
 
-    let toggle = () => setDropdownOpen((dropdownOpen) => !dropdownOpen)
+    function analyzeContent(str) {
+        let options = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg']
+        let res
+        let index
+        let startSrt
+        let endStr
+
+        options.forEach((elem) => {
+            let reg = new RegExp(`(http|https)://.*.${elem}`, 'gi')
+            if (reg.test(str)) {
+                res = str.match(reg)
+                index = str.indexOf(res[0])
+                startSrt = str.slice(0, index)
+                endStr = str.slice(res[0].length + index)
+            }
+        })
+
+        return { res, startSrt, endStr }
+    }
+
+    const ViewResultFinishedDialogue = () => {
+        let CalcStars = () => {
+            let arr = []
+            for (let i = 0; i < objResultDialogue.grade; i++) {
+                arr.push(
+                    <FontAwesomeIcon
+                        icon={['fas', 'star']}
+                        key={i}
+                        color="yellow"
+                        size="3x"
+                    />
+                )
+            }
+            return arr
+        }
+        return (
+            <div className="containerDialogue__resultFinishedDialogue">
+                <div className="containerDialogue__resultFinishedDialogue_stars">
+                    <CalcStars />
+                </div>
+
+                <p>
+                    Диалог завершился &nbsp;
+                    {moment(objResultDialogue.completionTime).fromNow()}
+                </p>
+            </div>
+        )
+    }
+
+    const ViewResult = ({ arrResult }) => {
+        arrResult.reverse()
+        return arrResult.map((elem) => {
+            let timestamp = calculateDate(elem.time)
+            let { res, startSrt, endStr } = analyzeContent(elem.content)
+            return (
+                <Toast
+                    className={
+                        elem.isOperator ? 'operatorMessage' : 'clientMessage'
+                    }
+                    key={elem.time}
+                >
+                    <ToastHeader className="infoMessage">
+                        {elem.isOperator ? 'Вы:' : 'Клиент:'}
+                        <div className="timeMessage">{timestamp}</div>
+                    </ToastHeader>
+                    <ToastBody>
+                        {res ? (
+                            <>
+                                <div>{startSrt}</div>
+                                <PictureInMessage srcImg={res[0]} />
+                                <div>{endStr}</div>
+                            </>
+                        ) : (
+                            elem.content
+                        )}
+                    </ToastBody>
+                </Toast>
+            )
+        })
+    }
+
+    let resultFinishedDialogue = objResultDialogue.completionTime ? (
+        <ViewResultFinishedDialogue />
+    ) : null
 
     let result =
         allResultFilter.length > 0 ? (
@@ -90,10 +175,11 @@ function Dialogue({
                                     color="danger"
                                     size="sm"
                                     onClick={() => {
-                                        Update_Data_In_Database(
+                                        Update_Dialogue_In_Database(
                                             { isSave: false },
                                             itemId
                                         )
+                                        fetch_Dialogues_From_Database()
                                     }}
                                 >
                                     Удалить из сохранённых
@@ -104,10 +190,11 @@ function Dialogue({
                                     color="primary"
                                     size="sm"
                                     onClick={() => {
-                                        Update_Data_In_Database(
+                                        Update_Dialogue_In_Database(
                                             { isSave: true },
                                             itemId
                                         )
+                                        fetch_Dialogues_From_Database()
                                     }}
                                 >
                                     Сохранить диалог
@@ -119,64 +206,13 @@ function Dialogue({
                                 {result}
                             </div>
                         </div>
-                        <div className="containerDialogue__Answers">
-                            <div className="containerDialogue__Answers_answer">
-                                Введите ответ:
-                                <Input />
-                            </div>
-                            <div className="containerDialogue__readyAnswers">
-                                <div className="containerDialogue__readyAnswers_settings">
-                                    <div>Или выберете из готовых:</div>
-                                    <FontAwesomeIcon
-                                        icon={['fas', 'cog']}
-                                        color="grey"
-                                    />
-                                </div>
-                                <Dropdown
-                                    isOpen={dropdownOpen}
-                                    toggle={toggle}
-                                    size="sm"
-                                >
-                                    <DropdownToggle
-                                        className="dropdownCustom"
-                                        caret
-                                    >
-                                        Варианты
-                                    </DropdownToggle>
-                                    <DropdownMenu>
-                                        <DropdownItem>Foo Action</DropdownItem>
-                                        <DropdownItem>Bar Action</DropdownItem>
-                                        <DropdownItem>Quo Action</DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                            </div>
-                        </div>
+                        {resultFinishedDialogue}
+                        <OperatorAnswerAnswer itemId={itemId} />
                     </div>
                 </div>
             </div>
         </div>
     )
-}
-
-const ViewResult = ({ arrResult }) => {
-    arrResult.reverse()
-    return arrResult.map((elem) => {
-        let timestamp = moment(elem.time).fromNow()
-        return (
-            <Toast
-                className={
-                    elem.isOperator ? 'operatorMessage' : 'clientMessage'
-                }
-                key={elem.time}
-            >
-                <ToastHeader className="infoMessage">
-                    {elem.isOperator ? 'Вы:' : 'Клиент:'}
-                    <div className="timeMessage">{timestamp}</div>
-                </ToastHeader>
-                <ToastBody>{elem.content}</ToastBody>
-            </Toast>
-        )
-    })
 }
 
 const mapStateToProps = ({ dialogues }) => {
@@ -187,7 +223,7 @@ const mapStateToProps = ({ dialogues }) => {
 
 const mapDispatchToProps = {
     fetch_Dialogues_From_Database,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogue)

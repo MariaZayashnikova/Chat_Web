@@ -5,6 +5,8 @@ const initialState = {
     dialogues: null,
     valueSearch: null,
     valueActiveCases: 5,
+    settingsUser: null,
+    topics: null,
 }
 
 const reducer = (state = initialState, action) => {
@@ -32,6 +34,7 @@ const reducer = (state = initialState, action) => {
             }
         case 'FETCH_MESSAGES_FAILURE':
             return {
+                ...state,
                 loadingFromState: false,
                 errorFromState: action.error.message,
             }
@@ -56,10 +59,6 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loadingFromState: true,
             }
-        case 'fetch_Dialogues_From_Database':
-            return {
-                ...state,
-            }
         case 'Dialogues_From_Database':
             return {
                 ...state,
@@ -70,18 +69,25 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 valueSearch: action.value,
             }
-        case 'push_Data':
-            return {
-                ...state,
-            }
         case 'change_Value_Active_Cases':
             return {
                 ...state,
                 valueActiveCases: state.valueActiveCases + 5,
             }
-        case 'Update_Data_In_Database':
+        case 'Update_User_Name':
             return {
                 ...state,
+                user: action.value,
+            }
+        case 'User_Settings':
+            return {
+                ...state,
+                settingsUser: action.data,
+            }
+        case 'set_Topics':
+            return {
+                ...state,
+                topics: action.data,
             }
         default:
             return state

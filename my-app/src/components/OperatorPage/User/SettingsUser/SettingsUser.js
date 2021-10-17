@@ -1,32 +1,67 @@
-import React from 'react'
-import { SignOut_User } from '../../../../actions'
+import React, { useState } from 'react'
+import { REMOVE_FAILURE } from '../../../../actions'
 import { connect } from 'react-redux'
-import NavBar from '../../NavBar/NavBar'
-import User from '../User'
+import './SettingsUser.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Modal from 'react-modal'
+import SettingsProfile from './Profile/SettingsProfile'
+import { Button } from 'reactstrap'
+import SettingsUserDialogues from './Dialogues/SettingsUserDialogues'
 
-function SettingsUser({ user, SignOut_User }) {
+function SettingsUser({ REMOVE_FAILURE, settingsUser }) {
+    const [modalIsOpen, setIsOpen] = useState(false)
+
+    function openModal() {
+        setIsOpen(true)
+    }
+
+    function closeModal() {
+        setIsOpen(false)
+        REMOVE_FAILURE()
+    }
     return (
-        <div className="OperatorPage">
-            <NavBar />
-            <div className="containerBodyOperatorPage">
-                <User />
-                <div className="containerBody">
-                    <div>Обновить профиль</div>
-                    <div>Настройки диалогов</div>
+        <>
+            {settingsUser ? (
+                <FontAwesomeIcon
+                    icon={['fas', 'cog']}
+                    color="blue"
+                    className="containerUser__icon containerUser__icon_settings"
+                    onClick={openModal}
+                />
+            ) : null}
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                ariaHideApp={false}
+            >
+                <div className="containerSettings">
+                    <Button
+                        className="containerSettings__btnClose"
+                        color="primary"
+                        onClick={closeModal}
+                    >
+                        <FontAwesomeIcon
+                            icon={['fas', 'times']}
+                            color="white"
+                        />
+                    </Button>
+                    <SettingsProfile closeModal={closeModal} />
+                    <SettingsUserDialogues />
                 </div>
-            </div>
-        </div>
+            </Modal>
+        </>
     )
 }
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({ settingsUser }) => {
     return {
-        user,
+        settingsUser,
     }
 }
 
 const mapDispatchToProps = {
-    SignOut_User,
+    REMOVE_FAILURE,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsUser)

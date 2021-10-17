@@ -5,7 +5,7 @@ import debounce from 'lodash.debounce'
 import {
     fetch_Dialogues_From_Database,
     Set_Value_Search,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
 } from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem } from 'reactstrap'
@@ -18,7 +18,7 @@ function SearchBar({
     Set_Value_Search,
     status,
     isSave,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
     user,
 }) {
     let resultSearch = []
@@ -116,7 +116,7 @@ function SearchBar({
                             `/OperatorPage/Dialogue/${elem.idDialogue}`
                         )
                         if (status === 'active') {
-                            Update_Data_In_Database(
+                            Update_Dialogue_In_Database(
                                 {
                                     status: 'inWork',
                                     operatorUID: user.uid,
@@ -181,7 +181,7 @@ const mapStateToProps = ({ dialogues, valueSearch, user }) => {
 const mapDispatchToProps = {
     fetch_Dialogues_From_Database,
     Set_Value_Search,
-    Update_Data_In_Database,
+    Update_Dialogue_In_Database,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar)

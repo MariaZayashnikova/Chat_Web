@@ -1,13 +1,13 @@
 import React from 'react'
-import { push_Data, SignOut_User } from '../../../actions'
+import { push_Dialogue, SignOut_User } from '../../../actions'
 import { connect } from 'react-redux'
 import './User.css'
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Link } from 'react-router-dom'
 import Spinner from '../../Spinner/Spinner'
+import SettingsUser from './SettingsUser/SettingsUser'
 
-function User({ user, SignOut_User, push_Data, loadingFromState }) {
+function User({ user, SignOut_User, push_Dialogue, loadingFromState }) {
     function addDialogueCustom() {
         let name = prompt('Ваше имя')
         let content = prompt('Тест обращения')
@@ -25,7 +25,7 @@ function User({ user, SignOut_User, push_Data, loadingFromState }) {
                 },
             },
         }
-        push_Data(obj)
+        push_Dialogue(obj)
     }
 
     return (
@@ -36,14 +36,8 @@ function User({ user, SignOut_User, push_Data, loadingFromState }) {
                     color="darkblue"
                     className="containerUser__icon"
                 />
-                {user.email}
-                <Link to="/OperatorPage/Settings">
-                    <FontAwesomeIcon
-                        icon={['fas', 'cog']}
-                        color="blue"
-                        className="containerUser__icon containerUser__icon_settings"
-                    />
-                </Link>
+                {user.name ? user.name : user.email}
+                <SettingsUser />
             </h2>
             <Button outline color="secondary" onClick={addDialogueCustom}>
                 Добавить
@@ -70,7 +64,7 @@ const mapStateToProps = ({ user, loadingFromState }) => {
 
 const mapDispatchToProps = {
     SignOut_User,
-    push_Data,
+    push_Dialogue,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)
