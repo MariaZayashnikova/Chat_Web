@@ -27,6 +27,7 @@ function OperatorAnswer({
     itemId,
     push_NewMessage_In_Database,
     fetch_Dialogues_From_Database,
+    settingsUser
 }) {
     function submitNewMessage() {
         if (!inputValue) return
@@ -129,9 +130,11 @@ function OperatorAnswer({
                             Варианты
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem>Foo Action</DropdownItem>
-                            <DropdownItem>Bar Action</DropdownItem>
-                            <DropdownItem>Quo Action</DropdownItem>
+                            {settingsUser.phrases.map((elem, index) => {
+                                return (
+                                    <DropdownItem key={index}>{elem}</DropdownItem>
+                                )
+                            })}
                         </DropdownMenu>
                     </Dropdown>
                 </div>
@@ -140,9 +143,15 @@ function OperatorAnswer({
     )
 }
 
+const mapStateToProps = ({ settingsUser }) => {
+    return {
+        settingsUser
+    }
+}
+
 const mapDispatchToProps = {
     push_NewMessage_In_Database,
     fetch_Dialogues_From_Database,
 }
 
-export default connect(null, mapDispatchToProps)(OperatorAnswer)
+export default connect(mapStateToProps, mapDispatchToProps)(OperatorAnswer)

@@ -4,6 +4,7 @@ import User from '../User/User'
 import {
     fetch_Dialogues_From_Database,
     Update_Dialogue_In_Database,
+    push_NewMessage_In_Database
 } from '../../../actions'
 import { connect } from 'react-redux'
 import { Toast, ToastBody, ToastHeader, Button } from 'reactstrap'
@@ -21,6 +22,8 @@ function Dialogue({
     dialogues,
     itemId,
     Update_Dialogue_In_Database,
+    settingsUser,
+    push_NewMessage_In_Database
 }) {
     if (!dialogues) {
         fetch_Dialogues_From_Database()
@@ -60,8 +63,30 @@ function Dialogue({
         }
     }
 
+    function checkIsFirstMessage() {
+        if (!allResultFilter) return
+        if (!settingsUser.automaticGreeting) return
+
+        for (let i = 0; i < allResultFilter.length; i++) {
+            if (allResultFilter[i].isOperator) {
+                return
+            }
+        }
+
+        let time = new Date().getTime()
+        let newMessage = {
+            [time]: {
+                content: settingsUser.automaticGreeting,
+                isOperator: true,
+            },
+        }
+        push_NewMessage_In_Database(newMessage, itemId)
+        fetch_Dialogues_From_Database()
+    }
+
     if (dialogues) {
         filterData()
+        checkIsFirstMessage()
     }
 
     setInterval(() => {
@@ -215,15 +240,17 @@ function Dialogue({
     )
 }
 
-const mapStateToProps = ({ dialogues }) => {
+const mapStateToProps = ({ dialogues, settingsUser }) => {
     return {
         dialogues,
+        settingsUser
     }
 }
 
 const mapDispatchToProps = {
     fetch_Dialogues_From_Database,
     Update_Dialogue_In_Database,
+    push_NewMessage_In_Database
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogue)
