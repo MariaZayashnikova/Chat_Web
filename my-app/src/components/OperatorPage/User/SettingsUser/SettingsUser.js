@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import { REMOVE_FAILURE } from '../../../../actions'
 import { connect } from 'react-redux'
-import './SettingsUser.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Modal from 'react-modal'
-import SettingsProfile from './Profile/SettingsProfile'
 import { Button } from 'reactstrap'
+import { clearErrors } from '../../../../actions'
 import SettingsUserDialogues from './Dialogues/SettingsUserDialogues'
+import SettingsProfile from './Profile/SettingsProfile'
+import './SettingsUser.css'
 
-function SettingsUser({ REMOVE_FAILURE, settingsUser }) {
+function SettingsUser({ clearErrors, settingsUser }) {
     const [modalIsOpen, setIsOpen] = useState(false)
 
     function openModal() {
@@ -17,7 +17,7 @@ function SettingsUser({ REMOVE_FAILURE, settingsUser }) {
 
     function closeModal() {
         setIsOpen(false)
-        REMOVE_FAILURE()
+        clearErrors()
     }
     return (
         <>
@@ -54,14 +54,8 @@ function SettingsUser({ REMOVE_FAILURE, settingsUser }) {
     )
 }
 
-const mapStateToProps = ({ settingsUser }) => {
-    return {
-        settingsUser,
-    }
-}
+const mapStateToProps = ({ settingsUser }) => ({ settingsUser })
 
-const mapDispatchToProps = {
-    REMOVE_FAILURE,
-}
+const mapDispatchToProps = { clearErrors }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsUser)

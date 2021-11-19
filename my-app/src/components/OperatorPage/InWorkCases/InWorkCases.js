@@ -1,34 +1,32 @@
 import React from 'react'
-import '../OperatorPage.css'
-import NavBar from '../NavBar/NavBar'
-import User from '../User/User'
-import SearchBar from '../SearchBar/SearchBar'
-import {
-    change_Value_Active_Cases,
-    fetch_Dialogues_From_Database,
-} from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import Spinner from '../../Spinner/Spinner'
 import { useHistory } from 'react-router-dom'
+import {
+    changeValueActiveCases,
+    fetchDialoguesFromDatabase,
+} from '../../../actions'
+import NavBar from '../NavBar/NavBar'
+import User from '../User/User'
+import SearchBar from '../SearchBar/SearchBar'
+import Spinner from '../../Spinner/Spinner'
 import { calculateDate, createDisplayedFilterResults } from '../OperatorPage'
+import '../OperatorPage.css'
 
 function InWorkCases({
-    fetch_Dialogues_From_Database,
+    fetchDialoguesFromDatabase,
     dialogues,
-    change_Value_Active_Cases,
+    changeValueActiveCases,
     valueActiveCases,
     user,
 }) {
-    if (!dialogues) {
-        fetch_Dialogues_From_Database()
-    }
+    if (!dialogues) fetchDialoguesFromDatabase()
 
     let timerId = setInterval(() => {
-        fetch_Dialogues_From_Database()
+        fetchDialoguesFromDatabase()
     }, 60000)
 
     let allResultFilter = []
@@ -69,13 +67,11 @@ function InWorkCases({
 
     function loadFunc() {
         setTimeout(() => {
-            change_Value_Active_Cases()
+            changeValueActiveCases()
         }, 1500)
     }
 
-    if (displayedFilterResults.length === allResultFilter.length) {
-        hasMoreActiveCases = false
-    }
+    if (displayedFilterResults.length === allResultFilter.length) hasMoreActiveCases = false
 
     const ViewResult = ({ arrResult }) => {
         const history = useHistory()
@@ -94,7 +90,7 @@ function InWorkCases({
                         </div>
                         <div className="dialogue__topic">
                             <div>
-                                <p className="dialogue__topic_title">Тема:</p>{' '}
+                                <p className="dialogue__topic_title">Тема:</p>
                                 {elem.topic}
                             </div>
                             <div>
@@ -175,8 +171,8 @@ const mapStateToProps = ({ dialogues, valueActiveCases, user }) => {
 }
 
 const mapDispatchToProps = {
-    fetch_Dialogues_From_Database,
-    change_Value_Active_Cases,
+    fetchDialoguesFromDatabase,
+    changeValueActiveCases,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(InWorkCases)

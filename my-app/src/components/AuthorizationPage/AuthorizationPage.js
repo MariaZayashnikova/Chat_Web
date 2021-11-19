@@ -1,17 +1,16 @@
-import './AuthorizationPage.css'
 import React from 'react'
-import { Form, FormGroup, Input, FormFeedback, Label, Button } from 'reactstrap'
-import { useFormik } from 'formik'
-import {
-    FETCH_MESSAGES_FAILURE,
-    FETCH_Authorization_REQUEST,
-    FETCH_AuthorizationViaGoogle_REQUEST,
-    REMOVE_FAILURE,
-} from '../../actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Form, FormGroup, Input, FormFeedback, Label, Button } from 'reactstrap'
+import { useFormik } from 'formik'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+    fetchAuthorization,
+    fetchAuthorizationViaGoogle,
+    clearErrors,
+} from '../../actions'
 import Spinner from '../Spinner/Spinner'
+import './AuthorizationPage.css'
 
 const validate = (values) => {
     const errors = {}
@@ -43,9 +42,9 @@ export { validate }
 function AuthorizationPage({
     errorFromState,
     loadingFromState,
-    FETCH_Authorization_REQUEST,
-    REMOVE_FAILURE,
-    FETCH_AuthorizationViaGoogle_REQUEST,
+    fetchAuthorization,
+    clearErrors,
+    fetchAuthorizationViaGoogle,
 }) {
     const formik = useFormik({
         initialValues: {
@@ -54,15 +53,14 @@ function AuthorizationPage({
         },
         validate,
         onSubmit: (values) => {
-            if (errorFromState) {
-                REMOVE_FAILURE()
-            }
-            FETCH_Authorization_REQUEST(values)
+            if (errorFromState) clearErrors()
+
+            fetchAuthorization(values)
         },
     })
 
     function onSignIn() {
-        FETCH_AuthorizationViaGoogle_REQUEST()
+        fetchAuthorizationViaGoogle()
     }
 
     return (
@@ -88,8 +86,8 @@ function AuthorizationPage({
                             type="text"
                             invalid={
                                 formik.touched.email &&
-                                formik.errors.email &&
-                                formik.errors.email.length > 0
+                                    formik.errors.email &&
+                                    formik.errors.email.length > 0
                                     ? true
                                     : false
                             }
@@ -111,7 +109,7 @@ function AuthorizationPage({
                         <Input
                             className={
                                 formik.touched.password &&
-                                formik.errors.password
+                                    formik.errors.password
                                     ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
                                     : 'pageLogin__containerForm_input'
                             }
@@ -154,9 +152,7 @@ function AuthorizationPage({
                         to="/Registration"
                         className="containerLinks__link_custom"
                         onClick={() => {
-                            if (errorFromState) {
-                                REMOVE_FAILURE()
-                            }
+                            if (errorFromState) clearErrors()
                         }}
                     >
                         Зарегистрироваться
@@ -165,9 +161,7 @@ function AuthorizationPage({
                         to="/ResetPassword"
                         className="containerLinks__link_custom"
                         onClick={() => {
-                            if (errorFromState) {
-                                REMOVE_FAILURE()
-                            }
+                            if (errorFromState) clearErrors()
                         }}
                     >
                         Забыли пароль?
@@ -178,18 +172,12 @@ function AuthorizationPage({
     )
 }
 
-const mapStateToProps = ({ errorFromState, loadingFromState }) => {
-    return {
-        loadingFromState,
-        errorFromState,
-    }
-}
+const mapStateToProps = ({ errorFromState, loadingFromState }) => ({ loadingFromState, errorFromState })
 
 const mapDispatchToProps = {
-    FETCH_Authorization_REQUEST,
-    FETCH_MESSAGES_FAILURE,
-    REMOVE_FAILURE,
-    FETCH_AuthorizationViaGoogle_REQUEST,
+    fetchAuthorization,
+    clearErrors,
+    fetchAuthorizationViaGoogle,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthorizationPage)

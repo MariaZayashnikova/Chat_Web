@@ -1,19 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Formik, Form, Field, FieldArray } from 'formik'
-import './SettingsUserDialogue.css'
 import { Button, Input, Fade, ListGroup, ListGroupItem } from 'reactstrap'
 import { connect } from 'react-redux'
-import {
-    fetch_User_Settings,
-    set_New_Settings_Dialogue,
-} from '../../../../../actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+    fetchUserSettings,
+    setNewSettingsDialogue,
+} from '../../../../../actions'
+import './SettingsUserDialogue.css'
+
+let csArr = [
+    {
+        id: 'wornvowienc',
+        m: "1"
+    },
+    {
+        id: 'pwrvnq[wpd',
+        m: "2"
+    },
+    {
+        id: ';qwomvpoqwmv',
+        m: "3"
+    },
+    {
+        id: 'worn5ugniunvvowienc',
+        m: "4"
+    }
+]
 
 function SettingsUserDialogues({
-    set_New_Settings_Dialogue,
+    setNewSettingsDialogue,
     user,
     settingsUser,
-    fetch_User_Settings,
+    fetchUserSettings,
     topics,
 }) {
     const [showInput, setShowInput] = useState(false)
@@ -73,8 +92,19 @@ function SettingsUserDialogues({
         })
     }
 
+    const [value, setValue] = useState();
+
+
     return (
         <div className="containerSettingsDialogues">
+            {/* <div>
+                <h3>Using useCallback hook:</h3>
+
+                <input onChange={useCallback(e => setValue(e.target.value), [])} />
+                {value}
+                {console.log('update')}
+            </div> */}
+
             <h2>Настройки Диалогов</h2>
             <div className="settingsDialogue">
                 <div className="settingsDialogue__block">
@@ -83,7 +113,7 @@ function SettingsUserDialogues({
                         {settingsUser ? (
                             <Formik
                                 initialValues={{
-                                    phrases: settingsUser.phrases,
+                                    phrases: csArr,
                                     automaticGreeting:
                                         settingsUser.automaticGreeting,
                                 }}
@@ -94,10 +124,10 @@ function SettingsUserDialogues({
                                                 values.automaticGreeting,
                                             phrases: values.phrases,
                                         }
-                                        set_New_Settings_Dialogue(obj, user.uid)
+                                        setNewSettingsDialogue(obj, user.uid)
                                         setShowInput(false)
                                         setValueInput('')
-                                        fetch_User_Settings(user.uid)
+                                        fetchUserSettings(user.uid)
                                     }
 
                                     if (
@@ -109,9 +139,9 @@ function SettingsUserDialogues({
                                                 valueInputAutomaticGreeting,
                                             phrases: values.phrases,
                                         }
-                                        set_New_Settings_Dialogue(obj, user.uid)
+                                        setNewSettingsDialogue(obj, user.uid)
                                         setShowBtnSubmit(false)
-                                        fetch_User_Settings(user.uid)
+                                        fetchUserSettings(user.uid)
                                     }
                                 }}
                             >
@@ -120,105 +150,79 @@ function SettingsUserDialogues({
                                         <FieldArray
                                             name="phrases"
                                             render={(arrayHelpers) => (
-                                                <div>
-                                                    {values.phrases &&
-                                                        values.phrases.length > 0
-                                                        ? values.phrases.map(
-                                                            (
-                                                                phrase,
-                                                                index
-                                                            ) => (
-                                                                <div
-                                                                    key={
-                                                                        index
-                                                                    }
-                                                                    className="settingsDialogue__readyPhrases_phrase"
-                                                                >
-                                                                    <Field
-                                                                        as="div"
-                                                                        name={`phrases.${index}`}
+                                                < div >
+                                                    {
+                                                        values.phrases &&
+                                                            values.phrases.length > 0
+                                                            ? values.phrases.map(
+                                                                (phrase, index) => (
+                                                                    <div
+                                                                        key={phrase.id}
+                                                                        className="settingsDialogue__readyPhrases_phrase"
                                                                     >
-                                                                        {
-                                                                            phrase
-                                                                        }
-                                                                    </Field>
-                                                                    <Button
-                                                                        type="button"
-                                                                        color="danger"
-                                                                        outline
-                                                                        size="sm"
-                                                                        className="settingsDialogue__readyPhrases_phraseBtn max-height"
-                                                                        onClick={() => {
-                                                                            arrayHelpers.remove(
-                                                                                index
-                                                                            )
-                                                                            let obj =
-                                                                            {
-                                                                                automaticGreeting:
-                                                                                    values.automaticGreeting,
-                                                                            }
-                                                                            values.phrases.forEach(
-                                                                                (
-                                                                                    elem,
-                                                                                    i
-                                                                                ) => {
-                                                                                    if (
-                                                                                        i ===
-                                                                                        index
-                                                                                    ) {
-                                                                                        values.phrases.splice(
-                                                                                            i,
-                                                                                            1
-                                                                                        )
-                                                                                    }
-                                                                                }
-                                                                            )
-                                                                            obj.phrases =
-                                                                                values.phrases
-                                                                            set_New_Settings_Dialogue(
-                                                                                obj,
-                                                                                user.uid
-                                                                            )
-                                                                            fetch_User_Settings(
-                                                                                user.uid
-                                                                            )
-                                                                        }}
-                                                                    >
-                                                                        -
-                                                                    </Button>
-                                                                </div>
+                                                                        <Field
+                                                                            as="div"
+                                                                            name={`phrases.${phrase.id}`}
+                                                                        >
+                                                                            {phrase.m}
+                                                                        </Field>
+                                                                        <Button
+                                                                            type="button"
+                                                                            color="danger"
+                                                                            outline
+                                                                            size="sm"
+                                                                            className="settingsDialogue__readyPhrases_phraseBtn max-height"
+                                                                            onClick={() => {
+                                                                                arrayHelpers.remove(phrase)
+                                                                                console.log(phrase)
+                                                                                //values.phrases = values.phrases.filter(item => item.id !== phrase.id)
+
+                                                                                console.log(values.phrases)
+                                                                                // let res = values.phrases.filter((item, i) => i !== index)
+
+                                                                                // let obj =
+                                                                                // {
+                                                                                //     automaticGreeting: values.automaticGreeting,
+                                                                                //     phrases: res
+                                                                                // }
+
+                                                                                // console.log(obj)
+
+                                                                                // values.phrases.forEach(
+                                                                                //     (elem, i) => {
+                                                                                //         if (i === index) {
+                                                                                //             values.phrases.splice(i, 1)
+                                                                                //         }
+                                                                                //     }
+                                                                                // )
+                                                                                // console.log(values.phrases)
+                                                                                // obj.phrases = values.phrases
+                                                                                // setNewSettingsDialogue(obj, user.uid)
+                                                                                // fetchUserSettings(user.uid)
+                                                                            }}
+                                                                        >
+                                                                            -
+                                                                        </Button>
+                                                                    </div>
+                                                                )
                                                             )
-                                                        )
-                                                        : null}
-                                                    <div className="settingsDialogue__readyPhrases_containerAdd">
+                                                            : null
+                                                    }
+                                                    < div className="settingsDialogue__readyPhrases_containerAdd">
                                                         {showInput ? (
                                                             <>
                                                                 <Input
                                                                     value={
                                                                         valueInput
                                                                     }
-                                                                    onChange={(
-                                                                        e
-                                                                    ) => {
-                                                                        setValueInput(
-                                                                            e
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }}
+                                                                    onChange={(e) => setValueInput(e.target.value)}
                                                                 />
                                                                 <Button
                                                                     color="success"
                                                                     type="submit"
                                                                     className="settingsDialogue__readyPhrases_phraseBtn"
                                                                     onClick={() => {
-                                                                        if (
-                                                                            valueInput
-                                                                        ) {
-                                                                            arrayHelpers.push(
-                                                                                valueInput
-                                                                            )
-                                                                        }
+                                                                        if (valueInput) arrayHelpers.push(valueInput)
                                                                     }}
                                                                 >
                                                                     <FontAwesomeIcon
@@ -235,13 +239,7 @@ function SettingsUserDialogues({
                                                                 color="primary"
                                                                 type="button"
                                                                 onClick={() => {
-                                                                    if (
-                                                                        !showInput
-                                                                    ) {
-                                                                        setShowInput(
-                                                                            true
-                                                                        )
-                                                                    }
+                                                                    if (!showInput) setShowInput(true)
                                                                 }}
                                                             >
                                                                 Добавить
@@ -300,7 +298,7 @@ function SettingsUserDialogues({
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
@@ -313,11 +311,8 @@ const mapStateToProps = ({ user, settingsUser, topics }) => {
 }
 
 const mapDispatchToProps = {
-    set_New_Settings_Dialogue,
-    fetch_User_Settings,
+    setNewSettingsDialogue,
+    fetchUserSettings,
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(SettingsUserDialogues)
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsUserDialogues)

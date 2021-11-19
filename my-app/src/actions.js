@@ -1,68 +1,68 @@
-export const FETCH_Authorization_REQUEST = (value) => ({
-    type: 'FETCH_Authorization_REQUEST',
+export const fetchAuthorization = (value) => ({
+    type: 'fetchAuthorization',
     value,
 })
-export const FETCH_AuthorizationViaGoogle_REQUEST = (value) => ({
-    type: 'FETCH_AuthorizationViaGoogle_REQUEST',
+export const fetchAuthorizationViaGoogle = (value) => ({
+    type: 'fetchAuthorizationViaGoogle',
     value,
 })
-export const FETCH_Registration_REQUEST = (value) => ({
-    type: 'FETCH_Registration_REQUEST',
+export const fetchRegistration = (value) => ({
+    type: 'fetchRegistration',
     value,
 })
-export const FETCH_MESSAGES_SUCCESS = (data) => ({
-    type: 'FETCH_MESSAGES_SUCCESS',
+export const fetchMessageSuccess = (data) => ({
+    type: 'fetchMessageSuccess',
     data,
 })
-export const FETCH_MESSAGES_FAILURE = (error) => ({
-    type: 'FETCH_MESSAGES_FAILURE',
+export const fetchMessageFailure = (error) => ({
+    type: 'fetchMessageFailure',
     error,
 })
-export const REMOVE_FAILURE = () => ({ type: 'REMOVE_FAILURE' })
-export const RESET_PASSWORD = (data) => ({ type: 'RESET_PASSWORD', data })
-export const SignOut_User = () => ({ type: 'SignOut_User' })
-export const user_Logged_Out = () => ({ type: 'user_Logged_Out' })
-export const fetch_Dialogues_From_Database = () => ({
-    type: 'fetch_Dialogues_From_Database',
+export const clearErrors = () => ({ type: 'clearErrors' })
+export const resetPassword = (data) => ({ type: 'resetPassword', data })
+export const singnOutUser = () => ({ type: 'singnOutUser' })
+export const userLoggedOut = () => ({ type: 'userLoggedOut' })
+export const fetchDialoguesFromDatabase = () => ({
+    type: 'fetchDialoguesFromDatabase',
 })
-export const Dialogues_From_Database = (data) => ({
-    type: 'Dialogues_From_Database',
+export const dialoguesFromDatabase = (data) => ({
+    type: 'dialoguesFromDatabase',
     data,
 })
-export const Set_Value_Search = (value) => ({ type: 'Set_Value_Search', value })
-export const push_Dialogue = (value) => ({ type: 'push_Dialogue', value })
-export const change_Value_Active_Cases = (value) => ({
-    type: 'change_Value_Active_Cases',
+export const setValueSearch = (value) => ({ type: 'setValueSearch', value })
+export const pushDialogue = (value) => ({ type: 'pushDialogue', value })
+export const changeValueActiveCases = (value) => ({
+    type: 'changeValueActiveCases',
     value,
 })
-export const Update_Dialogue_In_Database = (value, idDialogue) => ({
-    type: 'Update_Dialogue_In_Database',
-    value,
-    idDialogue,
-})
-export const push_NewMessage_In_Database = (value, idDialogue) => ({
-    type: 'push_NewMessage_In_Database',
+export const updateDialogueInDatabase = (value, idDialogue) => ({
+    type: 'updateDialogueInDatabase',
     value,
     idDialogue,
 })
-export const Update_Password = (value) => ({ type: 'Update_Password', value })
-export const fetch_Update_User_Name = (value) => ({
-    type: 'fetch_Update_User_Name',
+export const pushNewMessageInDatabase = (value, idDialogue) => ({
+    type: 'pushNewMessageInDatabase',
+    value,
+    idDialogue,
+})
+export const updatePassword = (value) => ({ type: 'updatePassword', value })
+export const updateUserName = (value) => ({
+    type: 'updateUserName',
     value,
 })
-export const Update_User_Name = (value) => ({
-    type: 'Update_User_Name',
+export const updatedUserName = (value) => ({
+    type: 'updatedUserName',
     value,
 })
-export const set_New_Settings_Dialogue = (value, userUID) => ({
-    type: 'set_New_Settings_Dialogue',
+export const setNewSettingsDialogue = (value, userUID) => ({
+    type: 'setNewSettingsDialogue',
     value,
     userUID,
 })
-export const fetch_User_Settings = (value) => ({
-    type: 'fetch_User_Settings',
+export const fetchUserSettings = (value) => ({
+    type: 'fetchUserSettings',
     value,
 })
-export const User_Settings = (value) => ({ type: 'User_Settings', value })
-export const get_Topics_From_DB = () => ({ type: 'get_Topics_From_DB' })
-export const set_Topics = (value) => ({ type: 'set_Topics', value })
+export const userSettings = (value) => ({ type: 'userSettings', value })
+export const getTopicsFromDB = () => ({ type: 'getTopicsFromDB' })
+export const setTopics = (value) => ({ type: 'setTopics', value })

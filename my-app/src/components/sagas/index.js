@@ -43,10 +43,10 @@ function* fetchUserAuthorization(action) {
             token: response.user._lat,
             uid: response.user.uid,
         }
-        yield put({ type: 'FETCH_MESSAGES_SUCCESS', data })
+        yield put({ type: 'fetchMessageSuccess', data })
     }
     if (error) {
-        yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
+        yield put({ type: 'fetchMessageFailure', error })
     }
 }
 
@@ -70,10 +70,10 @@ function* fetchUserAuthorizationViaGoogle(action) {
             token: response.user._lat,
             uid: response.user.uid,
         }
-        yield put({ type: 'FETCH_MESSAGES_SUCCESS', data })
+        yield put({ type: 'fetchMessageSuccess', data })
     }
     if (error) {
-        yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
+        yield put({ type: 'fetchMessageFailure', error })
     }
 }
 
@@ -104,7 +104,7 @@ function* fetchUserRegistration(action) {
             token: response.user._lat,
             uid: response.user.uid,
         }
-        yield put({ type: 'FETCH_MESSAGES_SUCCESS', data })
+        yield put({ type: 'fetchMessageSuccess', data })
         yield call(() =>
             setStandardPhrasesUser(data.uid, {
                 phrases: {
@@ -116,7 +116,7 @@ function* fetchUserRegistration(action) {
         )
     }
     if (error) {
-        yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
+        yield put({ type: 'fetchMessageFailure', error })
     }
 }
 
@@ -136,7 +136,7 @@ function* fetchResetPassword(action) {
         let error = {
             message: 'Что-то пошло не так... Попробуйте позже',
         }
-        yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
+        yield put({ type: 'fetchMessageFailure', error })
     }
 }
 
@@ -147,12 +147,12 @@ function user_Logged_Out() {
 function* userLoggedOut() {
     try {
         yield call(() => user_Logged_Out())
-        yield put({ type: 'user_Logged_Out' })
+        yield put({ type: 'userLoggedOut' })
     } catch {
         let error = {
             message: 'Что-то пошло не так... Попробуйте позже',
         }
-        yield put({ type: 'FETCH_MESSAGES_FAILURE', error })
+        yield put({ type: 'fetchMessageFailure', error })
     }
 }
 
@@ -169,14 +169,14 @@ function* dataFromDatabase() {
     const { snapshot, error } = yield call(() => fetchDataFromDatabase())
     if (snapshot) {
         const data = snapshot.val()
-        yield put({ type: 'Dialogues_From_Database', data })
+        yield put({ type: 'dialoguesFromDatabase', data })
     }
     if (error) {
         let err = {
             message: 'Что-то пошло не так... Попробуйте позже',
         }
         console.log(error)
-        yield put({ type: 'FETCH_MESSAGES_FAILURE', err })
+        yield put({ type: 'fetchMessageFailure', err })
     }
 }
 
@@ -259,7 +259,7 @@ function* UserSettings(action) {
 
     if (snapshot) {
         const data = snapshot.val()
-        yield put({ type: 'User_Settings', data })
+        yield put({ type: 'userSettings', data })
     }
 
     if (error) {
@@ -267,7 +267,7 @@ function* UserSettings(action) {
             message: 'Что-то пошло не так... Попробуйте позже',
         }
         console.log(error)
-        yield put({ type: 'FETCH_MESSAGES_FAILURE', err })
+        yield put({ type: 'fetchMessageFailure', err })
     }
 }
 
@@ -298,7 +298,7 @@ function* topicsFromDB() {
 
     if (snapshot) {
         const data = snapshot.val()
-        yield put({ type: 'set_Topics', data })
+        yield put({ type: 'setTopics', data })
     }
 
     if (error) {
@@ -306,84 +306,84 @@ function* topicsFromDB() {
             message: 'Что-то пошло не так... Попробуйте позже',
         }
         console.log(error)
-        yield put({ type: 'FETCH_MESSAGES_FAILURE', err })
+        yield put({ type: 'fetchMessageFailure', err })
     }
 }
 
-function* fetch_Topics() {
-    yield takeLatest('get_Topics_From_DB', topicsFromDB)
+function* fetchTopicsFromDB() {
+    yield takeLatest('getTopicsFromDB', topicsFromDB)
 }
 
-function* fetch_Settings() {
-    yield takeLatest('fetch_User_Settings', UserSettings)
+function* fetchSettingsFromDB() {
+    yield takeLatest('fetchUserSettings', UserSettings)
 }
 
-function* set_New_Settings() {
-    yield takeLatest('set_New_Settings_Dialogue', setNewSettingsUserDialogues)
+function* setNewSettingsInDB() {
+    yield takeLatest('setNewSettingsDialogue', setNewSettingsUserDialogues)
 }
 
-function* update_User_Name() {
-    yield takeLatest('fetch_Update_User_Name', updateUserName)
+function* updateUserNameInDB() {
+    yield takeLatest('updateUserName', updateUserName)
 }
 
-function* update_Password() {
-    yield takeLatest('Update_Password', updatePassword)
+function* updateUserPassword() {
+    yield takeLatest('updatePassword', updatePassword)
 }
 
 function* update_Dialogue() {
-    yield takeLatest('Update_Dialogue_In_Database', updateDialogueInDataBase)
+    yield takeLatest('updateDialogueInDatabase', updateDialogueInDataBase)
 }
 
 function* pushNewMessage() {
-    yield takeLatest('push_NewMessage_In_Database', pushNewMessageInDataBase)
+    yield takeLatest('pushNewMessageInDatabase', pushNewMessageInDataBase)
 }
 
-function* push_Dialogue() {
-    yield takeLatest('push_Dialogue', pushNewDialogueInDataBase)
+function* pushDialogueInDB() {
+    yield takeLatest('pushDialogue', pushNewDialogueInDataBase)
 }
 
-function* FETCH_Authorization() {
-    yield takeLatest('FETCH_Authorization_REQUEST', fetchUserAuthorization)
+function* fetchAuthorizationUser() {
+    yield takeLatest('fetchAuthorization', fetchUserAuthorization)
 }
 
-function* FETCH_AuthorizationViaGoogle() {
+function* fetchAuthorizationViaGoogleUser() {
     yield takeLatest(
-        'FETCH_AuthorizationViaGoogle_REQUEST',
+        'fetchAuthorizationViaGoogle',
         fetchUserAuthorizationViaGoogle
     )
 }
 
-function* FETCH_Registration() {
-    yield takeLatest('FETCH_Registration_REQUEST', fetchUserRegistration)
+function* fetchRegistrationUser() {
+    yield takeLatest('fetchRegistration', fetchUserRegistration)
 }
 
-function* FETCH_Reset_Password() {
-    yield takeLatest('RESET_PASSWORD', fetchResetPassword)
+function* fetchResetPasswordUser() {
+    yield takeLatest('resetPassword', fetchResetPassword)
 }
 
-function* Sign_Out_User() {
-    yield takeLatest('SignOut_User', userLoggedOut)
+function* signOutUser() {
+    yield takeLatest('singnOutUser', userLoggedOut)
 }
 
 function* fromDatabase() {
-    yield takeLatest('fetch_Dialogues_From_Database', dataFromDatabase)
+    yield takeLatest('fetchDialoguesFromDatabase', dataFromDatabase)
 }
 
 export default function* rootSaga() {
     yield all([
-        FETCH_Authorization(),
-        FETCH_Registration(),
-        FETCH_AuthorizationViaGoogle(),
-        FETCH_Reset_Password(),
-        Sign_Out_User(),
+        fetchAuthorizationUser(),
+        fetchRegistrationUser(),
+        fetchAuthorizationViaGoogleUser(),
+        fetchResetPasswordUser(),
+        signOutUser(),
         fromDatabase(),
-        push_Dialogue(),
+        pushDialogueInDB(),
         update_Dialogue(),
         pushNewMessage(),
-        update_Password(),
-        update_User_Name(),
-        set_New_Settings(),
-        fetch_Settings(),
-        fetch_Topics(),
+        updateUserPassword(),
+        updateUserNameInDB(),
+        setNewSettingsInDB(),
+        fetchSettingsFromDB(),
+        fetchTopicsFromDB(),
     ])
 }

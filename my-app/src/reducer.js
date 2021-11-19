@@ -11,80 +11,80 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'FETCH_Authorization_REQUEST':
+        case 'fetchAuthorization':
             return {
                 ...state,
                 loadingFromState: true,
             }
-        case 'FETCH_AuthorizationViaGoogle_REQUEST':
+        case 'fetchAuthorizationViaGoogle':
             return {
                 ...state,
                 loadingFromState: true,
             }
-        case 'FETCH_Registration_REQUEST':
+        case 'fetchRegistration':
             return {
                 ...state,
                 loadingFromState: true,
             }
-        case 'FETCH_MESSAGES_SUCCESS':
+        case 'fetchMessageSuccess':
             return {
                 ...state,
                 loadingFromState: false,
                 user: action.data,
             }
-        case 'FETCH_MESSAGES_FAILURE':
+        case 'fetchMessageFailure':
             return {
                 ...state,
                 loadingFromState: false,
                 errorFromState: action.error.message,
             }
-        case 'REMOVE_FAILURE':
+        case 'clearErrors':
             return {
                 ...state,
                 errorFromState: false,
             }
-        case 'RESET_PASSWORD':
+        case 'resetPassword':
             return {
                 ...state,
                 loadingFromState: true,
             }
-        case 'user_Logged_Out':
+        case 'userLoggedOut':
             return {
                 ...state,
                 user: null,
                 loadingFromState: false,
             }
-        case 'SignOut_User':
+        case 'singnOutUser':
             return {
                 ...state,
                 loadingFromState: true,
             }
-        case 'Dialogues_From_Database':
+        case 'dialoguesFromDatabase':
             return {
                 ...state,
                 dialogues: action.data,
             }
-        case 'Set_Value_Search':
+        case 'setValueSearch':
             return {
                 ...state,
                 valueSearch: action.value,
             }
-        case 'change_Value_Active_Cases':
+        case 'changeValueActiveCases':
             return {
                 ...state,
                 valueActiveCases: state.valueActiveCases + 5,
             }
-        case 'Update_User_Name':
+        case 'updatedUserName':
             return {
                 ...state,
                 user: action.value,
             }
-        case 'User_Settings':
+        case 'userSettings':
             return {
                 ...state,
                 settingsUser: action.data,
             }
-        case 'set_Topics':
+        case 'setTopics':
             return {
                 ...state,
                 topics: action.data,

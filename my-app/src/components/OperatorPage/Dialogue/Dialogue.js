@@ -1,33 +1,32 @@
 import React from 'react'
-import NavBar from '../NavBar/NavBar'
-import User from '../User/User'
-import {
-    fetch_Dialogues_From_Database,
-    Update_Dialogue_In_Database,
-    push_NewMessage_In_Database
-} from '../../../actions'
 import { connect } from 'react-redux'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ToastContainer } from 'react-toastify'
 import { Toast, ToastBody, ToastHeader, Button } from 'reactstrap'
 import moment from 'moment'
 import 'moment/locale/ru.js'
-import './Dialogue.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ToastContainer } from 'react-toastify'
+import {
+    fetchDialoguesFromDatabase,
+    updateDialogueInDatabase,
+    pushNewMessageInDatabase
+} from '../../../actions'
+import NavBar from '../NavBar/NavBar'
+import User from '../User/User'
 import { calculateDate } from '../OperatorPage'
 import OperatorAnswerAnswer from './OperatorAnswer'
 import PictureInMessage from './PictureInMessage'
+import './Dialogue.css'
 
 function Dialogue({
-    fetch_Dialogues_From_Database,
+    fetchDialoguesFromDatabase,
     dialogues,
     itemId,
-    Update_Dialogue_In_Database,
+    updateDialogueInDatabase,
     settingsUser,
-    push_NewMessage_In_Database
+    pushNewMessageInDatabase
 }) {
-    if (!dialogues) {
-        fetch_Dialogues_From_Database()
-    }
+    if (!dialogues) fetchDialoguesFromDatabase()
+
     let allResultFilter = []
 
     let nameClient
@@ -64,14 +63,9 @@ function Dialogue({
     }
 
     function checkIsFirstMessage() {
-        if (!allResultFilter) return
-        if (!settingsUser.automaticGreeting) return
+        if (!allResultFilter || !settingsUser.automaticGreeting) return
 
-        for (let i = 0; i < allResultFilter.length; i++) {
-            if (allResultFilter[i].isOperator) {
-                return
-            }
-        }
+        if (allResultFilter.some(elem => elem.isOperator)) return
 
         let time = new Date().getTime()
         let newMessage = {
@@ -80,8 +74,8 @@ function Dialogue({
                 isOperator: true,
             },
         }
-        push_NewMessage_In_Database(newMessage, itemId)
-        fetch_Dialogues_From_Database()
+        pushNewMessageInDatabase(newMessage, itemId)
+        fetchDialoguesFromDatabase()
     }
 
     if (dialogues) {
@@ -90,7 +84,7 @@ function Dialogue({
     }
 
     setInterval(() => {
-        fetch_Dialogues_From_Database()
+        fetchDialoguesFromDatabase()
     }, 30000)
 
     function analyzeContent(str) {
@@ -133,7 +127,6 @@ function Dialogue({
                 <div className="containerDialogue__resultFinishedDialogue_stars">
                     <CalcStars />
                 </div>
-
                 <p>
                     Диалог завершился &nbsp;
                     {moment(objResultDialogue.completionTime).fromNow()}
@@ -200,11 +193,11 @@ function Dialogue({
                                     color="danger"
                                     size="sm"
                                     onClick={() => {
-                                        Update_Dialogue_In_Database(
+                                        updateDialogueInDatabase(
                                             { isSave: false },
                                             itemId
                                         )
-                                        fetch_Dialogues_From_Database()
+                                        fetchDialoguesFromDatabase()
                                     }}
                                 >
                                     Удалить из сохранённых
@@ -215,11 +208,11 @@ function Dialogue({
                                     color="primary"
                                     size="sm"
                                     onClick={() => {
-                                        Update_Dialogue_In_Database(
+                                        updateDialogueInDatabase(
                                             { isSave: true },
                                             itemId
                                         )
-                                        fetch_Dialogues_From_Database()
+                                        fetchDialoguesFromDatabase()
                                     }}
                                 >
                                     Сохранить диалог
@@ -240,17 +233,12 @@ function Dialogue({
     )
 }
 
-const mapStateToProps = ({ dialogues, settingsUser }) => {
-    return {
-        dialogues,
-        settingsUser
-    }
-}
+const mapStateToProps = ({ dialogues, settingsUser }) => ({ dialogues, settingsUser })
 
 const mapDispatchToProps = {
-    fetch_Dialogues_From_Database,
-    Update_Dialogue_In_Database,
-    push_NewMessage_In_Database
+    fetchDialoguesFromDatabase,
+    updateDialogueInDatabase,
+    pushNewMessageInDatabase
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogue)

@@ -1,13 +1,13 @@
 import React from 'react'
-import './NavBar.css'
 import { Nav, NavItem } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
-import { Set_Value_Search } from '../../../actions'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { setValueSearch } from '../../../actions'
+import './NavBar.css'
 
-function NavBar({ Set_Value_Search }) {
+function NavBar({ setValueSearch }) {
     const history = useHistory()
 
     let isActivePage = false
@@ -37,7 +37,7 @@ function NavBar({ Set_Value_Search }) {
             <Nav className="listBar" navbar>
                 <NavItem
                     className={isActivePage ? 'navItem activeItem' : 'navItem'}
-                    onClick={() => Set_Value_Search(null)}
+                    onClick={() => setValueSearch(null)}
                 >
                     <Link to="/OperatorPage/Active" className="navItem__link">
                         <FontAwesomeIcon
@@ -50,7 +50,7 @@ function NavBar({ Set_Value_Search }) {
                 </NavItem>
                 <NavItem
                     className={isInWorkPage ? 'navItem activeItem' : 'navItem'}
-                    onClick={() => Set_Value_Search(null)}
+                    onClick={() => setValueSearch(null)}
                 >
                     <Link to="/OperatorPage/inWork" className="navItem__link">
                         <FontAwesomeIcon
@@ -65,7 +65,7 @@ function NavBar({ Set_Value_Search }) {
                     className={
                         isFinishedPage ? 'navItem activeItem' : 'navItem'
                     }
-                    onClick={() => Set_Value_Search(null)}
+                    onClick={() => setValueSearch(null)}
                 >
                     <Link to="/OperatorPage/Finished" className="navItem__link">
                         <FontAwesomeIcon
@@ -78,7 +78,7 @@ function NavBar({ Set_Value_Search }) {
                 </NavItem>
                 <NavItem
                     className={isSavedPage ? 'navItem activeItem' : 'navItem'}
-                    onClick={() => Set_Value_Search(null)}
+                    onClick={() => setValueSearch(null)}
                 >
                     <Link to="/OperatorPage/Saved" className="navItem__link">
                         <FontAwesomeIcon
@@ -94,8 +94,6 @@ function NavBar({ Set_Value_Search }) {
     )
 }
 
-const mapDispatchToProps = {
-    Set_Value_Search,
-}
+const mapDispatchToProps = { setValueSearch }
 
 export default connect(null, mapDispatchToProps)(NavBar)

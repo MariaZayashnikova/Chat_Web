@@ -1,32 +1,32 @@
 import React from 'react'
-import './SearchBar.css'
 import { Input, Label } from 'reactstrap'
 import debounce from 'lodash.debounce'
-import {
-    fetch_Dialogues_From_Database,
-    Set_Value_Search,
-    Update_Dialogue_In_Database,
-} from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem } from 'reactstrap'
 import { useHistory } from 'react-router-dom'
+import {
+    fetchDialoguesFromDatabase,
+    setValueSearch,
+    updateDialogueInDatabase,
+} from '../../../actions'
+import './SearchBar.css'
 
 function SearchBar({
-    fetch_Dialogues_From_Database,
+    fetchDialoguesFromDatabase,
     dialogues,
     valueSearch,
-    Set_Value_Search,
+    setValueSearch,
     status,
     isSave,
-    Update_Dialogue_In_Database,
+    updateDialogueInDatabase,
     user,
 }) {
     let resultSearch = []
 
     function searchStart(e) {
-        fetch_Dialogues_From_Database()
+        fetchDialoguesFromDatabase()
         resultSearch = []
-        Set_Value_Search(e.target.value.toLowerCase())
+        setValueSearch(e.target.value.toLowerCase())
     }
 
     function search() {
@@ -99,9 +99,7 @@ function SearchBar({
         }
     }
 
-    if (dialogues && valueSearch) {
-        search()
-    }
+    if (dialogues && valueSearch) search()
 
     const ViewResultSearch = ({ arrResult }) => {
         const history = useHistory()
@@ -111,12 +109,12 @@ function SearchBar({
                     key={elem.idDialogue}
                     className="resultSearch__item"
                     onClick={() => {
-                        Set_Value_Search(null)
+                        setValueSearch(null)
                         history.push(
                             `/OperatorPage/Dialogue/${elem.idDialogue}`
                         )
                         if (status === 'active') {
-                            Update_Dialogue_In_Database(
+                            updateDialogueInDatabase(
                                 {
                                     status: 'inWork',
                                     operatorUID: user.uid,
@@ -179,9 +177,9 @@ const mapStateToProps = ({ dialogues, valueSearch, user }) => {
 }
 
 const mapDispatchToProps = {
-    fetch_Dialogues_From_Database,
-    Set_Value_Search,
-    Update_Dialogue_In_Database,
+    fetchDialoguesFromDatabase,
+    setValueSearch,
+    updateDialogueInDatabase,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar)
