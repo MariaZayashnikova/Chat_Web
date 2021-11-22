@@ -1,38 +1,36 @@
 import React from 'react'
-import NavBar from '../NavBar/NavBar'
-import User from '../User/User'
-import SearchBar from '../SearchBar/SearchBar'
-import {
-    change_Value_Active_Cases,
-    fetch_Dialogues_From_Database,
-    Update_Dialogue_In_Database,
-} from '../../../actions'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import './ActiveCases.css'
-import '../OperatorPage.css'
+import { useHistory } from 'react-router-dom'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import {
+    changeValueActiveCases,
+    fetchDialoguesFromDatabase,
+    updateDialogueInDatabase,
+} from '../../../actions'
+import NavBar from '../NavBar/NavBar'
+import User from '../User/User'
+import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../Spinner/Spinner'
-import { useHistory } from 'react-router-dom'
 import { calculateDate, createDisplayedFilterResults } from '../OperatorPage'
+import './ActiveCases.css'
+import '../OperatorPage.css'
 
 function ActiveCases({
-    fetch_Dialogues_From_Database,
+    fetchDialoguesFromDatabase,
     dialogues,
-    change_Value_Active_Cases,
+    changeValueActiveCases,
     valueActiveCases,
     errorFromState,
-    Update_Dialogue_In_Database,
+    updateDialogueInDatabase,
     user,
 }) {
-    if (!dialogues) {
-        fetch_Dialogues_From_Database()
-    }
+    if (!dialogues) fetchDialoguesFromDatabase()
 
     let timerId = setInterval(() => {
-        fetch_Dialogues_From_Database()
+        fetchDialoguesFromDatabase()
     }, 30000)
 
     let allResultFilter = []
@@ -73,13 +71,11 @@ function ActiveCases({
 
     function loadFunc() {
         setTimeout(() => {
-            change_Value_Active_Cases()
+            changeValueActiveCases()
         }, 1500)
     }
 
-    if (displayedFilterResults.length === allResultFilter.length) {
-        hasMoreActiveCases = false
-    }
+    if (displayedFilterResults.length === allResultFilter.length) hasMoreActiveCases = false
 
     const ViewResult = ({ arrResult }) => {
         const history = useHistory()
@@ -124,7 +120,7 @@ function ActiveCases({
                                     history.push(
                                         `/OperatorPage/Dialogue/${elem.idDialogue}`
                                     )
-                                    Update_Dialogue_In_Database(
+                                    updateDialogueInDatabase(
                                         {
                                             status: 'inWork',
                                             operatorUID: user.uid,
@@ -199,9 +195,9 @@ const mapStateToProps = ({
 }
 
 const mapDispatchToProps = {
-    fetch_Dialogues_From_Database,
-    change_Value_Active_Cases,
-    Update_Dialogue_In_Database,
+    fetchDialoguesFromDatabase,
+    changeValueActiveCases,
+    updateDialogueInDatabase,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActiveCases)

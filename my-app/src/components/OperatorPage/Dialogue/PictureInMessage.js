@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody } from 'reactstrap'
-import './Dialogue.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import './Dialogue.css'
 
 function PictureInMessage({ srcImg }) {
     const [modal, setModal] = useState(false)

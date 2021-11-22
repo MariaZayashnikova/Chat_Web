@@ -1,8 +1,8 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComments } from '@fortawesome/free-solid-svg-icons'
-import './HeaderTitle.css'
 import { Link } from 'react-router-dom'
+import './HeaderTitle.css'
 
 function HeaderTitle() {
     return (

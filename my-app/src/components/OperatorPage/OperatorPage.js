@@ -1,10 +1,10 @@
 import React from 'react'
-import './OperatorPage.css'
+import { connect } from 'react-redux'
+import moment from 'moment'
+import { fetchUserSettings, getTopicsFromDB } from '../../actions'
 import NavBar from './NavBar/NavBar'
 import User from './User/User'
-import moment from 'moment'
-import { fetch_User_Settings, get_Topics_From_DB } from '../../actions'
-import { connect } from 'react-redux'
+import './OperatorPage.css'
 
 function createDisplayedFilterResults(
     allResultFilter,
@@ -50,12 +50,12 @@ export { calculateDate }
 function OperatorPage({
     user,
     settingsUser,
-    fetch_User_Settings,
-    get_Topics_From_DB,
+    fetchUserSettings,
+    getTopicsFromDB,
 }) {
     if (!settingsUser) {
-        fetch_User_Settings(user.uid)
-        get_Topics_From_DB()
+        fetchUserSettings(user.uid)
+        getTopicsFromDB()
     }
 
     if (settingsUser) {
@@ -78,16 +78,11 @@ function OperatorPage({
     )
 }
 
-const mapStateToProps = ({ user, settingsUser }) => {
-    return {
-        user,
-        settingsUser,
-    }
-}
+const mapStateToProps = ({ user, settingsUser }) => ({ user, settingsUser })
 
 const mapDispatchToProps = {
-    fetch_User_Settings,
-    get_Topics_From_DB,
+    fetchUserSettings,
+    getTopicsFromDB,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OperatorPage)

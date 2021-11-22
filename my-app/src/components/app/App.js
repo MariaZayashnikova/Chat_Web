@@ -1,26 +1,26 @@
-import './App.css'
-import AuthorizationPage from '../AuthorizationPage/AuthorizationPage'
-import HeaderTitle from '../HeaderTitle/HeaderTitle'
+import React from 'react'
 import {
     BrowserRouter as Router,
     Redirect,
     Route,
     Switch,
 } from 'react-router-dom'
-import RegistrationPage from '../RegistrationPage/RegistrationPage'
-import OperatorPage from '../OperatorPage/OperatorPage'
-import ResetPasswordPage from '../ResetPasswordPage/ResetPasswordPage'
-import React from 'react'
+import { connect } from 'react-redux'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
+import AuthorizationPage from '../AuthorizationPage/AuthorizationPage'
+import HeaderTitle from '../HeaderTitle/HeaderTitle'
+import RegistrationPage from '../RegistrationPage/RegistrationPage'
+import OperatorPage from '../OperatorPage/OperatorPage'
+import ResetPasswordPage from '../ResetPasswordPage/ResetPasswordPage'
 import ErrorRoute from '../ErrorRoute/ErrorRoute'
-import { connect } from 'react-redux'
 import ActiveCases from '../OperatorPage/AtiveCases/ActiveCases'
 import Dialogue from '../OperatorPage/Dialogue/Dialogue'
 import InWorkCases from '../OperatorPage/InWorkCases/InWorkCases'
 import SavedCases from '../OperatorPage/SavedCases/SavesCases'
 import FinishedCases from '../OperatorPage/FinishedCases/FinishedCases'
+import './App.css'
 
 library.add(fab, fas)
 
@@ -96,10 +96,6 @@ function App({ user }) {
     )
 }
 
-const mapStateToProps = ({ user }) => {
-    return {
-        user,
-    }
-}
+const mapStateToProps = ({ user }) => ({ user })
 
 export default connect(mapStateToProps)(App)

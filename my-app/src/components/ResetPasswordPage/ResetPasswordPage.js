@@ -2,13 +2,13 @@ import React from 'react'
 import { Button, FormFeedback, FormGroup, Input, Label } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { useFormik } from 'formik'
-import { validate } from '../AuthorizationPage/AuthorizationPage'
-import { RESET_PASSWORD, REMOVE_FAILURE } from '../../actions'
 import { connect } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
+import { resetPassword, clearErrors } from '../../actions'
+import { validate } from '../AuthorizationPage/AuthorizationPage'
 import 'react-toastify/dist/ReactToastify.css'
 
-function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
+function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -18,11 +18,9 @@ function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
     })
 
     function submitResetForm(email) {
-        if (errorFromState) {
-            REMOVE_FAILURE()
-        }
+        if (errorFromState) clearErrors()
 
-        RESET_PASSWORD(email)
+        resetPassword(email)
     }
 
     return (
@@ -47,8 +45,8 @@ function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
                         type="text"
                         invalid={
                             formik.touched.email &&
-                            formik.errors.email &&
-                            formik.errors.email.length > 0
+                                formik.errors.email &&
+                                formik.errors.email.length > 0
                                 ? true
                                 : false
                         }
@@ -64,9 +62,7 @@ function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
                     className="pageLogin__containerForm_btn"
                     color="primary"
                     type="submit"
-                    onClick={() => {
-                        submitResetForm(formik.values.email)
-                    }}
+                    onClick={() => submitResetForm(formik.values.email)}
                 >
                     Отправить ссылку для восстановления пароля
                 </Button>
@@ -81,9 +77,7 @@ function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
                         to="/"
                         className="containerLinks__link_custom"
                         onClick={() => {
-                            if (errorFromState) {
-                                REMOVE_FAILURE()
-                            }
+                            if (errorFromState) clearErrors()
                         }}
                     >
                         Войти
@@ -92,9 +86,7 @@ function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
                         to="/Registration"
                         className="containerLinks__link_custom"
                         onClick={() => {
-                            if (errorFromState) {
-                                REMOVE_FAILURE()
-                            }
+                            if (errorFromState) clearErrors()
                         }}
                     >
                         Регистрация
@@ -105,15 +97,8 @@ function ResetPasswordPage({ errorFromState, RESET_PASSWORD, REMOVE_FAILURE }) {
     )
 }
 
-const mapStateToProps = ({ errorFromState }) => {
-    return {
-        errorFromState,
-    }
-}
+const mapStateToProps = ({ errorFromState }) => ({ errorFromState })
 
-const mapDispatchToProps = {
-    RESET_PASSWORD,
-    REMOVE_FAILURE,
-}
+const mapDispatchToProps = { resetPassword, clearErrors }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordPage)

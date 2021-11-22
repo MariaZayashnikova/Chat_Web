@@ -1,13 +1,13 @@
 import React from 'react'
-import { push_Dialogue, SignOut_User } from '../../../actions'
 import { connect } from 'react-redux'
-import './User.css'
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { pushDialogue, singnOutUser } from '../../../actions'
 import Spinner from '../../Spinner/Spinner'
 import SettingsUser from './SettingsUser/SettingsUser'
+import './User.css'
 
-function User({ user, SignOut_User, push_Dialogue, loadingFromState }) {
+function User({ user, singnOutUser, pushDialogue, loadingFromState }) {
     function addDialogueCustom() {
         let name = prompt('Ваше имя')
         let content = prompt('Тест обращения')
@@ -25,7 +25,7 @@ function User({ user, SignOut_User, push_Dialogue, loadingFromState }) {
                 },
             },
         }
-        push_Dialogue(obj)
+        pushDialogue(obj)
     }
 
     return (
@@ -47,7 +47,7 @@ function User({ user, SignOut_User, push_Dialogue, loadingFromState }) {
                 className="btnCustom"
                 outline
                 color="primary"
-                onClick={() => SignOut_User()}
+                onClick={() => singnOutUser()}
             >
                 Выйти
             </Button>
@@ -55,16 +55,8 @@ function User({ user, SignOut_User, push_Dialogue, loadingFromState }) {
     )
 }
 
-const mapStateToProps = ({ user, loadingFromState }) => {
-    return {
-        loadingFromState,
-        user,
-    }
-}
+const mapStateToProps = ({ user, loadingFromState }) => ({ loadingFromState, user })
 
-const mapDispatchToProps = {
-    SignOut_User,
-    push_Dialogue,
-}
+const mapDispatchToProps = { singnOutUser, pushDialogue }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)
