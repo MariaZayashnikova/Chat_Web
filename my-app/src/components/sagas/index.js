@@ -271,11 +271,11 @@ function* UserSettings(action) {
     }
 }
 
-function setNewSettingsUserDialogues(action) {
+function updateSettingsUser(action) {
     firebase
         .database()
         .ref('ready-madeOperatorPhrases/' + action.userUID)
-        .set(action.value)
+        .update(action.value)
         .then(() => {
             notifySuccess('Данные успешно обновлены!')
         })
@@ -318,8 +318,8 @@ function* fetchSettingsFromDB() {
     yield takeLatest('fetchUserSettings', UserSettings)
 }
 
-function* setNewSettingsInDB() {
-    yield takeLatest('setNewSettingsDialogue', setNewSettingsUserDialogues)
+function* updateSettingsInDB() {
+    yield takeLatest('updateSettingsDialogue', updateSettingsUser)
 }
 
 function* updateUserNameInDB() {
@@ -382,7 +382,7 @@ export default function* rootSaga() {
         pushNewMessage(),
         updateUserPassword(),
         updateUserNameInDB(),
-        setNewSettingsInDB(),
+        updateSettingsInDB(),
         fetchSettingsFromDB(),
         fetchTopicsFromDB(),
     ])

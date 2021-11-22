@@ -54,8 +54,8 @@ export const updatedUserName = (value) => ({
     type: 'updatedUserName',
     value,
 })
-export const setNewSettingsDialogue = (value, userUID) => ({
-    type: 'setNewSettingsDialogue',
+export const updateSettingsDialogue = (value, userUID) => ({
+    type: 'updateSettingsDialogue',
     value,
     userUID,
 })
