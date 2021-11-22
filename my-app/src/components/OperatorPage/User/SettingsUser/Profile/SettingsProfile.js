@@ -1,26 +1,26 @@
 import React from 'react'
-import {
-    FETCH_MESSAGES_FAILURE,
-    REMOVE_FAILURE,
-    Update_Password,
-    fetch_Update_User_Name,
-    Update_User_Name,
-} from '../../../../../actions'
 import { connect } from 'react-redux'
-import './SettingsProfile.css'
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Form, Field } from 'react-final-form'
 import { ToastContainer } from 'react-toastify'
+import {
+    fetchMessageFailure,
+    clearErrors,
+    updatePassword,
+    updateUserName,
+    updatedUserName,
+} from '../../../../../actions'
+import './SettingsProfile.css'
 
 function SettingsProfile({
-    FETCH_MESSAGES_FAILURE,
+    fetchMessageFailure,
     errorFromState,
-    REMOVE_FAILURE,
-    Update_Password,
+    clearErrors,
+    updatePassword,
     user,
-    fetch_Update_User_Name,
-    Update_User_Name,
+    updateUserName,
+    updatedUserName,
     closeModal,
 }) {
     function onSubmit(values) {
@@ -35,31 +35,29 @@ function SettingsProfile({
                         message:
                             'Пароль должен содержать цифру, буквы в нижнем и верхнем регистре и иметь длину не менее 8 знаков',
                     }
-                    FETCH_MESSAGES_FAILURE(error)
+                    fetchMessageFailure(error)
                 } else {
-                    if (errorFromState) {
-                        REMOVE_FAILURE()
-                    }
-                    Update_Password(values.password)
+                    if (errorFromState) clearErrors()
+                    updatePassword(values.password)
                     setTimeout(closeModal, 5000)
                 }
             } else {
                 const error = {
                     message: 'Пароли не совпадают',
                 }
-                FETCH_MESSAGES_FAILURE(error)
+                fetchMessageFailure(error)
             }
         }
 
         if (user.name !== values.name) {
-            fetch_Update_User_Name(values.name)
+            updateUserName(values.name)
             let newUser = {
                 name: values.name,
                 email: user.email,
                 token: user._lat,
                 uid: user.uid,
             }
-            Update_User_Name(newUser)
+            updatedUserName(newUser)
             setTimeout(closeModal, 5000)
         }
     }
@@ -148,19 +146,14 @@ function SettingsProfile({
     )
 }
 
-const mapStateToProps = ({ errorFromState, user }) => {
-    return {
-        errorFromState,
-        user,
-    }
-}
+const mapStateToProps = ({ errorFromState, user }) => ({ errorFromState, user })
 
 const mapDispatchToProps = {
-    REMOVE_FAILURE,
-    FETCH_MESSAGES_FAILURE,
-    Update_Password,
-    fetch_Update_User_Name,
-    Update_User_Name,
+    clearErrors,
+    fetchMessageFailure,
+    updatePassword,
+    updateUserName,
+    updatedUserName,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsProfile)

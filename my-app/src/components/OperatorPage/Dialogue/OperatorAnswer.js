@@ -1,8 +1,4 @@
 import React, { useState } from 'react'
-import {
-    fetch_Dialogues_From_Database,
-    push_NewMessage_In_Database,
-} from '../../../actions'
 import { connect } from 'react-redux'
 import {
     Button,
@@ -16,17 +12,22 @@ import {
     Form,
 } from 'reactstrap'
 import 'moment/locale/ru.js'
-import './Dialogue.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Picker from 'emoji-picker-react'
 import debounce from 'lodash.debounce'
 import { usePubNub } from 'pubnub-react'
+import {
+    fetchDialoguesFromDatabase,
+    pushNewMessageInDatabase,
+} from '../../../actions'
 import Message from './MessageInfo'
+import './Dialogue.css'
 
 function OperatorAnswer({
     itemId,
-    push_NewMessage_In_Database,
-    fetch_Dialogues_From_Database,
+    pushNewMessageInDatabase,
+    fetchDialoguesFromDatabase,
+    settingsUser
 }) {
     function submitNewMessage() {
         if (!inputValue) return
@@ -37,8 +38,8 @@ function OperatorAnswer({
                 isOperator: true,
             },
         }
-        push_NewMessage_In_Database(newMessage, itemId)
-        fetch_Dialogues_From_Database()
+        pushNewMessageInDatabase(newMessage, itemId)
+        fetchDialoguesFromDatabase()
     }
 
     const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -85,9 +86,7 @@ function OperatorAnswer({
                             <Input
                                 id="answer"
                                 name="answer"
-                                onChange={(e) => {
-                                    setInputValue(e.target.value)
-                                }}
+                                onChange={(e) => setInputValue(e.target.value)}
                                 value={inputValue}
                                 onKeyUp={debounce(onTypingEnd, 3000)}
                                 onInput={() => onTypingStart('operator')}
@@ -129,9 +128,7 @@ function OperatorAnswer({
                             Варианты
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem>Foo Action</DropdownItem>
-                            <DropdownItem>Bar Action</DropdownItem>
-                            <DropdownItem>Quo Action</DropdownItem>
+                            {settingsUser.phrases.map((elem, index) => <DropdownItem key={index}>{elem}</DropdownItem>)}
                         </DropdownMenu>
                     </Dropdown>
                 </div>
@@ -140,9 +137,11 @@ function OperatorAnswer({
     )
 }
 
+const mapStateToProps = ({ settingsUser }) => ({ settingsUser })
+
 const mapDispatchToProps = {
-    push_NewMessage_In_Database,
-    fetch_Dialogues_From_Database,
+    pushNewMessageInDatabase,
+    fetchDialoguesFromDatabase,
 }
 
-export default connect(null, mapDispatchToProps)(OperatorAnswer)
+export default connect(mapStateToProps, mapDispatchToProps)(OperatorAnswer)

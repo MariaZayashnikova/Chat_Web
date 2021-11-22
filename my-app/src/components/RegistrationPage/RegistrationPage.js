@@ -1,22 +1,22 @@
 import React from 'react'
 import { Form, FormGroup, Input, FormFeedback, Label, Button } from 'reactstrap'
 import { useFormik } from 'formik'
-import { validate } from '../AuthorizationPage/AuthorizationPage'
 import { Link } from 'react-router-dom'
-import {
-    FETCH_MESSAGES_FAILURE,
-    FETCH_Registration_REQUEST,
-    REMOVE_FAILURE,
-} from '../../actions'
 import { connect } from 'react-redux'
+import {
+    fetchMessageFailure,
+    fetchRegistration,
+    clearErrors,
+} from '../../actions'
+import { validate } from '../AuthorizationPage/AuthorizationPage'
 import Spinner from '../Spinner/Spinner'
 
 function RegistrationPage({
     loadingFromState,
     errorFromState,
-    FETCH_Registration_REQUEST,
-    FETCH_MESSAGES_FAILURE,
-    REMOVE_FAILURE,
+    fetchRegistration,
+    fetchMessageFailure,
+    clearErrors,
 }) {
     const formik = useFormik({
         initialValues: {
@@ -27,15 +27,14 @@ function RegistrationPage({
         validate,
         onSubmit: (values) => {
             if (values.password === values.passwordConfirmation) {
-                if (errorFromState) {
-                    REMOVE_FAILURE()
-                }
-                FETCH_Registration_REQUEST(values)
+                if (errorFromState) clearErrors()
+
+                fetchRegistration(values)
             } else {
                 const error = {
                     message: 'Пароли не совпадают',
                 }
-                FETCH_MESSAGES_FAILURE(error)
+                fetchMessageFailure(error)
             }
         },
     })
@@ -63,8 +62,8 @@ function RegistrationPage({
                             type="text"
                             invalid={
                                 formik.touched.email &&
-                                formik.errors.email &&
-                                formik.errors.email.length > 0
+                                    formik.errors.email &&
+                                    formik.errors.email.length > 0
                                     ? true
                                     : false
                             }
@@ -86,7 +85,7 @@ function RegistrationPage({
                         <Input
                             className={
                                 formik.touched.password &&
-                                formik.errors.password
+                                    formik.errors.password
                                     ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
                                     : 'pageLogin__containerForm_input'
                             }
@@ -95,8 +94,8 @@ function RegistrationPage({
                             name="password"
                             invalid={
                                 formik.touched.password &&
-                                formik.errors.password &&
-                                formik.errors.password.length > 0
+                                    formik.errors.password &&
+                                    formik.errors.password.length > 0
                                     ? true
                                     : false
                             }
@@ -118,7 +117,7 @@ function RegistrationPage({
                         <Input
                             className={
                                 formik.touched.passwordConfirmation &&
-                                formik.errors.password
+                                    formik.errors.password
                                     ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
                                     : 'pageLogin__containerForm_input'
                             }
@@ -149,9 +148,7 @@ function RegistrationPage({
                         to="/"
                         className="containerLinks__link_custom"
                         onClick={() => {
-                            if (errorFromState) {
-                                REMOVE_FAILURE()
-                            }
+                            if (errorFromState) clearErrors()
                         }}
                     >
                         Войти
@@ -160,9 +157,7 @@ function RegistrationPage({
                         to="/ResetPassword"
                         className="containerLinks__link_custom"
                         onClick={() => {
-                            if (errorFromState) {
-                                REMOVE_FAILURE()
-                            }
+                            if (errorFromState) clearErrors()
                         }}
                     >
                         Забыли пароль?
@@ -173,17 +168,12 @@ function RegistrationPage({
     )
 }
 
-const mapStateToProps = ({ loadingFromState, errorFromState }) => {
-    return {
-        loadingFromState,
-        errorFromState,
-    }
-}
+const mapStateToProps = ({ loadingFromState, errorFromState }) => ({ loadingFromState, errorFromState })
 
 const mapDispatchToProps = {
-    FETCH_Registration_REQUEST,
-    FETCH_MESSAGES_FAILURE,
-    REMOVE_FAILURE,
+    fetchRegistration,
+    fetchMessageFailure,
+    clearErrors,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistrationPage)
