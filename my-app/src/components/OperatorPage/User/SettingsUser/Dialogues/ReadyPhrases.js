@@ -18,6 +18,12 @@ function ReadyPhrases({ phrases, submit }) {
         return obj
     }
 
+    function handleClickBtnDelete(arrayHelpers, index, phraseId, values) {
+        arrayHelpers.remove(index)
+        let phrases = values.phrases.filter(item => item.id !== phraseId)
+        submit({ phrases })
+    }
+
     return (
         <>
             {phrases ? (
@@ -37,40 +43,31 @@ function ReadyPhrases({ phrases, submit }) {
                                 name="phrases"
                                 render={(arrayHelpers) => (
                                     < div >
-                                        {
-                                            values.phrases &&
-                                                values.phrases.length > 0
-                                                ? values.phrases.map(
-                                                    (phrase, index) => (
-                                                        <div
-                                                            key={phrase.id}
-                                                            className="settingsDialogue__readyPhrases_phrase"
-                                                        >
-                                                            <Field
-                                                                as="div"
-                                                                name={`phrase.${phrase.id}`}
-                                                            >
-                                                                {phrase.content}
-                                                            </Field>
-                                                            <Button
-                                                                type="button"
-                                                                color="danger"
-                                                                outline
-                                                                size="sm"
-                                                                className="settingsDialogue__readyPhrases_phraseBtn max-height"
-                                                                onClick={() => {
-                                                                    arrayHelpers.remove(index)
-                                                                    let res = values.phrases.filter(item => item.id !== phrase.id)
-                                                                    let obj = { phrases: res }
-                                                                    submit(obj)
-                                                                }}
-                                                            >
-                                                                -
-                                                            </Button>
-                                                        </div>
-                                                    )
-                                                )
-                                                : null
+                                        {!!values?.phrases?.length && values.phrases.map(
+                                            (phrase, index) => (
+                                                <div
+                                                    key={phrase.id}
+                                                    className="settingsDialogue__readyPhrases_phrase"
+                                                >
+                                                    <Field
+                                                        as="div"
+                                                        name={`phrase.${phrase.id}`}
+                                                    >
+                                                        {phrase.content}
+                                                    </Field>
+                                                    <Button
+                                                        type="button"
+                                                        color="danger"
+                                                        outline
+                                                        size="sm"
+                                                        className="settingsDialogue__readyPhrases_phraseBtn max-height"
+                                                        onClick={() => handleClickBtnDelete(arrayHelpers, index, phrase.id, values)}
+                                                    >
+                                                        -
+                                                    </Button>
+                                                </div>
+                                            )
+                                        )
                                         }
                                         < div className="settingsDialogue__readyPhrases_containerAdd">
                                             {showInput ? (
