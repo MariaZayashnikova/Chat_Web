@@ -10,6 +10,9 @@ import {
     FormGroup,
     Label,
     Form,
+    Popover,
+    PopoverHeader,
+    PopoverBody
 } from 'reactstrap'
 import 'moment/locale/ru.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -29,6 +32,35 @@ function OperatorAnswer({
     fetchDialoguesFromDatabase,
     settingsUser
 }) {
+    const [dropdownOpen, setDropdownOpen] = useState(false)
+    let toggleDropdown = () => setDropdownOpen((dropdownOpen) => !dropdownOpen)
+
+    const [showEmoji, setShowEmoji] = useState(false)
+    const [inputValue, setInputValue] = useState('')
+    const onEmojiClick = (event, emojiObject) => {
+        setInputValue(inputValue + emojiObject.emoji)
+    }
+    const setValue = (data) => setInputValue(data)
+
+    const pubnub = usePubNub()
+    let [channels] = useState([`${itemId}`])
+
+    const onTypingStart = (presenceEvent) => {
+        let message = presenceEvent
+        pubnub.publish({ channel: channels, message })
+    }
+
+    const onTypingEnd = () => {
+        let message = 'operator onTypingEnd'
+        pubnub.publish({ channel: channels, message })
+    }
+
+    let valueForAutocomplete = ''
+    const [arrResAutocomplete, setArrResAutocomplete] = useState([])
+    const pushArrResAC = (arr) => setArrResAutocomplete(arr)
+
+    const [showTooltip, isShowTooltip] = useState(false)
+
     function submitNewMessage() {
         if (!inputValue) return
         let time = new Date().getTime()
@@ -42,41 +74,67 @@ function OperatorAnswer({
         fetchDialoguesFromDatabase()
     }
 
-    const [dropdownOpen, setDropdownOpen] = useState(false)
+    const addPhrase = (phrase) => setValue(inputValue + ' ' + phrase)
 
-    let toggleDropdown = () => setDropdownOpen((dropdownOpen) => !dropdownOpen)
-
-    const onEmojiClick = (event, emojiObject) => {
-        setInputValue(inputValue + emojiObject.emoji)
+    function addPhraseInTooltip(phraseId, arrResult) {
+        settingsUser.phrases.forEach(elem => {
+            if (elem.id === phraseId) arrResult.push(elem)
+        })
     }
 
-    const [showEmoji, setShowEmoji] = useState(false)
+    const selectPhrase = (phrase) => setValue(phrase)
 
-    const [inputValue, setInputValue] = useState('')
+    function autocomplete() {
+        let str = valueForAutocomplete
+        let phrases = settingsUser.phrases
+        let arrResult = []
 
-    const pubnub = usePubNub()
+        phrases = phrases.map(elem => {
+            return {
+                content: elem.content.toLowerCase().replace(/[^a-zа-яё0-9\s]/gm, ''),
+                id: elem.id
+            }
+        })
 
-    let [channels] = useState([`${itemId}`])
+        str = str.toLowerCase().replace(/[^a-zа-яё0-9\s]/gm, '')
 
-    const onTypingStart = (presenceEvent) => {
-        let message = presenceEvent
-        pubnub.publish({ channel: channels, message })
+        if (str.length > 0) {
+            phrases.forEach(phrase => {
+                if (phrase.content.includes(str) && phrase.content.length !== str.length) addPhraseInTooltip(phrase.id, arrResult)
+            })
+        }
+
+        pushArrResAC(arrResult)
     }
 
-    const onTypingEnd = () => {
-        let message = 'operator onTypingEnd'
-        pubnub.publish({ channel: channels, message })
+    if (arrResAutocomplete.length > 0 && !showTooltip) isShowTooltip(true)
+    if (arrResAutocomplete.length === 0 && showTooltip) isShowTooltip(false)
+
+    const View = () => {
+        return (
+            <>
+                <Popover placement="top-start" isOpen={showTooltip} target="myTooltip" toggle={isShowTooltip}>
+                    <PopoverHeader>Готовые фразы:</PopoverHeader>
+                    {arrResAutocomplete.map(elem => <PopoverBody className="containerDialogue-tooltips" onClick={() => {
+                        selectPhrase(elem.content)
+                        pushArrResAC([])
+                    }} key={elem.id}>{elem.content}</PopoverBody>)}
+                </Popover>
+            </>
+        )
     }
 
     return (
         <div>
             <Message itemId={itemId} />
+            <div id="myTooltip"></div>
+            <View />
             <div className="containerDialogue__Answers">
                 <Form
                     onSubmit={(e) => {
                         e.preventDefault()
                         submitNewMessage()
-                        setInputValue('')
+                        setValue('')
                     }}
                     className="containerDialogue__Answer"
                 >
@@ -86,10 +144,14 @@ function OperatorAnswer({
                             <Input
                                 id="answer"
                                 name="answer"
-                                onChange={(e) => setInputValue(e.target.value)}
-                                value={inputValue}
                                 onKeyUp={debounce(onTypingEnd, 3000)}
-                                onInput={() => onTypingStart('operator')}
+                                value={inputValue}
+                                onInput={(e) => {
+                                    onTypingStart('operator')
+                                    valueForAutocomplete = e.target.value
+                                    setValue(e.target.value)
+                                    autocomplete()
+                                }}
                             />
                             <FontAwesomeIcon
                                 icon={['fas', 'smile']}
@@ -128,7 +190,7 @@ function OperatorAnswer({
                             Варианты
                         </DropdownToggle>
                         <DropdownMenu>
-                            {settingsUser.phrases.map((elem, index) => <DropdownItem key={index}>{elem}</DropdownItem>)}
+                            {settingsUser.phrases.map(elem => <DropdownItem onClick={() => addPhrase(elem.content)} key={elem.id}>{elem.content}</DropdownItem>)}
                         </DropdownMenu>
                     </Dropdown>
                 </div>
