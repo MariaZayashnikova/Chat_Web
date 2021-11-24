@@ -10,7 +10,9 @@ import {
     updatePassword,
     updateUserName,
     updatedUserName,
+    updateUsersAvatar
 } from '../../../../../actions'
+import ShowBigPicture from '../../../Dialogue/ShowBigPicture'
 import './SettingsProfile.css'
 
 function SettingsProfile({
@@ -22,7 +24,12 @@ function SettingsProfile({
     updateUserName,
     updatedUserName,
     closeModal,
+    updateUsersAvatar
 }) {
+    let initialUserName = user.name ? user.name : ''
+
+    let fileInput = React.createRef()
+
     function onSubmit(values) {
         if (values.password) {
             if (values.password === values.passwordConfirmation) {
@@ -39,7 +46,6 @@ function SettingsProfile({
                 } else {
                     if (errorFromState) clearErrors()
                     updatePassword(values.password)
-                    setTimeout(closeModal, 5000)
                 }
             } else {
                 const error = {
@@ -49,20 +55,35 @@ function SettingsProfile({
             }
         }
 
-        if (user.name !== values.name) {
-            updateUserName(values.name)
+        if (user.name !== values.name || fileInput.current.files[0]) {
             let newUser = {
-                name: values.name,
+                name: user.name,
                 email: user.email,
-                token: user._lat,
+                photoUrl: user.photoUrl,
+                token: user.token,
                 uid: user.uid,
             }
-            updatedUserName(newUser)
-            setTimeout(closeModal, 5000)
-        }
-    }
 
-    let initialUserName = user.name ? user.name : ''
+            if (user.name !== values.name) {
+                updateUserName(values.name)
+                newUser.name = values.name
+            }
+
+            if (fileInput.current.files[0]) {
+                newUser.photoUrl = window.URL.createObjectURL(fileInput.current.files[0])
+
+                let obj = {
+                    user,
+                    avatar: fileInput.current.files[0]
+                }
+                updateUsersAvatar(obj)
+            }
+
+            updatedUserName(newUser)
+        }
+
+        setTimeout(closeModal, 5000)
+    }
 
     return (
         <>
@@ -90,11 +111,16 @@ function SettingsProfile({
                         </div>
                         <div className="formSettings__containerAvatar">
                             <label>Аватар:</label>
-                            <FontAwesomeIcon
-                                icon={['fas', 'user']}
-                                color="darkblue"
-                                size="3x"
-                            />
+                            {user.photoUrl ? (
+                                <div className="formSettings__avatar">
+                                    <ShowBigPicture srcImg={user.photoUrl} style={{ name: "formSettings__avatar_image" }} />
+                                </div>
+                            )
+                                : <FontAwesomeIcon
+                                    icon={['fas', 'user']}
+                                    color="darkblue"
+                                    size="3x"
+                                />}
                             <Field name="avatar">
                                 {(props) => (
                                     <div>
@@ -102,6 +128,7 @@ function SettingsProfile({
                                             {...props.input}
                                             type="file"
                                             value={values.avatar}
+                                            ref={fileInput}
                                         />
                                     </div>
                                 )}
@@ -154,6 +181,7 @@ const mapDispatchToProps = {
     updatePassword,
     updateUserName,
     updatedUserName,
+    updateUsersAvatar
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsProfile)

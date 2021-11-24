@@ -14,7 +14,7 @@ import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import { calculateDate } from '../OperatorPage'
 import OperatorAnswerAnswer from './OperatorAnswer'
-import PictureInMessage from './PictureInMessage'
+import ShowBigPicture from './ShowBigPicture'
 import './Dialogue.css'
 
 function Dialogue({
@@ -155,7 +155,7 @@ function Dialogue({
                         {res ? (
                             <>
                                 <div>{startSrt}</div>
-                                <PictureInMessage srcImg={res[0]} />
+                                <ShowBigPicture srcImg={res[0]} style={{ name: "containerDialogue__containerMessages_image" }} />
                                 <div>{endStr}</div>
                             </>
                         ) : (

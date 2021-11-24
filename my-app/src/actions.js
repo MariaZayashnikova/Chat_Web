@@ -66,3 +66,5 @@ export const fetchUserSettings = (value) => ({
 export const userSettings = (value) => ({ type: 'userSettings', value })
 export const getTopicsFromDB = () => ({ type: 'getTopicsFromDB' })
 export const setTopics = (value) => ({ type: 'setTopics', value })
+export const updateUsersAvatar = (value) => ({ type: 'updateUsersAvatar', value })
+export const fetchUsersAvatar = (value) => ({ type: 'fetchUsersAvatar', value })

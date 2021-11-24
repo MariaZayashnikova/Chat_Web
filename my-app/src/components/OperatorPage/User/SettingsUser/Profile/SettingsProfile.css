@@ -24,3 +24,17 @@
 .formSettings_btn {
     margin: 10px 0;
 }
+
+.formSettings__avatar {
+    width: 200px;
+}
+
+.formSettings__avatar_image {
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+.formSettings__containerFlex {
+    display: flex;
+    justify-content: space-between;
+}

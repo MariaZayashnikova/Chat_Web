@@ -52,6 +52,8 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 user: null,
+                settingsUser: null,
+                topics: null,
                 loadingFromState: false,
             }
         case 'singnOutUser':

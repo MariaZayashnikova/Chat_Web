@@ -3,7 +3,8 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
 import { toast } from 'react-toastify'
-import { fb } from '../Firebase/componentFirebase'
+import uniqid from 'uniqid';
+import { fb, storageRef } from '../Firebase/componentFirebase'
 
 const notifySuccess = (text) =>
     toast.success(text, {
@@ -40,6 +41,7 @@ function* fetchUserAuthorization(action) {
         let data = {
             name: response.user.displayName,
             email: response.user.email,
+            photoUrl: response.user.photoURL,
             token: response.user._lat,
             uid: response.user.uid,
         }
@@ -67,6 +69,7 @@ function* fetchUserAuthorizationViaGoogle(action) {
         let data = {
             name: response.user.displayName,
             email: response.user.email,
+            photoUrl: response.user.photoURL,
             token: response.user._lat,
             uid: response.user.uid,
         }
@@ -101,6 +104,7 @@ function* fetchUserRegistration(action) {
         let data = {
             name: response.user.displayName,
             email: response.user.email,
+            photoUrl: response.user.photoURL,
             token: response.user._lat,
             uid: response.user.uid,
         }
@@ -108,9 +112,18 @@ function* fetchUserRegistration(action) {
         yield call(() =>
             setStandardPhrasesUser(data.uid, {
                 phrases: {
-                    0: 'Сейчас проверю, одну минуту',
-                    1: 'Давайте я уточню, с чем это связано, и вернусь ...',
-                    2: 'Минутку, проверяю ваши данные',
+                    0: {
+                        content: 'Сейчас проверю, одну минуту',
+                        id: uniqid()
+                    },
+                    1: {
+                        content: 'Давайте я уточню, с чем это связано, и вернусь ...',
+                        id: uniqid()
+                    },
+                    2: {
+                        content: 'Минутку, проверяю ваши данные',
+                        id: uniqid()
+                    },
                 },
             })
         )
@@ -310,6 +323,72 @@ function* topicsFromDB() {
     }
 }
 
+function fetchUsersAvatar(action) {
+    let image = storageRef.child(`${action.value.user.uid}-avatar.jpeg`);
+    return image.getDownloadURL()
+        .then((url) => ({ url }))
+}
+
+function* usersAvatar(action) {
+    const { url } = yield call(() => fetchUsersAvatar(action))
+
+    if (url) {
+        let data = {
+            name: action.value.user.name,
+            email: action.value.user.email,
+            photoUrl: url,
+            token: action.value.user.token,
+            uid: action.value.user.uid,
+        }
+        yield put({ type: 'fetchMessageSuccess', data })
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                user.updateProfile({
+                    photoURL: url,
+                })
+            }
+        })
+    }
+}
+
+function updateUsersAvatar(action) {
+    const metadata = {
+        contentType: 'image/jpeg',
+    }
+
+    return storageRef.child(`${action.value.user.uid}-avatar.jpeg`).put(action.value.avatar, metadata)
+        .then((snapshot) => ({ snapshot }))
+        .catch((error) => ({ error }))
+}
+
+function* updateAndFetchAvatar(action) {
+    let value = {
+        user: action.value.user
+    }
+
+    const { snapshot, error } = yield call(() => updateUsersAvatar(action))
+
+    if (snapshot) {
+        yield put({ type: 'fetchUsersAvatar', value })
+    }
+
+    if (error) {
+        let err = {
+            message: 'Что-то пошло не так... Попробуйте позже',
+        }
+        yield put({ type: 'fetchMessageFailure', err })
+    }
+}
+
+function* fetchAvatar() {
+    yield takeLatest('fetchUsersAvatar', usersAvatar)
+}
+
+function* updateAvatar() {
+    yield takeLatest('updateUsersAvatar', updateAndFetchAvatar)
+}
+
 function* fetchTopicsFromDB() {
     yield takeLatest('getTopicsFromDB', topicsFromDB)
 }
@@ -385,5 +464,7 @@ export default function* rootSaga() {
         updateSettingsInDB(),
         fetchSettingsFromDB(),
         fetchTopicsFromDB(),
+        updateAvatar(),
+        fetchAvatar()
     ])
 }
