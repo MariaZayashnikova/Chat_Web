@@ -33,35 +33,35 @@ function OperatorAnswer({
     settingsUser
 }) {
     const [dropdownOpen, setDropdownOpen] = useState(false)
-    let toggleDropdown = () => setDropdownOpen((dropdownOpen) => !dropdownOpen)
-
     const [showEmoji, setShowEmoji] = useState(false)
     const [inputValue, setInputValue] = useState('')
+    const [arrResAutocomplete, setArrResAutocomplete] = useState([])
+    const [showTooltip, isShowTooltip] = useState(false)
+
+    let valueForAutocomplete = ''
+
+    const toggleDropdown = () => setDropdownOpen((dropdownOpen) => !dropdownOpen)
     const onEmojiClick = (event, emojiObject) => {
         setInputValue(inputValue + emojiObject.emoji)
     }
     const setValue = (data) => setInputValue(data)
-
     const pubnub = usePubNub()
-    let [channels] = useState([`${itemId}`])
-
     const onTypingStart = (presenceEvent) => {
         let message = presenceEvent
-        pubnub.publish({ channel: channels, message })
+        pubnub.publish({ channel: itemId, message })
     }
 
+    console.log(typeof itemId)
     const onTypingEnd = () => {
         let message = 'operator onTypingEnd'
-        pubnub.publish({ channel: channels, message })
+        pubnub.publish({ channel: itemId, message })
     }
-
-    let valueForAutocomplete = ''
-    const [arrResAutocomplete, setArrResAutocomplete] = useState([])
     const pushArrResAC = (arr) => setArrResAutocomplete(arr)
+    const addPhrase = (phrase) => setValue(inputValue + ' ' + phrase)
+    const selectPhrase = (phrase) => setValue(phrase)
 
-    const [showTooltip, isShowTooltip] = useState(false)
-
-    function submitNewMessage() {
+    function submitNewMessage(e) {
+        e.preventDefault()
         if (!inputValue) return
         let time = new Date().getTime()
         let newMessage = {
@@ -71,18 +71,15 @@ function OperatorAnswer({
             },
         }
         pushNewMessageInDatabase(newMessage, itemId)
+        setValue('')
         fetchDialoguesFromDatabase()
     }
-
-    const addPhrase = (phrase) => setValue(inputValue + ' ' + phrase)
 
     function addPhraseInTooltip(phraseId, arrResult) {
         settingsUser.phrases.forEach(elem => {
             if (elem.id === phraseId) arrResult.push(elem)
         })
     }
-
-    const selectPhrase = (phrase) => setValue(phrase)
 
     function autocomplete() {
         let str = valueForAutocomplete
@@ -110,17 +107,22 @@ function OperatorAnswer({
     if (arrResAutocomplete.length > 0 && !showTooltip) isShowTooltip(true)
     if (arrResAutocomplete.length === 0 && showTooltip) isShowTooltip(false)
 
+    function changeInput(e) {
+        onTypingStart('operator')
+        valueForAutocomplete = e.target.value
+        setValue(e.target.value)
+        autocomplete()
+    }
+
     const View = () => {
         return (
-            <>
-                <Popover placement="top-start" isOpen={showTooltip} target="myTooltip" toggle={isShowTooltip}>
-                    <PopoverHeader>Готовые фразы:</PopoverHeader>
-                    {arrResAutocomplete.map(elem => <PopoverBody className="containerDialogue-tooltips" onClick={() => {
-                        selectPhrase(elem.content)
-                        pushArrResAC([])
-                    }} key={elem.id}>{elem.content}</PopoverBody>)}
-                </Popover>
-            </>
+            <Popover placement="top-start" isOpen={showTooltip} target="myTooltip" toggle={isShowTooltip}>
+                <PopoverHeader>Готовые фразы:</PopoverHeader>
+                {arrResAutocomplete.map(elem => <PopoverBody className="containerDialogue-tooltips" onClick={() => {
+                    selectPhrase(elem.content)
+                    pushArrResAC([])
+                }} key={elem.id}>{elem.content}</PopoverBody>)}
+            </Popover>
         )
     }
 
@@ -131,11 +133,7 @@ function OperatorAnswer({
             <View />
             <div className="containerDialogue__Answers">
                 <Form
-                    onSubmit={(e) => {
-                        e.preventDefault()
-                        submitNewMessage()
-                        setValue('')
-                    }}
+                    onSubmit={submitNewMessage}
                     className="containerDialogue__Answer"
                 >
                     <FormGroup className="position-relative">
@@ -146,12 +144,7 @@ function OperatorAnswer({
                                 name="answer"
                                 onKeyUp={debounce(onTypingEnd, 3000)}
                                 value={inputValue}
-                                onInput={(e) => {
-                                    onTypingStart('operator')
-                                    valueForAutocomplete = e.target.value
-                                    setValue(e.target.value)
-                                    autocomplete()
-                                }}
+                                onInput={changeInput}
                             />
                             <FontAwesomeIcon
                                 icon={['fas', 'smile']}
