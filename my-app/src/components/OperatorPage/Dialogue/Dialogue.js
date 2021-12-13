@@ -13,7 +13,7 @@ import {
 import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import { calculateDate } from '../OperatorPage'
-import OperatorAnswerAnswer from './OperatorAnswer'
+import OperatorAnswer from './OperatorAnswer'
 import PictureInMessage from './PictureInMessage'
 import './Dialogue.css'
 
@@ -225,7 +225,7 @@ function Dialogue({
                             </div>
                         </div>
                         {resultFinishedDialogue}
-                        <OperatorAnswerAnswer itemId={itemId} />
+                        <OperatorAnswer itemId={itemId} />
                     </div>
                 </div>
             </div>

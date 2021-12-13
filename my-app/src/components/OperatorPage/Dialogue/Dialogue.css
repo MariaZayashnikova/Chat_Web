@@ -30,8 +30,7 @@
 
 .containerDialogue__containerMessages .containerDialogue__containerMessages_messages {
     margin-bottom: 10px;
-    min-height: 400px;
-    max-height: 550px;
+    height: 550px;
     overflow: auto;
     display: flex;
     flex-direction: column-reverse;
@@ -132,4 +131,21 @@ body .containerDialogue__containerMessages_modal {
     text-align: center;
     margin: 5px 0;
     font-style: italic;
+}
+
+.containerDialogue-tooltips {
+    cursor: pointer
+}
+
+.containerDialogue-tooltips:hover {
+    background-color: rgba(45, 156, 247, 0.925);
+    color: white;
+}
+
+.popover {
+    border: 1px solid blue !important;
+}
+
+.popover-header {
+    background-color:rgba(75, 179, 240, 0.911) !important;
 }
