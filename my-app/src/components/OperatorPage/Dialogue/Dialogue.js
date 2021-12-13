@@ -14,7 +14,7 @@ import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import { calculateDate } from '../OperatorPage'
 import OperatorAnswer from './OperatorAnswer'
-import PictureInMessage from './PictureInMessage'
+import ShowBigPicture from './ShowBigPicture'
 import './Dialogue.css'
 
 function Dialogue({
