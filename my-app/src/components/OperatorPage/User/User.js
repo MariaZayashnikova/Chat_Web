@@ -31,11 +31,16 @@ function User({ user, singnOutUser, pushDialogue, loadingFromState }) {
     return (
         <div className="containerUser">
             <h2 className="containerUser__name">
-                <FontAwesomeIcon
+                {user.photoUrl ? (
+                    <div className="containerUser__avatar">
+                        <img src={user.photoUrl} alt="avatar" width="100%" className="containerUser__avatar_image" />
+                    </div>
+                ) : <FontAwesomeIcon
                     icon={['fas', 'user']}
                     color="darkblue"
                     className="containerUser__icon"
-                />
+                />}
+
                 {user.name ? user.name : user.email}
                 <SettingsUser />
             </h2>

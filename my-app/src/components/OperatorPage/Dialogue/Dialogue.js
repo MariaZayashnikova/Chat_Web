@@ -155,7 +155,7 @@ function Dialogue({
                         {res ? (
                             <>
                                 <div>{startSrt}</div>
-                                <PictureInMessage srcImg={res[0]} />
+                                <ShowBigPicture srcImg={res[0]} style={{ name: "containerDialogue__containerMessages_image" }} />
                                 <div>{endStr}</div>
                             </>
                         ) : (
