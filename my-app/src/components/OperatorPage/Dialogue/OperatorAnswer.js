@@ -51,7 +51,6 @@ function OperatorAnswer({
         pubnub.publish({ channel: itemId, message })
     }
 
-    console.log(typeof itemId)
     const onTypingEnd = () => {
         let message = 'operator onTypingEnd'
         pubnub.publish({ channel: itemId, message })
