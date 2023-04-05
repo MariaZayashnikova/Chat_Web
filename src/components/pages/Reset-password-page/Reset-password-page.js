@@ -5,7 +5,7 @@ import { useFormik } from 'formik'
 import { connect } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 import { resetPassword, clearErrors } from '../../../actions'
-import { validate } from '../AuthorizationPage/AuthorizationPage'
+import { validate } from '../Authorization-page/Authorization-page'
 import 'react-toastify/dist/ReactToastify.css'
 
 function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
@@ -25,12 +25,12 @@ function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
 
     return (
         <div className="page">
-            <div className="pageLogin">
-                <h2 className="pageLogin__titlePage">Восстановить пароль</h2>
-                <div className="pageLogin__containerForm">
+            <div className="container-form">
+                <h2 className="container-form__title">Восстановить пароль</h2>
+                <div className="form">
                     <FormGroup className="position-relative">
                         <Label
-                            className="pageLogin__containerForm_colorWhite"
+                            className="color-white"
                             for="email"
                         >
                             Email
@@ -38,8 +38,8 @@ function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
                         <Input
                             className={
                                 formik.touched.email && formik.errors.email
-                                    ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
-                                    : 'pageLogin__containerForm_input'
+                                    ? 'form__input form__input_error'
+                                    : 'form__input'
                             }
                             id="email"
                             name="email"
@@ -60,7 +60,7 @@ function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
                         </FormFeedback>
                     </FormGroup>
                     <Button
-                        className="pageLogin__containerForm_btn"
+                        className="form__button"
                         color="primary"
                         type="submit"
                         onClick={() => submitResetForm(formik.values.email)}
@@ -72,7 +72,7 @@ function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
                     <div className="error">{errorFromState}</div>
                 ) : null}
                 <ToastContainer />
-                <div className="containerLinks">
+                <div className="container-links">
                     <div className="link">
                         <Link
                             to="/"

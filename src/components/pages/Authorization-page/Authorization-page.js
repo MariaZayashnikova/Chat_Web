@@ -11,7 +11,7 @@ import {
     clearErrors,
 } from '../../../actions'
 import Spinner from '../../Spinner/Spinner'
-import './AuthorizationPage.css'
+import './Authorization-page.css'
 
 const validate = (values) => {
     const errors = {}
@@ -84,13 +84,13 @@ function AuthorizationPage({
 
     return (
         <div className="page">
-            <div className="pageLogin">
-                <h2 className="pageLogin__titlePage">Авторизация</h2>
-                <div className="pageLogin__containerForm">
+            <div className="container-form">
+                <h2 className="container-form__title">Авторизация</h2>
+                <div className="form">
                     <Form onSubmit={formik.handleSubmit}>
                         <FormGroup className="position-relative">
                             <Label
-                                className="pageLogin__containerForm_colorWhite"
+                                className="color-white"
                                 for="email"
                             >
                                 Email
@@ -98,8 +98,8 @@ function AuthorizationPage({
                             <Input
                                 className={
                                     formik.touched.email && formik.errors.email
-                                        ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
-                                        : 'pageLogin__containerForm_input'
+                                        ? 'form__input form__input_error'
+                                        : 'form__input'
                                 }
                                 id="email"
                                 name="email"
@@ -121,7 +121,7 @@ function AuthorizationPage({
                         </FormGroup>
                         <FormGroup>
                             <Label
-                                className="pageLogin__containerForm_colorWhite"
+                                className="color-white"
                                 for="password"
                             >
                                 Пароль
@@ -130,8 +130,8 @@ function AuthorizationPage({
                                 className={
                                     formik.touched.password &&
                                         formik.errors.password
-                                        ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
-                                        : 'pageLogin__containerForm_input'
+                                        ? 'form__input form__input_error'
+                                        : 'form__input'
                                 }
                                 type="password"
                                 id="password"
@@ -142,7 +142,7 @@ function AuthorizationPage({
                             />
                         </FormGroup>
                         <Button
-                            className="pageLogin__containerForm_btn"
+                            className="form__button"
                             color="primary"
                             type="submit"
                         >
@@ -154,7 +154,7 @@ function AuthorizationPage({
                         <div className="error">{errorFromState}</div>
                     ) : null}
                 </div>
-                <div className="containerLinks">
+                <div className="container-links">
                     <div className="link">
                         <button
                             onClick={onSignIn}

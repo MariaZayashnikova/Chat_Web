@@ -8,7 +8,7 @@ import {
     fetchRegistration,
     clearErrors,
 } from '../../../actions'
-import { validate } from '../AuthorizationPage/AuthorizationPage'
+import { validate } from '../Authorization-page/Authorization-page'
 import Spinner from '../../Spinner/Spinner'
 
 function RegistrationPage({
@@ -41,13 +41,13 @@ function RegistrationPage({
 
     return (
         <div className="page">
-            <div className="pageLogin">
-                <h2 className="pageLogin__titlePage">Регистрация</h2>
-                <div className="pageLogin__containerForm">
+            <div className="container-form">
+                <h2 className="container-form__title">Регистрация</h2>
+                <div className="form">
                     <Form onSubmit={formik.handleSubmit}>
                         <FormGroup className="position-relative">
                             <Label
-                                className="pageLogin__containerForm_colorWhite"
+                                className="color-white"
                                 for="email"
                             >
                                 Email
@@ -55,8 +55,8 @@ function RegistrationPage({
                             <Input
                                 className={
                                     formik.touched.email && formik.errors.email
-                                        ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
-                                        : 'pageLogin__containerForm_input'
+                                        ? 'form__input form__input_error'
+                                        : 'form__input'
                                 }
                                 id="email"
                                 name="email"
@@ -78,7 +78,7 @@ function RegistrationPage({
                         </FormGroup>
                         <FormGroup className="position-relative">
                             <Label
-                                className="pageLogin__containerForm_colorWhite"
+                                className="color-white"
                                 for="password"
                             >
                                 Пароль
@@ -87,8 +87,8 @@ function RegistrationPage({
                                 className={
                                     formik.touched.password &&
                                         formik.errors.password
-                                        ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
-                                        : 'pageLogin__containerForm_input'
+                                        ? 'form__input form__input_error'
+                                        : 'form__input'
                                 }
                                 type="password"
                                 id="password"
@@ -110,7 +110,7 @@ function RegistrationPage({
                         </FormGroup>
                         <FormGroup className="position-relative">
                             <Label
-                                className="pageLogin__containerForm_colorWhite"
+                                className="color-white"
                                 for="password"
                             >
                                 Подтверждение пароля
@@ -119,8 +119,8 @@ function RegistrationPage({
                                 className={
                                     formik.touched.passwordConfirmation &&
                                         formik.errors.password
-                                        ? 'pageLogin__containerForm_input pageLogin__containerForm_inputError'
-                                        : 'pageLogin__containerForm_input'
+                                        ? 'form__input form__input_error'
+                                        : 'form__input'
                                 }
                                 type="password"
                                 id="passwordConfirmation"
@@ -131,7 +131,7 @@ function RegistrationPage({
                             />
                         </FormGroup>
                         <Button
-                            className="pageLogin__containerForm_btn"
+                            className="form__button"
                             color="primary"
                             type="submit"
                         >
@@ -143,7 +143,7 @@ function RegistrationPage({
                         <div className="error">{errorFromState}</div>
                     ) : null}
                 </div>
-                <div className="containerLinks">
+                <div className="container-links">
                     <div className="link">
                         <Link
                             to="/"

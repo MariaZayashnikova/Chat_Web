@@ -24,7 +24,7 @@ code {
   text-decoration: underline;
 }
 
-.pageLogin {
+.container-form {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -35,24 +35,24 @@ code {
   box-shadow: 1px 1px 20px -3px grey;
 }
 
-.pageLogin__titlePage {
+.container-form__title {
   width: 100%;
   text-align: center;
   color: white;
   font-size: calc(16px + (26 -16)* ((100vw - 500px)/(1920-500)));
 }
 
-.pageLogin__containerForm {
+.form {
   width: 90%;
   margin: 10px auto;
   padding: 5px;
 }
 
-.pageLogin__containerForm_colorWhite {
+.color-white {
   color: white;
 }
 
-.pageLogin .pageLogin__containerForm_btn {
+.container-form .form__button {
   width: 100%;
   display: block;
   text-align: center;
@@ -63,11 +63,11 @@ code {
   background: transparent;
 }
 
-.pageLogin__containerForm_input {
+.form__input {
   margin: 10px 0;
 }
 
-.pageLogin .pageLogin__containerForm_inputError {
+.container-form .form__input_error {
   border: 2px solid red;
 }
 
@@ -81,7 +81,7 @@ code {
   background: rgba(204, 255, 255, 0.8);
 }
 
-.containerLinks {
+.container-links {
   margin: 5px 0 15px 0;
   font-size: calc(12px + (12 -12)* ((100vw - 500px)/(1920-500)));
 }
