@@ -77,7 +77,7 @@ function AuthorizationPage({
     );
 
     const PromptTestUser = () => (
-        <OverlayTrigger trigger="click" placement="right" overlay={popover}>
+        <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
             <Button color="primary">Нужен тестовый пользователь?<br /> Нажми</Button>
         </OverlayTrigger>
     );

@@ -2,15 +2,13 @@
     display: flex;
     justify-content: center;
     align-items: baseline;
+    flex-wrap: wrap;
+    line-height: 16px;
 }
 
 .pageLogin .containerLinks__link_btnGoogle {
-    width: 30%;
+    width: 150px;
     border: none;
-    text-align: center;
-    border-radius: 20px;
-    font-size: 16px;
-    line-height: 16px;
     background: transparent;
     color: white;
 }
