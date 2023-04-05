@@ -13,6 +13,15 @@ code {
     monospace;
 }
 
+.page {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  line-height: 16px;
+}
+
 .link_elem {
   text-decoration: none;
   color: white;

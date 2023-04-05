@@ -1,11 +1,3 @@
-.page {
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-    flex-wrap: wrap;
-    line-height: 16px;
-}
-
 .container-form .link_btnGoogle {
     width: 150px;
     border: none;
@@ -17,5 +9,4 @@
     display: block;
     margin: 0 auto;
 }
-
 

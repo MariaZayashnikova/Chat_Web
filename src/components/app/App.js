@@ -20,6 +20,7 @@ import Dialogue from '../pages//OperatorPage/Dialogue/Dialogue'
 import InWorkCases from '../pages//OperatorPage/InWorkCases/InWorkCases'
 import SavedCases from '../pages//OperatorPage/SavedCases/SavesCases'
 import FinishedCases from '../pages//OperatorPage/FinishedCases/FinishedCases'
+import Footer from '../Footer/Footer'
 import './App.css'
 
 library.add(fab, fas)
@@ -91,6 +92,7 @@ function App({ user }) {
                         <ErrorRoute />
                     </Route>
                 </Switch>
+                <Footer />
             </div>
         </Router>
     )
