@@ -73,10 +73,10 @@ function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
                 ) : null}
                 <ToastContainer />
                 <div className="containerLinks">
-                    <div className="containerLinks__link">
+                    <div className="link">
                         <Link
                             to="/"
-                            className="containerLinks__link_custom"
+                            className="link_elem"
                             onClick={() => {
                                 if (errorFromState) clearErrors()
                             }}
@@ -85,7 +85,7 @@ function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
                         </Link>
                         <Link
                             to="/Registration"
-                            className="containerLinks__link_custom"
+                            className="link_elem"
                             onClick={() => {
                                 if (errorFromState) clearErrors()
                             }}

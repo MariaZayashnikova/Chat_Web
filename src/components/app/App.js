@@ -10,7 +10,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import AuthorizationPage from '../pages/AuthorizationPage/AuthorizationPage'
-import HeaderTitle from '../HeaderTitle/HeaderTitle'
+import Header from '../Header/Header'
 import RegistrationPage from '../pages//RegistrationPage/RegistrationPage'
 import OperatorPage from '../pages//OperatorPage/OperatorPage'
 import ResetPasswordPage from '../pages//ResetPasswordPage/ResetPasswordPage'
@@ -28,7 +28,7 @@ function App({ user }) {
     return (
         <Router>
             <div className="App">
-                <HeaderTitle />
+                <Header />
                 <Switch>
                     <Route
                         path="/"

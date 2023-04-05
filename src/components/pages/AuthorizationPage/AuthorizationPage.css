@@ -6,14 +6,14 @@
     line-height: 16px;
 }
 
-.pageLogin .containerLinks__link_btnGoogle {
+.pageLogin .link_btnGoogle {
     width: 150px;
     border: none;
     background: transparent;
     color: white;
 }
 
-.containerLinks__link_icon {
+.link_icon {
     display: block;
     margin: 0 auto;
 }

@@ -13,12 +13,12 @@ code {
     monospace;
 }
 
-.containerLinks__link_custom {
+.link_elem {
   text-decoration: none;
   color: white;
 }
 
-.containerLinks__link_custom:hover {
+.link_elem:hover {
   color: white;
   font-weight: 600;
   text-decoration: underline;
@@ -86,7 +86,7 @@ code {
   font-size: calc(12px + (12 -12)* ((100vw - 500px)/(1920-500)));
 }
 
-.containerLinks__link {
+.link {
   display: flex;
   padding: 5px;
   justify-content: space-around;

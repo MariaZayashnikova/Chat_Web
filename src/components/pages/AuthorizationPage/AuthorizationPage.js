@@ -155,22 +155,22 @@ function AuthorizationPage({
                     ) : null}
                 </div>
                 <div className="containerLinks">
-                    <div className="containerLinks__link">
+                    <div className="link">
                         <button
                             onClick={onSignIn}
-                            className="containerLinks__link_btnGoogle"
+                            className="link_btnGoogle"
                         >
                             <FontAwesomeIcon
-                                className="containerLinks__link_icon"
+                                className="link_icon"
                                 icon={['fab', 'google']}
                             />
                             Войти через Google
                         </button>
                     </div>
-                    <div className="containerLinks__link">
+                    <div className="link">
                         <Link
                             to="/Registration"
-                            className="containerLinks__link_custom"
+                            className="link_elem"
                             onClick={() => {
                                 if (errorFromState) clearErrors()
                             }}
@@ -179,7 +179,7 @@ function AuthorizationPage({
                         </Link>
                         <Link
                             to="/ResetPassword"
-                            className="containerLinks__link_custom"
+                            className="link_elem"
                             onClick={() => {
                                 if (errorFromState) clearErrors()
                             }}
