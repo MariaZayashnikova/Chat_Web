@@ -92,7 +92,6 @@ function App({ user }) {
                         <ErrorRoute />
                     </Route>
                 </Switch>
-                <Footer />
             </div>
         </Router>
     )
