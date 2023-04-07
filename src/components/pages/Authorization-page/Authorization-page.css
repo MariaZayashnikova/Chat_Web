@@ -1,0 +1,12 @@
+.container-form .link_btnGoogle {
+    width: 150px;
+    border: none;
+    background: transparent;
+    color: white;
+}
+
+.link_icon {
+    display: block;
+    margin: 0 auto;
+}
+

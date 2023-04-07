@@ -4,7 +4,7 @@ import 'firebase/auth'
 import 'firebase/database'
 import { toast } from 'react-toastify'
 import uniqid from 'uniqid';
-import { fb, storageRef } from '../Firebase/componentFirebase'
+import { fb, storageRef } from '../Firebase/Firebase-config'
 
 const notifySuccess = (text) =>
     toast.success(text, {

@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',"Trebuchet MS",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -13,48 +13,56 @@ code {
     monospace;
 }
 
-.containerLinks__link_custom {
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  line-height: 16px;
+}
+
+.link_elem {
   text-decoration: none;
   color: white;
 }
 
-.containerLinks__link_custom:hover {
+.link_elem:hover {
   color: white;
   font-weight: 600;
   text-decoration: underline;
 }
 
-.pageLogin {
+.container-form {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 30%;
+  width: calc(300px + (500 - 300) * ((100vw - 500px)/(1920-500)));
   margin: 20px 5px;
   background-image: linear-gradient(to right bottom, #00bfff, blue);
   border-radius: 15px;
   box-shadow: 1px 1px 20px -3px grey;
 }
 
-.pageLogin__titlePage {
-  width: 90%;
-  margin: 10px auto;
+.container-form__title {
+  width: 100%;
+  text-align: center;
   color: white;
+  font-size: calc(16px + (26 -16)* ((100vw - 500px)/(1920-500)));
 }
 
-.pageLogin__containerForm {
+.form {
   width: 90%;
   margin: 10px auto;
   padding: 5px;
 }
 
-.pageLogin__containerForm_colorWhite {
+.color-white {
   color: white;
 }
 
-.pageLogin .pageLogin__containerForm_btn {
+.container-form .form__button {
   width: 100%;
   display: block;
-  margin: 15px auto;
   text-align: center;
   border-radius: 20px;
   border: 2px solid white;
@@ -63,36 +71,30 @@ code {
   background: transparent;
 }
 
-.pageLogin__containerForm_input {
-  display: block;
-  margin: 10px auto;
-  border-radius: 15px;
-  border: none;
-  outline: none;
-  font-size: 24px;
-  padding: 2px 10px;
-  line-height: 16px;
+.form__input {
+  margin: 10px 0;
 }
 
-.pageLogin .pageLogin__containerForm_inputError {
+.container-form .form__input_error {
   border: 2px solid red;
 }
 
 .error {
   color: red;
-  font-size: 18px;
-  margin: 5px auto;
-  border-radius: 15px;
-  padding: 3px 10px;
+  font-size: calc(12px + (12 -12)* ((100vw - 500px)/(1920-500)));
+  margin: 5px 0;
+  border-radius: 10px;
+  padding: 10px 10px;
   text-align: center;
   background: rgba(204, 255, 255, 0.8);
 }
 
-.containerLinks {
+.container-links {
   margin: 5px 0 15px 0;
+  font-size: calc(12px + (12 -12)* ((100vw - 500px)/(1920-500)));
 }
 
-.containerLinks__link {
+.link {
   display: flex;
   padding: 5px;
   justify-content: space-around;

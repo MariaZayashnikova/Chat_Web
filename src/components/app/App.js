@@ -9,17 +9,18 @@ import { connect } from 'react-redux'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
-import AuthorizationPage from '../AuthorizationPage/AuthorizationPage'
-import HeaderTitle from '../HeaderTitle/HeaderTitle'
-import RegistrationPage from '../RegistrationPage/RegistrationPage'
-import OperatorPage from '../OperatorPage/OperatorPage'
-import ResetPasswordPage from '../ResetPasswordPage/ResetPasswordPage'
+import AuthorizationPage from '../pages/Authorization-page/Authorization-page'
+import Header from '../Header/Header'
+import RegistrationPage from '../pages/Registration-page/Registration-page'
+import OperatorPage from '../pages//OperatorPage/OperatorPage'
+import ResetPasswordPage from '../pages/Reset-password-page/Reset-password-page'
 import ErrorRoute from '../ErrorRoute/ErrorRoute'
-import ActiveCases from '../OperatorPage/AtiveCases/ActiveCases'
-import Dialogue from '../OperatorPage/Dialogue/Dialogue'
-import InWorkCases from '../OperatorPage/InWorkCases/InWorkCases'
-import SavedCases from '../OperatorPage/SavedCases/SavesCases'
-import FinishedCases from '../OperatorPage/FinishedCases/FinishedCases'
+import ActiveCases from '../pages//OperatorPage/AtiveCases/ActiveCases'
+import Dialogue from '../pages//OperatorPage/Dialogue/Dialogue'
+import InWorkCases from '../pages//OperatorPage/InWorkCases/InWorkCases'
+import SavedCases from '../pages//OperatorPage/SavedCases/SavesCases'
+import FinishedCases from '../pages//OperatorPage/FinishedCases/FinishedCases'
+import Footer from '../Footer/Footer'
 import './App.css'
 
 library.add(fab, fas)
@@ -28,7 +29,7 @@ function App({ user }) {
     return (
         <Router>
             <div className="App">
-                <HeaderTitle />
+                <Header />
                 <Switch>
                     <Route
                         path="/"

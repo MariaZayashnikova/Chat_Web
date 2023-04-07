@@ -1,0 +1,8 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    color: white;
+    background-image: linear-gradient(to right bottom, #00bfff, blue);
+    font-family: "Trebuchet MS";
+}
