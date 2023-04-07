@@ -25,9 +25,9 @@ function InWorkCases({
 }) {
     if (!dialogues) fetchDialoguesFromDatabase()
 
-    let timerId = setInterval(() => {
-        fetchDialoguesFromDatabase()
-    }, 60000)
+    // let timerId = setInterval(() => {
+    //     fetchDialoguesFromDatabase()
+    // }, 60000)
 
     let allResultFilter = []
 
@@ -111,7 +111,7 @@ function InWorkCases({
                                 color="primary"
                                 size="sm"
                                 onClick={() => {
-                                    clearInterval(timerId)
+                                    // clearInterval(timerId)
                                     history.push(
                                         `/OperatorPage/Dialogue/${elem.idDialogue}`
                                     )

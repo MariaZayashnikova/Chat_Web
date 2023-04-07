@@ -29,9 +29,9 @@ function ActiveCases({
 }) {
     if (!dialogues) fetchDialoguesFromDatabase()
 
-    let timerId = setInterval(() => {
-        fetchDialoguesFromDatabase()
-    }, 30000)
+    // let timerId = setInterval(() => {
+    //     fetchDialoguesFromDatabase()
+    // }, 30000)
 
     let allResultFilter = []
 
@@ -116,7 +116,7 @@ function ActiveCases({
                                 color="primary"
                                 size="sm"
                                 onClick={() => {
-                                    clearInterval(timerId)
+                                    // clearInterval(timerId)
                                     history.push(
                                         `/OperatorPage/Dialogue/${elem.idDialogue}`
                                     )
