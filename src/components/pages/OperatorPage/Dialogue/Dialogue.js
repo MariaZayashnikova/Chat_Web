@@ -83,9 +83,9 @@ function Dialogue({
         checkIsFirstMessage()
     }
 
-    setInterval(() => {
-        fetchDialoguesFromDatabase()
-    }, 30000)
+    // setInterval(() => {
+    //     fetchDialoguesFromDatabase()
+    // }, 30000)
 
     function analyzeContent(str) {
         let options = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg']

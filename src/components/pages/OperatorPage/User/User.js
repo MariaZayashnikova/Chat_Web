@@ -44,9 +44,13 @@ function User({ user, singnOutUser, pushDialogue, loadingFromState }) {
                 {user.name ? user.name : user.email}
                 <SettingsUser />
             </h2>
-            <Button outline color="secondary" onClick={addDialogueCustom}>
-                Добавить
-            </Button>
+
+            {user.uid === 'BPAkuUugWZZ1OPnUkTUOtIanWQD2' ? (
+                <Button outline color="secondary" onClick={addDialogueCustom}>
+                    Добавить
+                </Button>
+            ) : null}
+
             {loadingFromState ? <Spinner /> : null}
             <Button
                 className="btnCustom"

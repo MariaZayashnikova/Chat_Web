@@ -65,9 +65,9 @@ function SavedCases({
         )
     }
 
-    let timerId = setInterval(() => {
-        fetchDialoguesFromDatabase()
-    }, 60000)
+    // let timerId = setInterval(() => {
+    //     fetchDialoguesFromDatabase()
+    // }, 60000)
 
     function loadFunc() {
         setTimeout(() => {
@@ -116,7 +116,7 @@ function SavedCases({
                                 size="sm"
                                 className="dialogue__actions_button"
                                 onClick={() => {
-                                    clearInterval(timerId)
+                                    // clearInterval(timerId)
                                     history.push(
                                         `/OperatorPage/Dialogue/${elem.idDialogue}`
                                     )

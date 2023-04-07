@@ -67,9 +67,9 @@ function FinishedCases({
         )
     }
 
-    let timerId = setInterval(() => {
-        fetchDialoguesFromDatabase()
-    }, 60000)
+    // let timerId = setInterval(() => {
+    //     fetchDialoguesFromDatabase()
+    // }, 60000)
 
     function loadFunc() {
         setTimeout(() => {
@@ -137,7 +137,7 @@ function FinishedCases({
                                     color="primary"
                                     size="sm"
                                     onClick={() => {
-                                        clearInterval(timerId)
+                                        // clearInterval(timerId)
                                         history.push(
                                             `/OperatorPage/Dialogue/${elem.idDialogue}`
                                         )
