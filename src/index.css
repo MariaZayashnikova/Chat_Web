@@ -81,7 +81,7 @@ code {
 
 .error {
   color: red;
-  font-size: calc(12px + (12 -12)* ((100vw - 500px)/(1920-500)));
+  font-size: calc(12px + (18 -12)* ((100vw - 500px)/(1920-500)));
   margin: 5px 0;
   border-radius: 10px;
   padding: 10px 10px;
@@ -91,7 +91,7 @@ code {
 
 .container-links {
   margin: 5px 0 15px 0;
-  font-size: calc(12px + (12 -12)* ((100vw - 500px)/(1920-500)));
+  font-size: calc(12px + (18 -12)* ((100vw - 500px)/(1920-500)));
 }
 
 .link {
