@@ -4,7 +4,7 @@ import moment from 'moment'
 import { fetchUserSettings, getTopicsFromDB } from '../../../actions'
 import NavBar from './NavBar/NavBar'
 import User from './User/User'
-import './OperatorPage.css'
+import './Operator-page.css'
 
 function createDisplayedFilterResults(
     allResultFilter,
@@ -68,7 +68,7 @@ function OperatorPage({
         settingsUser.phrases = newArr
     }
     return (
-        <div className="OperatorPage">
+        <div className="Operator-page">
             <NavBar />
             <div className="containerBodyOperatorPage">
                 <User />

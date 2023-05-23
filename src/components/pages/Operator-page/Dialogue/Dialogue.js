@@ -12,7 +12,7 @@ import {
 } from '../../../../actions'
 import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
-import { calculateDate } from '../OperatorPage'
+import { calculateDate } from '../Operator-page'
 import OperatorAnswer from './OperatorAnswer'
 import ShowBigPicture from './ShowBigPicture'
 import './Dialogue.css'

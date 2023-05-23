@@ -7,51 +7,49 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { useHistory } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import {
-    changeValueActiveCases,
     fetchDialoguesFromDatabase,
     updateDialogueInDatabase,
+    changeValueActiveCases,
 } from '../../../../actions'
 import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
-import { calculateDate, createDisplayedFilterResults } from '../OperatorPage'
-import './FinishedCases.css'
-import '../OperatorPage.css'
+import { calculateDate, createDisplayedFilterResults } from '../Operator-page'
+import './SavedCases.css'
+import '../Operator-page.css'
 
-function FinishedCases({
+function SavedCases({
     fetchDialoguesFromDatabase,
     dialogues,
-    changeValueActiveCases,
-    valueActiveCases,
     updateDialogueInDatabase,
+    user,
+    valueActiveCases,
+    changeValueActiveCases,
 }) {
     if (!dialogues) fetchDialoguesFromDatabase()
 
     let allResultFilter = []
 
-    let hasMoreActiveCases = true
-
     let displayedFilterResults = []
 
-    let isSavedCase = false
+    let hasMoreActiveCases = true
 
     function filterData() {
         for (let objDialogue in dialogues) {
             let contentDialogue = dialogues[objDialogue]
             let messages = contentDialogue.messages
-            if (contentDialogue.status === 'finished') {
-                if (contentDialogue.isSave) {
-                    isSavedCase = contentDialogue.isSave
-                }
+            if (
+                contentDialogue.isSave === true &&
+                user.uid === contentDialogue.operatorUID
+            ) {
                 let objResult = {
                     idDialogue: objDialogue,
                     client: contentDialogue.client,
                     topic: contentDialogue.topic,
                     subtopic: contentDialogue.subtopic,
                     content: Object.values(messages).pop().content,
-                    time: contentDialogue.completionTime,
-                    grade: contentDialogue.grade,
+                    time: Object.keys(messages).pop(),
                 }
                 allResultFilter.push(objResult)
             }
@@ -83,19 +81,6 @@ function FinishedCases({
         const history = useHistory()
         return arrResult.map((elem) => {
             let timestamp = calculateDate(parseInt(elem.time, 10))
-            let CalcStars = () => {
-                let arr = []
-                for (let i = 0; i < elem.grade; i++) {
-                    arr.push(
-                        <FontAwesomeIcon
-                            icon={['fas', 'star']}
-                            key={i}
-                            color="yellow"
-                        />
-                    )
-                }
-                return arr
-            }
             return (
                 <ListGroupItem key={elem.idDialogue}>
                     <div className="dialogue">
@@ -119,63 +104,41 @@ function FinishedCases({
                                 {elem.subtopic}
                             </div>
                         </div>
-                        <div className="dialogue__messageFinished">
-                            {elem.content}
-                        </div>
-                        <div className="dialogueFinished__actions">
-                            <div className="dialogueFinished__info">
+                        <div className="dialogue__message">{elem.content}</div>
+                        <div className="dialogue__actions">
+                            <div className="dialogue__actions_time">
                                 <div>{timestamp}</div>
-                                <div>
-                                    <div>Оценка</div>
-                                    <CalcStars />
-                                </div>
                             </div>
-                            <div className="dialogueFinished__buttons">
-                                <Button
-                                    type="button"
-                                    outline
-                                    color="primary"
-                                    size="sm"
-                                    onClick={() => {
-                                        // clearInterval(timerId)
-                                        history.push(
-                                            `/OperatorPage/Dialogue/${elem.idDialogue}`
-                                        )
-                                    }}
-                                >
-                                    Войти в диалог
-                                </Button>
-                                {isSavedCase ? (
-                                    <Button
-                                        type="button"
-                                        outline
-                                        color="danger"
-                                        size="sm"
-                                        onClick={() => {
-                                            updateDialogueInDatabase(
-                                                { isSave: false },
-                                                elem.idDialogue
-                                            )
-                                        }}
-                                    >
-                                        Удалить из сохранённых
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        outline
-                                        color="info"
-                                        size="sm"
-                                        onClick={() => {
-                                            updateDialogueInDatabase(
-                                                { isSave: true },
-                                                elem.idDialogue
-                                            )
-                                        }}
-                                    >
-                                        Сохранить диалог
-                                    </Button>
-                                )}
-                            </div>
+                            <Button
+                                type="button"
+                                outline
+                                color="primary"
+                                size="sm"
+                                className="dialogue__actions_button"
+                                onClick={() => {
+                                    // clearInterval(timerId)
+                                    history.push(
+                                        `/OperatorPage/Dialogue/${elem.idDialogue}`
+                                    )
+                                }}
+                            >
+                                Войти в диалог
+                            </Button>
+                            <Button
+                                type="button"
+                                outline
+                                color="danger"
+                                size="sm"
+                                className="dialogue__actions_button dialogue__actions_buttonDelete"
+                                onClick={() => {
+                                    updateDialogueInDatabase(
+                                        { isSave: false },
+                                        elem.idDialogue
+                                    )
+                                }}
+                            >
+                                Удалить из сохранённых
+                            </Button>
                         </div>
                     </div>
                 </ListGroupItem>
@@ -194,7 +157,7 @@ function FinishedCases({
             <div className="containerBodyOperatorPage">
                 <User />
                 <div className="body">
-                    <SearchBar status={'finished'} />
+                    <SearchBar isSave={true} />
                     <ToastContainer />
                     <div className="queue">
                         <ListGroup
@@ -220,12 +183,18 @@ function FinishedCases({
     )
 }
 
-const mapStateToProps = ({ dialogues, valueActiveCases }) => ({ dialogues, valueActiveCases })
+const mapStateToProps = ({ dialogues, user, valueActiveCases }) => {
+    return {
+        dialogues,
+        user,
+        valueActiveCases,
+    }
+}
 
 const mapDispatchToProps = {
     fetchDialoguesFromDatabase,
-    changeValueActiveCases,
     updateDialogueInDatabase,
+    changeValueActiveCases,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FinishedCases)
+export default connect(mapStateToProps, mapDispatchToProps)(SavedCases)

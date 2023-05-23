@@ -13,8 +13,8 @@ import NavBar from '../NavBar/NavBar'
 import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
-import { calculateDate, createDisplayedFilterResults } from '../OperatorPage'
-import '../OperatorPage.css'
+import { calculateDate, createDisplayedFilterResults } from '../Operator-page'
+import '../Operator-page.css'
 
 function InWorkCases({
     fetchDialoguesFromDatabase,
