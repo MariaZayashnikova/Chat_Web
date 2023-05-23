@@ -1,10 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import moment from 'moment'
 import { fetchUserSettings, getTopicsFromDB } from '../../../actions'
 import NavBar from './NavBar/NavBar'
 import User from './User/User'
 import './Operator-page.css'
+import ActiveCases from './AtiveCases/ActiveCases'
+
 
 function createDisplayedFilterResults(
     allResultFilter,
@@ -67,12 +70,16 @@ function OperatorPage({
         }
         settingsUser.phrases = newArr
     }
+
+    const history = useHistory()
+
     return (
         <div className="Operator-page">
             <NavBar />
             <div className="containerBodyOperatorPage">
                 <User />
                 <div className="body"></div>
+                {history.location.pathname === '/active' ? <ActiveCases /> : null}
             </div>
         </div>
     )

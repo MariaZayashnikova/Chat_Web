@@ -15,12 +15,10 @@ import RegistrationPage from '../pages/Registration-page/Registration-page'
 import OperatorPage from '../pages/Operator-page/Operator-page'
 import ResetPasswordPage from '../pages/Reset-password-page/Reset-password-page'
 import ErrorRoute from '../ErrorRoute/ErrorRoute'
-import ActiveCases from '../pages/Operator-page/AtiveCases/ActiveCases'
 import Dialogue from '../pages/Operator-page/Dialogue/Dialogue'
 import InWorkCases from '../pages/Operator-page/InWorkCases/InWorkCases'
 import SavedCases from '../pages/Operator-page/SavedCases/SavesCases'
 import FinishedCases from '../pages/Operator-page/FinishedCases/FinishedCases'
-import Footer from '../Footer/Footer'
 import './App.css'
 
 library.add(fab, fas)
@@ -31,13 +29,12 @@ function App({ user }) {
             <div className="App">
                 <Header />
                 <Switch>
-                    <Route
-                        path="/"
-                        exact
-                        render={() =>
-                            user ? <OperatorPage /> : <AuthorizationPage />
-                        }
-                    />
+                    <Route path="/" exact >
+                        {user ? <OperatorPage /> : <AuthorizationPage />}
+                    </Route>
+                    <Route path="/active" exact >
+                        <OperatorPage />
+                    </Route>
                     <Route
                         path="/Registration"
                         exact
@@ -50,13 +47,6 @@ function App({ user }) {
                         exact
                         component={ResetPasswordPage}
                     />
-                    <Route
-                        path="/OperatorPage/Active"
-                        exact
-                        component={ActiveCases}
-                    >
-                        {!user ? <Redirect push to="/" /> : null}
-                    </Route>
                     <Route
                         path="/OperatorPage/inWork"
                         exact

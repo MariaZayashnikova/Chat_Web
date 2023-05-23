@@ -144,39 +144,33 @@ function ActiveCases({
         ) : null
 
     return (
-        <div className="OperatorPage">
-            <NavBar />
-            <div className="containerBodyOperatorPage">
-                <User />
-                <div className="body">
-                    <SearchBar status={'active'} />
-                    <div className="queue">
-                        <div className="queueQuantity">
-                            Клиентов в очереди: {allResultFilter.length}
-                        </div>
-                        {errorFromState ? (
-                            <div className="error">{errorFromState}</div>
-                        ) : null}
-                        <ListGroup
-                            id="scrollableDiv"
-                            className="containerQueue"
-                        >
-                            <InfiniteScroll
-                                dataLength={displayedFilterResults.length}
-                                pageStart={0}
-                                next={loadFunc}
-                                hasMore={hasMoreActiveCases}
-                                loader={<Spinner />}
-                                children={displayedFilterResults}
-                                scrollableTarget="scrollableDiv"
-                            >
-                                {result}
-                            </InfiniteScroll>
-                        </ListGroup>
-                    </div>
+        <>
+            <SearchBar status={'active'} />
+            <div className="queue">
+                <div className="queueQuantity">
+                    Клиентов в очереди: {allResultFilter.length}
                 </div>
+                {errorFromState ? (
+                    <div className="error">{errorFromState}</div>
+                ) : null}
+                <ListGroup
+                    id="scrollableDiv"
+                    className="containerQueue"
+                >
+                    <InfiniteScroll
+                        dataLength={displayedFilterResults.length}
+                        pageStart={0}
+                        next={loadFunc}
+                        hasMore={hasMoreActiveCases}
+                        loader={<Spinner />}
+                        children={displayedFilterResults}
+                        scrollableTarget="scrollableDiv"
+                    >
+                        {result}
+                    </InfiniteScroll>
+                </ListGroup>
             </div>
-        </div>
+        </>
     )
 }
 
