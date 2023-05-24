@@ -10,8 +10,8 @@ import {
     fetchDialoguesFromDatabase,
     updateDialogueInDatabase,
 } from '../../../../actions'
-import NavBar from '../NavBar/NavBar'
-import User from '../User/User'
+// import NavBar from '../NavBar/NavBar'
+// import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedFilterResults } from '../Operator-page'

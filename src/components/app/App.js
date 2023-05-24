@@ -19,6 +19,7 @@ import Dialogue from '../pages/Operator-page/Dialogue/Dialogue'
 import InWorkCases from '../pages/Operator-page/InWorkCases/InWorkCases'
 import SavedCases from '../pages/Operator-page/SavedCases/SavesCases'
 import FinishedCases from '../pages/Operator-page/FinishedCases/FinishedCases'
+import ActiveCases from '../pages/Operator-page/AtiveCases/ActiveCases'
 import './App.css'
 
 library.add(fab, fas)
@@ -29,11 +30,8 @@ function App({ user }) {
             <div className="App">
                 <Header />
                 <Switch>
-                    <Route path="/" exact >
+                    <Route path="/" >
                         {user ? <OperatorPage /> : <AuthorizationPage />}
-                    </Route>
-                    <Route path="/active" exact >
-                        <OperatorPage />
                     </Route>
                     <Route
                         path="/Registration"
