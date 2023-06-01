@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PubNub from 'pubnub'
+import { BrowserRouter } from 'react-router-dom'
 import { PubNubProvider } from 'pubnub-react'
 import App from './components/app/App'
 import reportWebVitals from './reportWebVitals'
@@ -17,13 +18,15 @@ const pubnub = new PubNub({
 })
 
 ReactDOM.render(
-    <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-            <PubNubProvider client={pubnub}>
-                <App />
-            </PubNubProvider>
-        </PersistGate>
-    </Provider>,
+    <BrowserRouter>
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+                <PubNubProvider client={pubnub}>
+                    <App />
+                </PubNubProvider>
+            </PersistGate>
+        </Provider>
+    </BrowserRouter>,
     document.getElementById('root')
 )
 reportWebVitals()

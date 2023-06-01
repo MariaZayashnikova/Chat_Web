@@ -1,21 +1,21 @@
 import React from 'react'
 import { Nav, NavItem } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { setValueSearch } from '../../../../actions'
 import './NavBar.css'
 
 function NavBar({ setValueSearch }) {
-    const history = useHistory()
+    const location = useLocation()
 
     let isActivePage = false
     let isFinishedPage = false
     let isInWorkPage = false
     let isSavedPage = false
 
-    switch (history.location.pathname) {
-        case '/active':
+    switch (location.pathname) {
+        case '/OperatorPage/Active':
             isActivePage = true
             break
         case '/OperatorPage/inWork':
@@ -38,7 +38,7 @@ function NavBar({ setValueSearch }) {
                     className={isActivePage ? 'navItem activeItem' : 'navItem'}
                     onClick={() => setValueSearch(null)}
                 >
-                    <Link to='/active' className="navItem__link">
+                    <Link to='/OperatorPage/Active' className="navItem__link">
                         <FontAwesomeIcon
                             icon={['fas', 'users']}
                             size="3x"

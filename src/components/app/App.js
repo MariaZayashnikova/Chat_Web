@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-    BrowserRouter as Router,
-    Redirect,
-    Route,
-    Switch,
-} from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -26,62 +21,23 @@ library.add(fab, fas)
 
 function App({ user }) {
     return (
-        <Router>
-            <div className="App">
-                <Header />
-                <Switch>
-                    <Route path="/" >
-                        {user ? <OperatorPage /> : <AuthorizationPage />}
+        <div className="App">
+            <Header />
+            <Routes>
+                <Route path="/" element={user ? <OperatorPage /> : <AuthorizationPage />}>
+                    <Route path='/OperatorPage' element={null}>
+                        <Route path='Active' element={<ActiveCases />} />
+                        <Route path="inWork" element={<InWorkCases />} />
+                        <Route path="Saved" element={<SavedCases />} />
+                        <Route path="Finished" element={<FinishedCases />} />
+                        <Route path="Dialogue/:itemId " element={<Dialogue />} />
                     </Route>
-                    <Route
-                        path="/Registration"
-                        exact
-                        component={RegistrationPage}
-                    >
-                        {user ? <Redirect push to="/" /> : <RegistrationPage />}
-                    </Route>
-                    <Route
-                        path="/ResetPassword"
-                        exact
-                        component={ResetPasswordPage}
-                    />
-                    <Route
-                        path="/OperatorPage/inWork"
-                        exact
-                        component={InWorkCases}
-                    >
-                        {!user ? <Redirect push to="/" /> : null}
-                    </Route>
-                    <Route
-                        path="/OperatorPage/Saved"
-                        exact
-                        component={SavedCases}
-                    >
-                        {!user ? <Redirect push to="/" /> : null}
-                    </Route>
-                    <Route
-                        path="/OperatorPage/Finished"
-                        exact
-                        component={FinishedCases}
-                    >
-                        {!user ? <Redirect push to="/" /> : null}
-                    </Route>
-                    <Route
-                        path="/OperatorPage/Dialogue/:id"
-                        render={({ match }) => {
-                            const { id } = match.params
-
-                            return <Dialogue itemId={id} />
-                        }}
-                    >
-                        {!user ? <Redirect push to="/" /> : null}
-                    </Route>
-                    <Route path="*">
-                        <ErrorRoute />
-                    </Route>
-                </Switch>
-            </div>
-        </Router>
+                </Route>
+                <Route path="/Registration" element={<RegistrationPage />} />
+                <Route path="/ResetPassword" element={<ResetPasswordPage />} />
+                <Route path="*" element={<ErrorRoute />} />
+            </Routes>
+        </div >
     )
 }
 

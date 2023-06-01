@@ -3,7 +3,7 @@ import { Input, Label } from 'reactstrap'
 import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem } from 'reactstrap'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {
     fetchDialoguesFromDatabase,
     setValueSearch,
@@ -102,7 +102,7 @@ function SearchBar({
     if (dialogues && valueSearch) search()
 
     const ViewResultSearch = ({ arrResult }) => {
-        const history = useHistory()
+        const navigate = useNavigate()
         return arrResult.map((elem) => {
             return (
                 <ListGroupItem
@@ -110,9 +110,7 @@ function SearchBar({
                     className="resultSearch__item"
                     onClick={() => {
                         setValueSearch(null)
-                        history.push(
-                            `/OperatorPage/Dialogue/${elem.idDialogue}`
-                        )
+                        navigate(`/OperatorPage/Dialogue/${elem.idDialogue}`)
                         if (status === 'active') {
                             updateDialogueInDatabase(
                                 {

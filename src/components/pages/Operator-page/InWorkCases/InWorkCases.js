@@ -4,16 +4,14 @@ import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useHistory } from 'react-router-dom'
+import { useNavigate, Link, redirect } from 'react-router-dom'
 import {
     changeValueActiveCases,
     fetchDialoguesFromDatabase,
 } from '../../../../actions'
-import NavBar from '../NavBar/NavBar'
-import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
-import { calculateDate, createDisplayedFilterResults } from '../Operator-page'
+import { calculateDate, createDisplayedFilterResults } from '../../../../utils'
 import '../Operator-page.css'
 
 function InWorkCases({
@@ -74,7 +72,7 @@ function InWorkCases({
     if (displayedFilterResults.length === allResultFilter.length) hasMoreActiveCases = false
 
     const ViewResult = ({ arrResult }) => {
-        const history = useHistory()
+        const navigate = useNavigate()
         return arrResult.map((elem) => {
             let timestamp = calculateDate(parseInt(elem.time, 10))
             return (
@@ -112,9 +110,7 @@ function InWorkCases({
                                 size="sm"
                                 onClick={() => {
                                     // clearInterval(timerId)
-                                    history.push(
-                                        `/OperatorPage/Dialogue/${elem.idDialogue}`
-                                    )
+                                    navigate(`Dialogue/${elem.idDialogue}`)
                                 }}
                             >
                                 Войти в диалог
@@ -132,33 +128,27 @@ function InWorkCases({
         ) : null
 
     return (
-        <div className="OperatorPage">
-            <NavBar />
-            <div className="containerBodyOperatorPage">
-                <User />
-                <div className="body">
-                    <SearchBar status={'inWork'} />
-                    <div className="queue">
-                        <ListGroup
-                            id="scrollableDiv"
-                            className="containerQueue"
-                        >
-                            <InfiniteScroll
-                                dataLength={displayedFilterResults.length}
-                                pageStart={0}
-                                next={loadFunc}
-                                hasMore={hasMoreActiveCases}
-                                loader={<Spinner />}
-                                children={displayedFilterResults}
-                                scrollableTarget="scrollableDiv"
-                            >
-                                {result}
-                            </InfiniteScroll>
-                        </ListGroup>
-                    </div>
-                </div>
+        <>
+            <SearchBar status={'inWork'} />
+            <div className="queue">
+                <ListGroup
+                    id="scrollableDiv"
+                    className="containerQueue"
+                >
+                    <InfiniteScroll
+                        dataLength={displayedFilterResults.length}
+                        pageStart={0}
+                        next={loadFunc}
+                        hasMore={hasMoreActiveCases}
+                        loader={<Spinner />}
+                        children={displayedFilterResults}
+                        scrollableTarget="scrollableDiv"
+                    >
+                        {result}
+                    </InfiniteScroll>
+                </ListGroup>
             </div>
-        </div>
+        </>
     )
 }
 

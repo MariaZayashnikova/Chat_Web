@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import {
@@ -10,11 +10,9 @@ import {
     fetchDialoguesFromDatabase,
     updateDialogueInDatabase,
 } from '../../../../actions'
-// import NavBar from '../NavBar/NavBar'
-// import User from '../User/User'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
-import { calculateDate, createDisplayedFilterResults } from '../Operator-page'
+import { calculateDate, createDisplayedFilterResults } from '../../../../utils'
 import './ActiveCases.css'
 import '../Operator-page.css'
 
@@ -28,7 +26,7 @@ function ActiveCases({
     user,
 }) {
     if (!dialogues) fetchDialoguesFromDatabase()
-
+    console.log('activeCases')
     // let timerId = setInterval(() => {
     //     fetchDialoguesFromDatabase()
     // }, 30000)
@@ -78,7 +76,7 @@ function ActiveCases({
     if (displayedFilterResults.length === allResultFilter.length) hasMoreActiveCases = false
 
     const ViewResult = ({ arrResult }) => {
-        const history = useHistory()
+        const navigate = useNavigate()
         return arrResult.map((elem) => {
             let timestamp = calculateDate(elem.time)
 
@@ -117,9 +115,7 @@ function ActiveCases({
                                 size="sm"
                                 onClick={() => {
                                     // clearInterval(timerId)
-                                    history.push(
-                                        `/OperatorPage/Dialogue/${elem.idDialogue}`
-                                    )
+                                    navigate(`/OperatorPage/Dialogue/${elem.idDialogue}`)
                                     updateDialogueInDatabase(
                                         {
                                             status: 'inWork',

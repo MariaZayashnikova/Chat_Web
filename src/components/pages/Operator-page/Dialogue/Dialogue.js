@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ToastContainer } from 'react-toastify'
 import { Toast, ToastBody, ToastHeader, Button } from 'reactstrap'
@@ -10,9 +11,7 @@ import {
     updateDialogueInDatabase,
     pushNewMessageInDatabase
 } from '../../../../actions'
-import NavBar from '../NavBar/NavBar'
-import User from '../User/User'
-import { calculateDate } from '../Operator-page'
+import { calculateDate } from '../../../../utils'
 import OperatorAnswer from './OperatorAnswer'
 import ShowBigPicture from './ShowBigPicture'
 import './Dialogue.css'
@@ -20,7 +19,6 @@ import './Dialogue.css'
 function Dialogue({
     fetchDialoguesFromDatabase,
     dialogues,
-    itemId,
     updateDialogueInDatabase,
     settingsUser,
     pushNewMessageInDatabase
@@ -34,6 +32,8 @@ function Dialogue({
     let isSavedCase = false
 
     let objResultDialogue = {}
+
+    let { itemId } = useParams()
 
     function filterData() {
         for (let objDialogue in dialogues) {
@@ -177,59 +177,53 @@ function Dialogue({
         ) : null
 
     return (
-        <div className="OperatorPage">
-            <NavBar />
-            <div className="containerBodyOperatorPage">
-                <User />
-                <div className="body">
-                    <ToastContainer />
-                    <div className="containerDialogue">
-                        <div className="containerDialogue__client">
-                            {nameClient}
-                            {isSavedCase ? (
-                                <Button
-                                    type="button"
-                                    outline
-                                    color="danger"
-                                    size="sm"
-                                    onClick={() => {
-                                        updateDialogueInDatabase(
-                                            { isSave: false },
-                                            itemId
-                                        )
-                                        fetchDialoguesFromDatabase()
-                                    }}
-                                >
-                                    Удалить из сохранённых
-                                </Button>
-                            ) : (
-                                <Button
-                                    outline
-                                    color="primary"
-                                    size="sm"
-                                    onClick={() => {
-                                        updateDialogueInDatabase(
-                                            { isSave: true },
-                                            itemId
-                                        )
-                                        fetchDialoguesFromDatabase()
-                                    }}
-                                >
-                                    Сохранить диалог
-                                </Button>
-                            )}
-                        </div>
-                        <div className="containerDialogue__containerMessages">
-                            <div className="containerDialogue__containerMessages_messages">
-                                {result}
-                            </div>
-                        </div>
-                        {resultFinishedDialogue}
-                        <OperatorAnswer itemId={itemId} />
+        <>
+            <ToastContainer />
+            <div className="containerDialogue">
+                <div className="containerDialogue__client">
+                    {nameClient}
+                    {isSavedCase ? (
+                        <Button
+                            type="button"
+                            outline
+                            color="danger"
+                            size="sm"
+                            onClick={() => {
+                                updateDialogueInDatabase(
+                                    { isSave: false },
+                                    itemId
+                                )
+                                fetchDialoguesFromDatabase()
+                            }}
+                        >
+                            Удалить из сохранённых
+                        </Button>
+                    ) : (
+                        <Button
+                            outline
+                            color="primary"
+                            size="sm"
+                            onClick={() => {
+                                updateDialogueInDatabase(
+                                    { isSave: true },
+                                    itemId
+                                )
+                                fetchDialoguesFromDatabase()
+                            }}
+                        >
+                            Сохранить диалог
+                        </Button>
+                    )}
+                </div>
+                <div className="containerDialogue__containerMessages">
+                    <div className="containerDialogue__containerMessages_messages">
+                        {result}
                     </div>
                 </div>
+                {resultFinishedDialogue}
+                <OperatorAnswer itemId={itemId} />
             </div>
-        </div>
+        </>
     )
 }
 
