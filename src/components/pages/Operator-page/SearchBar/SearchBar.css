@@ -40,6 +40,10 @@
     font-weight: bold;
 }
 
+.resultSearch > a {
+    text-decoration: none;
+}
+
 .resultSearch__item:hover {
     border: 3px solid lightblue;
 }

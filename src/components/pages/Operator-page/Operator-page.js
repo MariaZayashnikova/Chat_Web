@@ -1,17 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Outlet } from 'react-router-dom'
-import { fetchUserSettings, getTopicsFromDB } from '../../../actions'
+import { Outlet, useLocation } from 'react-router-dom'
+import { fetchUserSettings, getTopicsFromDB, setValueSearch } from '../../../actions'
 import NavBar from './NavBar/NavBar'
 import User from './User/User'
 import './Operator-page.css'
 
-function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB }) {
+function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB, setValueSearch }) {
+    let location = useLocation();
+
+    useEffect(() => {
+        setValueSearch(null)
+    }, [location])
+
     if (!settingsUser) {
         fetchUserSettings(user.uid)
         getTopicsFromDB()
     }
-    console.log('operator page')
+
     if (settingsUser) {
         let newArr = []
         for (let i = 0; i < settingsUser.phrases.length; i++) {
@@ -39,6 +45,7 @@ const mapStateToProps = ({ user, settingsUser }) => ({ user, settingsUser })
 const mapDispatchToProps = {
     fetchUserSettings,
     getTopicsFromDB,
+    setValueSearch
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OperatorPage)

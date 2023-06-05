@@ -23,9 +23,9 @@ function InWorkCases({
 }) {
     if (!dialogues) fetchDialoguesFromDatabase()
 
-    // let timerId = setInterval(() => {
-    //     fetchDialoguesFromDatabase()
-    // }, 60000)
+    let timerId = setInterval(() => {
+        fetchDialoguesFromDatabase()
+    }, 60000)
 
     let allResultFilter = []
 

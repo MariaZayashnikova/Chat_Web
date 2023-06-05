@@ -26,10 +26,10 @@ function ActiveCases({
     user,
 }) {
     if (!dialogues) fetchDialoguesFromDatabase()
-    console.log('activeCases')
-    // let timerId = setInterval(() => {
-    //     fetchDialoguesFromDatabase()
-    // }, 30000)
+
+    let timerId = setInterval(() => {
+        fetchDialoguesFromDatabase()
+    }, 30000)
 
     let allResultFilter = []
 

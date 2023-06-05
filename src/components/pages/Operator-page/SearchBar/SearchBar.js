@@ -3,7 +3,7 @@ import { Input, Label } from 'reactstrap'
 import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem } from 'reactstrap'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
     fetchDialoguesFromDatabase,
     setValueSearch,
@@ -102,35 +102,33 @@ function SearchBar({
     if (dialogues && valueSearch) search()
 
     const ViewResultSearch = ({ arrResult }) => {
-        const navigate = useNavigate()
-        return arrResult.map((elem) => {
+        return arrResult.map((elem, i) => {
             return (
-                <ListGroupItem
-                    key={elem.idDialogue}
-                    className="resultSearch__item"
-                    onClick={() => {
-                        setValueSearch(null)
-                        navigate(`/OperatorPage/Dialogue/${elem.idDialogue}`)
-                        if (status === 'active') {
-                            updateDialogueInDatabase(
-                                {
-                                    status: 'inWork',
-                                    operatorUID: user.uid,
-                                },
-                                elem.idDialogue
-                            )
-                        }
-                    }}
-                >
-                    <div className="resultSearch__dialogue">
-                        <p className="resultSearch__dialogue_nameClient">
-                            {elem.client}
-                        </p>
-                        <p>{elem.topic}</p>
-                        <p>{elem.subtopic}</p>
-                    </div>
-                    <p>{elem.content}</p>
-                </ListGroupItem>
+                <Link key={elem.idDialogue + i} to={`/OperatorPage/Dialogue/${elem.idDialogue}`}>
+                    <ListGroupItem
+                        className="resultSearch__item"
+                        onClick={() => {
+                            if (status === 'active') {
+                                updateDialogueInDatabase(
+                                    {
+                                        status: 'inWork',
+                                        operatorUID: user.uid,
+                                    },
+                                    elem.idDialogue
+                                )
+                            }
+                        }}
+                    >
+                        <div className="resultSearch__dialogue">
+                            <p className="resultSearch__dialogue_nameClient">
+                                {elem.client}
+                            </p>
+                            <p>{elem.topic}</p>
+                            <p>{elem.subtopic}</p>
+                        </div>
+                        <p>{elem.content}</p>
+                    </ListGroupItem>
+                </Link>
             )
         })
     }
