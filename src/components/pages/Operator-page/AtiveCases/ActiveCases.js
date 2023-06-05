@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import {
@@ -76,7 +76,6 @@ function ActiveCases({
     if (displayedFilterResults.length === allResultFilter.length) hasMoreActiveCases = false
 
     const ViewResult = ({ arrResult }) => {
-        const navigate = useNavigate()
         return arrResult.map((elem) => {
             let timestamp = calculateDate(elem.time)
 
@@ -108,25 +107,22 @@ function ActiveCases({
                             <div className="dialogue__actions_time">
                                 <div>{timestamp}</div>
                             </div>
-                            <Button
-                                type="button"
-                                outline
-                                color="primary"
-                                size="sm"
-                                onClick={() => {
-                                    // clearInterval(timerId)
-                                    navigate(`/OperatorPage/Dialogue/${elem.idDialogue}`)
-                                    updateDialogueInDatabase(
-                                        {
-                                            status: 'inWork',
-                                            operatorUID: user.uid,
-                                        },
-                                        elem.idDialogue
-                                    )
-                                }}
-                            >
-                                Войти в диалог
-                            </Button>
+                            <Link to={`/OperatorPage/Dialogue/${elem.idDialogue}`}>
+                                <Button
+                                    type="button"
+                                    outline
+                                    color="primary"
+                                    size="sm"
+                                    onClick={() => {
+                                        updateDialogueInDatabase(
+                                            { status: 'inWork', operatorUID: user.uid },
+                                            elem.idDialogue
+                                        )
+                                    }}
+                                >
+                                    Войти в диалог
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </ListGroupItem>

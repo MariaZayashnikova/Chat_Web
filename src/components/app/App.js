@@ -25,12 +25,12 @@ function App({ user }) {
             <Header />
             <Routes>
                 <Route path="/" element={user ? <OperatorPage /> : <AuthorizationPage />}>
-                    <Route path='/OperatorPage' element={null}>
+                    <Route path='/OperatorPage'>
                         <Route path='Active' element={<ActiveCases />} />
                         <Route path="inWork" element={<InWorkCases />} />
                         <Route path="Saved" element={<SavedCases />} />
                         <Route path="Finished" element={<FinishedCases />} />
-                        <Route path="Dialogue/:itemId " element={<Dialogue />} />
+                        <Route path="Dialogue/:itemId" element={<Dialogue />} />
                     </Route>
                 </Route>
                 <Route path="/Registration" element={<RegistrationPage />} />

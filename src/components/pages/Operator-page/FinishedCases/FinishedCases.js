@@ -4,7 +4,7 @@ import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import {
     changeValueActiveCases,
@@ -78,7 +78,6 @@ function FinishedCases({
     if (displayedFilterResults.length === allResultFilter.length) hasMoreActiveCases = false
 
     const ViewResult = ({ arrResult }) => {
-        const navigate = useNavigate()
         return arrResult.map((elem) => {
             let timestamp = calculateDate(parseInt(elem.time, 10))
             let CalcStars = () => {
@@ -129,18 +128,16 @@ function FinishedCases({
                                 </div>
                             </div>
                             <div className="dialogueFinished__buttons">
-                                <Button
-                                    type="button"
-                                    outline
-                                    color="primary"
-                                    size="sm"
-                                    onClick={() => {
-                                        // clearInterval(timerId)
-                                        navigate(`/OperatorPage/Dialogue/${elem.idDialogue}`)
-                                    }}
-                                >
-                                    Войти в диалог
-                                </Button>
+                                <Link to={`/OperatorPage/Dialogue/${elem.idDialogue}`}>
+                                    <Button
+                                        type="button"
+                                        outline
+                                        color="primary"
+                                        size="sm"
+                                    >
+                                        Войти в диалог
+                                    </Button>
+                                </Link>
                                 {isSavedCase ? (
                                     <Button
                                         type="button"

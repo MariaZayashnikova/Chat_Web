@@ -4,7 +4,7 @@ import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import {
     fetchDialoguesFromDatabase,
@@ -76,7 +76,6 @@ function SavedCases({
     if (displayedFilterResults.length === allResultFilter.length) hasMoreActiveCases = false
 
     const ViewResult = ({ arrResult }) => {
-        const navigate = useNavigate()
         return arrResult.map((elem) => {
             let timestamp = calculateDate(parseInt(elem.time, 10))
             return (
@@ -107,19 +106,16 @@ function SavedCases({
                             <div className="dialogue__actions_time">
                                 <div>{timestamp}</div>
                             </div>
-                            <Button
-                                type="button"
-                                outline
-                                color="primary"
-                                size="sm"
-                                className="dialogue__actions_button"
-                                onClick={() => {
-                                    // clearInterval(timerId)
-                                    navigate(`/OperatorPage/Dialogue/${elem.idDialogue}`)
-                                }}
-                            >
-                                Войти в диалог
-                            </Button>
+                            <Link to={`/OperatorPage/Dialogue/${elem.idDialogue}`}>
+                                <Button
+                                    type="button"
+                                    outline
+                                    color="primary"
+                                    size="sm"
+                                >
+                                    Войти в диалог
+                                </Button>
+                            </Link>
                             <Button
                                 type="button"
                                 outline
