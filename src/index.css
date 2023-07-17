@@ -36,7 +36,7 @@ code {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: calc(300px + (500 - 300) * ((100vw - 500px)/(1920-500)));
+  width: calc(300px + (500 - 300) * ((100vw - 500px) / (1920 - 500)));
   margin: 20px 5px;
   background-image: linear-gradient(to right bottom, #00bfff, blue);
   border-radius: 15px;
@@ -47,7 +47,7 @@ code {
   width: 100%;
   text-align: center;
   color: white;
-  font-size: calc(16px + (26 -16)* ((100vw - 500px)/(1920-500)));
+  font-size: calc(16px + (26 - 16) * ((100vw - 500px) / (1920 - 500)));
 }
 
 .form {
@@ -81,7 +81,7 @@ code {
 
 .error {
   color: red;
-  font-size: calc(12px + (18 -12)* ((100vw - 500px)/(1920-500)));
+  font-size: calc(12px + (18 - 12) * ((100vw - 500px) / (1920 - 500)));
   margin: 5px 0;
   border-radius: 10px;
   padding: 10px 10px;
@@ -91,7 +91,7 @@ code {
 
 .container-links {
   margin: 5px 0 15px 0;
-  font-size: calc(12px + (18 -12)* ((100vw - 500px)/(1920-500)));
+  font-size: calc(12px + (18 - 12) * ((100vw - 500px) / (1920 - 500)));
 }
 
 .link {

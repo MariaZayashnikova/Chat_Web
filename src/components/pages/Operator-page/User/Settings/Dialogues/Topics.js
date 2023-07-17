@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Fade, ListGroup, ListGroupItem } from 'reactstrap'
 import { connect } from 'react-redux'
-import './SettingsUserDialogue.css'
+import './Settings-dialogue.css'
 
 function Topics({ topics, }) {
     const [fadeIn, setFadeIn] = useState(true)

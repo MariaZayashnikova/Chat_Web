@@ -1,0 +1,8 @@
+#picture-modal {
+    max-width: 50%;
+}
+ 
+#picture-modal button {
+    position: absolute;
+    right: 10px;
+}

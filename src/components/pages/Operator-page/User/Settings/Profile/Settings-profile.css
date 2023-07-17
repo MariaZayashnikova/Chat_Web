@@ -1,40 +1,35 @@
-.formSettings {
+.Settings-profile {
     display: flex;
     flex-direction: column;
     width: 70%;
     font-family: "Trebuchet MS";
 }
 
-.formSettings__inputs {
+.Settings-profile-inputs {
     display: flex;
     flex-direction: column;
     margin: 10px 0;
 }
 
-.formSettings__containerAvatar {
+.Settings-profile-inputs label {
+    margin-bottom: 10px;
+}
+
+.Settings-profile-avatar {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.formSettings__inputs_label {
-    margin-bottom: 10px;
-}
-
-.formSettings_btn {
+.Settings-profile button {
     margin: 10px 0;
 }
 
-.formSettings__avatar {
+.avatar {
     width: 200px;
 }
 
-.formSettings__avatar_image {
+.avatar_image {
     border-radius: 100px;
     cursor: pointer;
-}
-
-.formSettings__containerFlex {
-    display: flex;
-    justify-content: space-between;
 }

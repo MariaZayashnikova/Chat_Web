@@ -16,9 +16,7 @@ function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB, 
     if (!settingsUser) {
         fetchUserSettings(user.uid)
         getTopicsFromDB()
-    }
-
-    if (settingsUser) {
+    } else {
         let newArr = []
         for (let i = 0; i < settingsUser.phrases.length; i++) {
             if (settingsUser.phrases[i]) {
@@ -31,10 +29,11 @@ function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB, 
     return (
         <div className="Operator-page">
             <NavBar />
-            <div className="containerBodyOperatorPage">
+            <div className="container-content">
                 <User />
-                <div className="body"></div>
-                <Outlet />
+                <div className="content">
+                    <Outlet />
+                </div>
             </div>
         </div>
     )

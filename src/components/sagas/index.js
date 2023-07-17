@@ -440,8 +440,8 @@ function* fetchResetPasswordUser() {
     yield takeLatest('resetPassword', fetchResetPassword)
 }
 
-function* signOutUser() {
-    yield takeLatest('singnOutUser', userLoggedOut)
+function* signOut() {
+    yield takeLatest('signOutUser', userLoggedOut)
 }
 
 function* fromDatabase() {
@@ -454,7 +454,7 @@ export default function* rootSaga() {
         fetchRegistrationUser(),
         fetchAuthorizationViaGoogleUser(),
         fetchResetPasswordUser(),
-        signOutUser(),
+        signOut(),
         fromDatabase(),
         pushDialogueInDB(),
         update_Dialogue(),

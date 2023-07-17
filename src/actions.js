@@ -20,7 +20,7 @@ export const fetchMessageFailure = (error) => ({
 })
 export const clearErrors = () => ({ type: 'clearErrors' })
 export const resetPassword = (data) => ({ type: 'resetPassword', data })
-export const singnOutUser = () => ({ type: 'singnOutUser' })
+export const signOutUser = () => ({ type: 'signOutUser' })
 export const userLoggedOut = () => ({ type: 'userLoggedOut' })
 export const fetchDialoguesFromDatabase = () => ({
     type: 'fetchDialoguesFromDatabase',

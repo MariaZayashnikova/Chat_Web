@@ -12,8 +12,8 @@ import {
     updatedUserName,
     updateUsersAvatar
 } from '../../../../../../actions'
-import ShowBigPicture from '../../../Dialogue/ShowBigPicture'
-import './SettingsProfile.css'
+import PicturePreview from '../../../../../Picture-preview/Picture-preview'
+import './Settings-profile.css'
 
 function SettingsProfile({
     fetchMessageFailure,
@@ -26,6 +26,7 @@ function SettingsProfile({
     closeModal,
     updateUsersAvatar
 }) {
+
     let initialUserName = user.name ? user.name : ''
 
     let fileInput = React.createRef()
@@ -33,23 +34,20 @@ function SettingsProfile({
     function onSubmit(values) {
         if (values.password) {
             if (values.password === values.passwordConfirmation) {
-                if (
-                    !/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/i.test(
-                        values.password
-                    )
-                ) {
+                if (!/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/i.test(values.password)) {
                     const error = {
-                        message:
-                            'Пароль должен содержать цифру, буквы в нижнем и верхнем регистре и иметь длину не менее 8 знаков',
+                        message: 'Пароль должен содержать цифру, буквы в нижнем и верхнем регистре и иметь длину не менее 8 знаков'
                     }
                     fetchMessageFailure(error)
+
                 } else {
                     if (errorFromState) clearErrors()
+
                     updatePassword(values.password)
                 }
             } else {
                 const error = {
-                    message: 'Пароли не совпадают',
+                    message: 'Пароли не совпадают'
                 }
                 fetchMessageFailure(error)
             }
@@ -97,30 +95,21 @@ function SettingsProfile({
                     avatar: '',
                 }}
                 render={({ handleSubmit, values }) => (
-                    <form className="formSettings" onSubmit={handleSubmit}>
+                    <form className="Settings-profile" onSubmit={handleSubmit}>
                         <h2>Настройки профиля</h2>
-                        <div className="formSettings__inputs">
-                            <label className="formSettings__inputs_label">
-                                Имя:
-                            </label>
-                            <Field
-                                name="name"
-                                component="input"
-                                value={values.name}
-                            />
+                        <div className="Settings-profile-inputs">
+                            <label>  Имя: </label>
+                            <Field name="name" component="input" value={values.name} />
                         </div>
-                        <div className="formSettings__containerAvatar">
+                        <div className="Settings-profile-avatar">
                             <label>Аватар:</label>
                             {user.photoUrl ? (
-                                <div className="formSettings__avatar">
-                                    <ShowBigPicture srcImg={user.photoUrl} style={{ name: "formSettings__avatar_image" }} />
+                                <div className="avatar">
+                                    <PicturePreview srcImg={user.photoUrl} style={{ name: "avatar_image" }} />
                                 </div>
                             )
-                                : <FontAwesomeIcon
-                                    icon={['fas', 'user']}
-                                    color="darkblue"
-                                    size="3x"
-                                />}
+                                : <FontAwesomeIcon icon={['fas', 'user']} color="darkblue" size="3x" />
+                            }
                             <Field name="avatar">
                                 {(props) => (
                                     <div>
@@ -134,33 +123,15 @@ function SettingsProfile({
                                 )}
                             </Field>
                         </div>
-                        <div className="formSettings__inputs">
-                            <label className="formSettings__inputs_label">
-                                Пароль
-                            </label>
-                            <Field
-                                name="password"
-                                type="password"
-                                component="input"
-                                value={values.password}
-                            />
+                        <div className="Settings-profile-inputs">
+                            <label>  Пароль </label>
+                            <Field name="password" type="password" component="input" value={values.password} />
                         </div>
-                        <div className="formSettings__inputs">
-                            <label className="formSettings__inputs_label">
-                                Подтверждение пароля
-                            </label>
-                            <Field
-                                name="passwordConfirmation"
-                                type="password"
-                                component="input"
-                                value={values.passwordConfirmation}
-                            />
+                        <div className="Settings-profile-inputs">
+                            <label>  Подтверждение пароля </label>
+                            <Field name="passwordConfirmation" type="password" component="input" value={values.passwordConfirmation} />
                         </div>
-                        <Button
-                            className="formSettings_btn"
-                            color="primary"
-                            type="submit"
-                        >
+                        <Button color="primary" type="submit" >
                             Обновить профиль
                         </Button>
                     </form>

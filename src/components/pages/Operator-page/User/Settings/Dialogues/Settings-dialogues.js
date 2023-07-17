@@ -1,31 +1,22 @@
 import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
-import {
-    fetchUserSettings,
-    updateSettingsDialogue,
-} from '../../../../../../actions'
+import { fetchUserSettings, updateSettingsDialogue, } from '../../../../../../actions'
 import ReadyPhrases from './ReadyPhrases'
 import AutomaticGreeting from './AutomaticGreeting'
 import Topics from './Topics'
-import './SettingsUserDialogue.css'
+import './Settings-dialogue.css'
 
-function SettingsUserDialogues({
-    updateSettingsDialogue,
-    user,
-    settingsUser,
-    fetchUserSettings,
-}) {
-    let submit = useCallback(values => {
+function SettingsDialogues({ updateSettingsDialogue, user, settingsUser, fetchUserSettings, }) {
+
+    const submit = useCallback(values => {
         updateSettingsDialogue(values, user.uid)
         fetchUserSettings(user.uid)
-
     }, [fetchUserSettings, updateSettingsDialogue, user.uid])
 
-
     return (
-        <div className="containerSettingsDialogues">
+        <div className="Settings-dialogues">
             <h2>Настройки Диалогов</h2>
-            <div className="settingsDialogue">
+            <div className="Settings-dialogues-container">
                 <div className="settingsDialogue__block">
                     <div className="settingsDialogue__readyPhrases">
                         <h4>Готовые фразы:</h4>
@@ -46,4 +37,4 @@ const mapDispatchToProps = {
     fetchUserSettings,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsUserDialogues)
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsDialogues)

@@ -3,7 +3,7 @@ import { Formik, Form, Field, FieldArray } from 'formik'
 import { Button, Input } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import uniqid from 'uniqid';
-import './SettingsUserDialogue.css'
+import './Settings-dialogue.css'
 
 function ReadyPhrases({ phrases, submit }) {
     const [valueInput, setValueInput] = useState('')

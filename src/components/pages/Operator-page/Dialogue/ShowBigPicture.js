@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Modal, ModalBody } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Dialogue.css'
-
+// заменить на picture-preview
 function ShowBigPicture({ srcImg, style }) {
     const [modal, setModal] = useState(false)
 

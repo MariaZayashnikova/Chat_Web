@@ -1,9 +1,9 @@
-.containerSettingsDialogues {
+.Settings-dialogues {
     width: 70%;
     font-family: "Trebuchet MS";
 }
 
-.settingsDialogue {
+.Settings-dialogues-container {
     display: flex;
     justify-content: space-between;
     padding: 5px;

@@ -2,13 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { pushDialogue, singnOutUser } from '../../../../actions'
+import { pushDialogue, signOutUser } from '../../../../actions'
 import Spinner from '../../../Spinner/Spinner'
-import SettingsUser from './SettingsUser/SettingsUser'
+import Settings from './Settings/Settings'
 import './User.css'
 
-function User({ user, singnOutUser, pushDialogue, loadingFromState }) {
-    function addDialogueCustom() {
+function User({ user, signOutUser, pushDialogue, loadingFromState }) {
+    function addDialogueCustom() { // функция для добавления нового обращения, пока не готово мобильное приложение
         let name = prompt('Ваше имя')
         let content = prompt('Тест обращения')
         let time = new Date().getTime()
@@ -29,20 +29,17 @@ function User({ user, singnOutUser, pushDialogue, loadingFromState }) {
     }
 
     return (
-        <div className="containerUser">
-            <h2 className="containerUser__name">
+        <div className="User">
+            <h2 className="User__name">
                 {user.photoUrl ? (
-                    <div className="containerUser__avatar">
-                        <img src={user.photoUrl} alt="avatar" width="100%" className="containerUser__avatar_image" />
+                    <div className="User__avatar">
+                        <img src={user.photoUrl} alt="avatar" width="100%" className="User__avatar_image" />
                     </div>
-                ) : <FontAwesomeIcon
-                    icon={['fas', 'user']}
-                    color="darkblue"
-                    className="containerUser__icon"
-                />}
+                ) : <FontAwesomeIcon icon={['fas', 'user']} color="darkblue" className="User__icon" />}
 
                 {user.name ? user.name : user.email}
-                <SettingsUser />
+
+                <Settings />
             </h2>
 
             {user.uid === 'BPAkuUugWZZ1OPnUkTUOtIanWQD2' ? (
@@ -52,12 +49,8 @@ function User({ user, singnOutUser, pushDialogue, loadingFromState }) {
             ) : null}
 
             {loadingFromState ? <Spinner /> : null}
-            <Button
-                className="btnCustom"
-                outline
-                color="primary"
-                onClick={() => singnOutUser()}
-            >
+
+            <Button outline color="primary" className="User__sign-out" onClick={() => signOutUser()}>
                 Выйти
             </Button>
         </div>
@@ -66,6 +59,6 @@ function User({ user, singnOutUser, pushDialogue, loadingFromState }) {
 
 const mapStateToProps = ({ user, loadingFromState }) => ({ loadingFromState, user })
 
-const mapDispatchToProps = { singnOutUser, pushDialogue }
+const mapDispatchToProps = { signOutUser, pushDialogue }
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

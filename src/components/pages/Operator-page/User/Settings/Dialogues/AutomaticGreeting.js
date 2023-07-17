@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Input } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import './SettingsUserDialogue.css'
+import './Settings-dialogue.css'
 
 function AutomaticGreeting({ automaticGreeting, submit }) {
     const [valueInputAutomaticGreeting, setValueInputAutomaticGreeting] =

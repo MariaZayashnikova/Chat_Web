@@ -56,7 +56,7 @@ const reducer = (state = initialState, action) => {
                 topics: null,
                 loadingFromState: false,
             }
-        case 'singnOutUser':
+        case 'signOutUser':
             return {
                 ...state,
                 loadingFromState: true,
