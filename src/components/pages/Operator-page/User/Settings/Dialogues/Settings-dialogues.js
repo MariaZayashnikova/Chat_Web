@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
 import { fetchUserSettings, updateSettingsDialogue, } from '../../../../../../actions'
-import ReadyPhrases from './ReadyPhrases'
-import AutomaticGreeting from './AutomaticGreeting'
+import ReadyPhrases from './Ready-phrases'
+import AutomaticGreeting from './Automatic-greeting'
 import Topics from './Topics'
 import './Settings-dialogue.css'
 
@@ -16,9 +16,9 @@ function SettingsDialogues({ updateSettingsDialogue, user, settingsUser, fetchUs
     return (
         <div className="Settings-dialogues">
             <h2>Настройки Диалогов</h2>
-            <div className="Settings-dialogues-container">
-                <div className="settingsDialogue__block">
-                    <div className="settingsDialogue__readyPhrases">
+            <div className="Settings-dialogues-containers">
+                <div className="Settings-dialogues-container">
+                    <div>
                         <h4>Готовые фразы:</h4>
                         <ReadyPhrases phrases={settingsUser.phrases} submit={submit} />
                         <AutomaticGreeting submit={submit} automaticGreeting={settingsUser.automaticGreeting} />

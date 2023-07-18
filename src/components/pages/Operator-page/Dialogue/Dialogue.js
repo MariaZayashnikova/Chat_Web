@@ -13,7 +13,7 @@ import {
 } from '../../../../actions'
 import { calculateDate } from '../../../../utils'
 import OperatorAnswer from './OperatorAnswer'
-import ShowBigPicture from './ShowBigPicture'
+import PicturePreview from '../../../Picture-preview/Picture-preview'
 import './Dialogue.css'
 
 function Dialogue({
@@ -155,7 +155,7 @@ function Dialogue({
                         {res ? (
                             <>
                                 <div>{startSrt}</div>
-                                <ShowBigPicture srcImg={res[0]} style={{ name: "containerDialogue__containerMessages_image" }} />
+                                <PicturePreview srcImg={res[0]} style={{ name: "containerDialogue__containerMessages_image" }} />
                                 <div>{endStr}</div>
                             </>
                         ) : (

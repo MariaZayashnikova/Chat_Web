@@ -3,39 +3,30 @@
     font-family: "Trebuchet MS";
 }
 
-.Settings-dialogues-container {
+.Settings-dialogues-containers {
     display: flex;
     justify-content: space-between;
     padding: 5px;
 }
 
-.settingsDialogue__block {
+.Settings-dialogues-container {
     width: 50%;
     padding: 5px;
 }
 
-.settingsDialogue__greetings {
+.settings-dialogue-item {
     display: flex;
     margin: 10px 0;
 }
 
-.settingsDialogue__readyPhrases_phrase {
-    display: flex;
-    margin: 10px 0;
-}
-
-.settingsDialogue__readyPhrases_phraseBtn {
+.settings-dialogue-action {
     margin: 0 10px;
-}
-
-.settingsDialogue__readyPhrases_containerAdd {
-    display: flex;
 }
 
 .max-height {
     max-height: 25px;
 }
 
-.settingsDialogue__containerTopics {
+.settings-dialogue-topics {
     padding: 5px;
 }

@@ -10,10 +10,8 @@ function AutomaticGreeting({ automaticGreeting, submit }) {
     const [showBtnSubmit, setShowBtnSubmit] = useState(false)
 
     return (
-        <div className="settingsDialogue__greetings">
-            <div>
-                Автоматическое приветствие:
-            </div>
+        <div className="settings-dialogue-item">
+            <div>  Автоматическое приветствие: </div>
             <Input
                 value={valueInputAutomaticGreeting}
                 onChange={(e) => {
@@ -29,12 +27,9 @@ function AutomaticGreeting({ automaticGreeting, submit }) {
                         submit({ automaticGreeting: valueInputAutomaticGreeting })
                         setShowBtnSubmit(false)
                     }}
-                    className="settingsDialogue__readyPhrases_phraseBtn"
+                    className="settings-dialogue-action"
                 >
-                    <FontAwesomeIcon
-                        icon={['fas', 'check']}
-                        color="white"
-                    />
+                    <FontAwesomeIcon icon={['fas', 'check']} color="white" />
                 </Button>
             ) : null}
         </div>

@@ -42,17 +42,11 @@ function ReadyPhrases({ phrases, submit }) {
                             <FieldArray
                                 name="phrases"
                                 render={(arrayHelpers) => (
-                                    < div >
+                                    <div>
                                         {!!values?.phrases?.length && values.phrases.map(
                                             (phrase, index) => (
-                                                <div
-                                                    key={phrase.id}
-                                                    className="settingsDialogue__readyPhrases_phrase"
-                                                >
-                                                    <Field
-                                                        as="div"
-                                                        name={`phrase.${phrase.id}`}
-                                                    >
+                                                <div key={phrase.id} className="settings-dialogue-item" >
+                                                    <Field as="div" name={`phrase.${phrase.id}`} >
                                                         {phrase.content}
                                                     </Field>
                                                     <Button
@@ -60,16 +54,15 @@ function ReadyPhrases({ phrases, submit }) {
                                                         color="danger"
                                                         outline
                                                         size="sm"
-                                                        className="settingsDialogue__readyPhrases_phraseBtn max-height"
+                                                        className="settings-dialogue-action max-height"
                                                         onClick={() => handleClickBtnDelete(arrayHelpers, index, phrase.id, values)}
                                                     >
                                                         -
                                                     </Button>
                                                 </div>
                                             )
-                                        )
-                                        }
-                                        < div className="settingsDialogue__readyPhrases_containerAdd">
+                                        )}
+                                        <div className="settings-dialogue-item">
                                             {showInput ? (
                                                 <>
                                                     <Input
@@ -79,7 +72,7 @@ function ReadyPhrases({ phrases, submit }) {
                                                     <Button
                                                         color="success"
                                                         type="submit"
-                                                        className="settingsDialogue__readyPhrases_phraseBtn"
+                                                        className="settings-dialogue-action"
                                                         onClick={() => {
                                                             if (valueInput) {
                                                                 let res = createObjNewPhrase(valueInput)
@@ -87,10 +80,7 @@ function ReadyPhrases({ phrases, submit }) {
                                                             }
                                                         }}
                                                     >
-                                                        <FontAwesomeIcon
-                                                            icon={['fas', 'check',]}
-                                                            color="white"
-                                                        />
+                                                        <FontAwesomeIcon icon={['fas', 'check',]} color="white" />
                                                     </Button>
                                                 </>
                                             ) : (
@@ -108,7 +98,6 @@ function ReadyPhrases({ phrases, submit }) {
                                     </div>
                                 )}
                             />
-
                         </Form>
                     )}
                 </Formik>
@@ -116,6 +105,5 @@ function ReadyPhrases({ phrases, submit }) {
         </>
     )
 }
-
 
 export default ReadyPhrases

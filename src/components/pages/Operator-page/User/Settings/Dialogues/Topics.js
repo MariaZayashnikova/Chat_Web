@@ -3,7 +3,7 @@ import { Fade, ListGroup, ListGroupItem } from 'reactstrap'
 import { connect } from 'react-redux'
 import './Settings-dialogue.css'
 
-function Topics({ topics, }) {
+function Topics({ topics }) {
     const [fadeIn, setFadeIn] = useState(true)
     const [subtopics, setSubtopics] = useState(Object.values(topics)[0])
     const [currentIndex, setCurrentIndex] = useState(0)
@@ -54,21 +54,20 @@ function Topics({ topics, }) {
     }
 
     return (
-        <div className="settingsDialogue__block">
+        <div className="Settings-dialogues-container">
             <div>
                 <h4>Список тем</h4>
-                <div className="settingsDialogue__containerTopics">
+                <div className="settings-dialogue-topics">
                     <ViewTopics />
                 </div>
             </div>
             <div>
                 <h4>Список подтем</h4>
-                <div className="settingsDialogue__containerTopics">
+                <div className="settings-dialogue-topics">
                     <ViewSubtopics />
                 </div>
             </div>
         </div>
-
     )
 }
 
