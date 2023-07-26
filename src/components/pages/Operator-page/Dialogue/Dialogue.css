@@ -1,10 +1,4 @@
-.containerDialogue {
-    padding: 10px;
-    border-radius: 15px;
-    margin-top: 10px;
-}
-
-.containerDialogue__client {
+.Dialogue__client {
     display: flex;
     font-weight: bold;
     font-size: 24px;
@@ -14,28 +8,26 @@
     box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.1);
 }
 
-.containerDialogue__client button {
+.Dialogue__client button {
     margin-left: 15px;
 }
 
-.infoMessage {
+.info-message {
     position: relative;
 }
 
-.timeMessage {
+.time-message {
     position: absolute;
     top: 0.5rem;
     right: 0.75rem;
 }
 
-.containerDialogue__containerMessages .containerDialogue__containerMessages_messages {
-    margin-bottom: 10px;
+.Dialogue__messages .messages {
     height: 550px;
     overflow: auto;
     display: flex;
     flex-direction: column-reverse;
     padding: 7px;
-    border-radius: 15px;
 }
 
 .containerDialogue__Answers {
@@ -89,29 +81,29 @@
     width: 60%;
 }
 
-.containerDialogue__containerMessages_messages .operatorMessage {
+.messages .operator-message {
     align-self: flex-end;
     margin-bottom: 5px;
     background: dodgerblue;
     color: white;
 }
 
-.containerDialogue__containerMessages_messages .clientMessage {
+.messages .client-message {
     background: lightgrey;
+    margin-bottom: 5px;
 }
 
-.containerDialogue__containerMessages_image {
+.image-message {
     cursor: pointer;
 }
 
-.containerDialogue__resultFinishedDialogue {
-    width: 100%;
+.Dialogue__result {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.containerDialogue__resultFinishedDialogue_stars {
+.stars {
     margin: 10px 0;
 }
 

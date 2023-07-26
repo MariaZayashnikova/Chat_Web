@@ -16,6 +16,10 @@
     box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.1);
 }
 
+.content {
+    padding: 20px 10px;
+}
+
 .queue {
     z-index: 2;
 }

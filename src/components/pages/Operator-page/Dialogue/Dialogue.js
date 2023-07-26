@@ -16,56 +16,51 @@ import OperatorAnswer from './OperatorAnswer'
 import PicturePreview from '../../../Picture-preview/Picture-preview'
 import './Dialogue.css'
 
-function Dialogue({
-    fetchDialoguesFromDatabase,
-    dialogues,
-    updateDialogueInDatabase,
-    settingsUser,
-    pushNewMessageInDatabase
-}) {
-    if (!dialogues) fetchDialoguesFromDatabase()
+function Dialogue({ fetchDialoguesFromDatabase, dialogues, updateDialogueInDatabase, settingsUser, pushNewMessageInDatabase }) {
 
-    let allResultFilter = []
-
-    let nameClient
-
-    let isSavedCase = false
-
-    let objResultDialogue = {}
+    let messageArray = [],
+        clientName,
+        isSavedCase = false,
+        dialogueResultObj = {}
 
     let { itemId } = useParams()
 
     function filterData() {
-        for (let objDialogue in dialogues) {
-            if (objDialogue === itemId) {
-                let contentDialogue = dialogues[objDialogue]
-                nameClient = contentDialogue.client
-                if (contentDialogue.status) {
-                    objResultDialogue.completionTime =
-                        contentDialogue.completionTime
-                    objResultDialogue.grade = contentDialogue.grade
-                }
-                if (contentDialogue.isSave) {
-                    isSavedCase = contentDialogue.isSave
-                }
-                let messages = contentDialogue.messages
-                for (let messageTime in messages) {
-                    let contentMessage = messages[messageTime]
-                    let obj = {
-                        time: parseInt(messageTime, 10),
-                        content: contentMessage.content,
-                        isOperator: contentMessage.isOperator,
-                    }
-                    allResultFilter.push(obj)
-                }
+        for (let dialogueObj in dialogues) {
+            if (dialogueObj !== itemId) continue
+
+            let dialogue = dialogues[dialogueObj]
+            clientName = dialogue.client
+
+            if (dialogue.status) {
+                dialogueResultObj.completionTime = dialogue.completionTime
+                dialogueResultObj.grade = dialogue.grade
             }
+
+            if (dialogue.isSave) {
+                isSavedCase = dialogue.isSave
+            }
+
+            let messages = dialogue.messages
+
+            for (let messageTime in messages) {
+                let contentMessage = messages[messageTime]
+                let obj = {
+                    time: parseInt(messageTime, 10),
+                    content: contentMessage.content,
+                    isOperator: contentMessage.isOperator,
+                }
+                messageArray.push(obj)
+            }
+
+            break;
         }
     }
 
     function checkIsFirstMessage() {
-        if (!allResultFilter || !settingsUser.automaticGreeting) return
+        if (!messageArray || !settingsUser.automaticGreeting) return
 
-        if (allResultFilter.some(elem => elem.isOperator)) return
+        if (messageArray.some(elem => elem.isOperator)) return
 
         let time = new Date().getTime()
         let newMessage = {
@@ -81,6 +76,8 @@ function Dialogue({
     if (dialogues) {
         filterData()
         checkIsFirstMessage()
+    } else {
+        fetchDialoguesFromDatabase()
     }
 
     // setInterval(() => {
@@ -88,11 +85,11 @@ function Dialogue({
     // }, 30000)
 
     function analyzeContent(str) {
-        let options = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg']
-        let res
-        let index
-        let startSrt
-        let endStr
+        let options = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'],
+            res,
+            index,
+            startSrt,
+            endStr
 
         options.forEach((elem) => {
             let reg = new RegExp(`(http|https)://.*.${elem}`, 'gi')
@@ -107,81 +104,67 @@ function Dialogue({
         return { res, startSrt, endStr }
     }
 
-    const ViewResultFinishedDialogue = () => {
-        let CalcStars = () => {
-            let arr = []
-            for (let i = 0; i < objResultDialogue.grade; i++) {
-                arr.push(
-                    <FontAwesomeIcon
-                        icon={['fas', 'star']}
-                        key={i}
-                        color="yellow"
-                        size="3x"
-                    />
-                )
-            }
-            return arr
+    const CalcStars = () => {
+        let arr = []
+        for (let i = 0; i < dialogueResultObj.grade; i++) {
+            arr.push(<FontAwesomeIcon icon={['fas', 'star']} key={i} color="yellow" size="3x" />)
         }
+        return arr
+    }
+
+    const ViewDialogueResult = () => {
         return (
-            <div className="containerDialogue__resultFinishedDialogue">
-                <div className="containerDialogue__resultFinishedDialogue_stars">
+            <div className="Dialogue__result">
+                <div className="stars">
                     <CalcStars />
                 </div>
                 <p>
                     Диалог завершился &nbsp;
-                    {moment(objResultDialogue.completionTime).fromNow()}
+                    {moment(dialogueResultObj.completionTime).fromNow()}
                 </p>
             </div>
         )
     }
 
-    const ViewResult = ({ arrResult }) => {
-        arrResult.reverse()
-        return arrResult.map((elem) => {
+    const ViewMessages = ({ messageArray }) => {
+        messageArray.reverse()
+        return messageArray.map((elem) => {
             let timestamp = calculateDate(elem.time)
             let { res, startSrt, endStr } = analyzeContent(elem.content)
             return (
                 <Toast
-                    className={
-                        elem.isOperator ? 'operatorMessage' : 'clientMessage'
-                    }
+                    className={elem.isOperator ? 'operator-message' : 'client-message'}
                     key={elem.time}
                 >
-                    <ToastHeader className="infoMessage">
+                    <ToastHeader className="info-message">
                         {elem.isOperator ? 'Вы:' : 'Клиент:'}
-                        <div className="timeMessage">{timestamp}</div>
+                        <div className="time-message">{timestamp}</div>
                     </ToastHeader>
                     <ToastBody>
                         {res ? (
                             <>
                                 <div>{startSrt}</div>
-                                <PicturePreview srcImg={res[0]} style={{ name: "containerDialogue__containerMessages_image" }} />
+                                <PicturePreview srcImg={res[0]} style={{ name: "image-message" }} />
                                 <div>{endStr}</div>
                             </>
-                        ) : (
-                            elem.content
-                        )}
+                        ) : elem.content
+                        }
                     </ToastBody>
                 </Toast>
             )
         })
     }
 
-    let resultFinishedDialogue = objResultDialogue.completionTime ? (
-        <ViewResultFinishedDialogue />
-    ) : null
+    const dialogueResult = dialogueResultObj.completionTime ? <ViewDialogueResult /> : null
 
-    let result =
-        allResultFilter.length > 0 ? (
-            <ViewResult arrResult={allResultFilter} />
-        ) : null
+    const messages = messageArray.length > 0 ? <ViewMessages messageArray={messageArray} /> : null
 
     return (
         <>
             <ToastContainer />
-            <div className="containerDialogue">
-                <div className="containerDialogue__client">
-                    {nameClient}
+            <div className="Dialogue">
+                <div className="Dialogue__client">
+                    {clientName}
                     {isSavedCase ? (
                         <Button
                             type="button"
@@ -215,12 +198,12 @@ function Dialogue({
                         </Button>
                     )}
                 </div>
-                <div className="containerDialogue__containerMessages">
-                    <div className="containerDialogue__containerMessages_messages">
-                        {result}
+                <div className="Dialogue__messages">
+                    <div className="messages">
+                        {messages}
                     </div>
                 </div>
-                {resultFinishedDialogue}
+                {dialogueResult}
                 <OperatorAnswer itemId={itemId} />
             </div>
         </>
