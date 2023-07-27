@@ -1,6 +1,6 @@
 .NavBar {
     display: flex;
-    height: 60%;
+    max-height: 500px;
     flex-direction: column;
     justify-content: space-between;
     padding: 20px;

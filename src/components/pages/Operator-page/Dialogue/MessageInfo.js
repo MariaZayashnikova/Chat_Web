@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { usePubNub } from 'pubnub-react'
 import './Dialogue.css'
-
+// todo: когда будет мобильное приложение, протестировать
 function Message({ itemId }) {
     /*    const pubnub = usePubNub()
     const channels = ['idDialogue']

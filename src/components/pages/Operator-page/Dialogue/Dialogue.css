@@ -30,7 +30,7 @@
     padding: 7px;
 }
 
-.containerDialogue__Answers {
+.Answer {
     display: flex;
     justify-content: space-between;
     padding: 10px;
@@ -38,7 +38,7 @@
     border-radius: 10px;
 }
 
-.containerDialogue__input_emoji {
+.Answer-form__emoji_btn {
     position: absolute;
     top: 5px;
     right: 6px;
@@ -47,35 +47,35 @@
     cursor: pointer;
 }
 
-.containerDialogue__input_emojiPicker {
+.Answer-form__emoji {
     position: absolute;
     bottom: 50px;
     right: 0;
 }
 
-.containerDialogue__Answers .containerDialogue__Answer {
+.Answer .Answer-form {
     width: 60%;
     display: flex;
     flex-direction: column;
 }
 
-.containerDialogue__Answer_btn {
+.Answer-form__btn {
     width: 20%;
     align-self: flex-end;
     margin-top: 10px;
 }
 
-.containerDialogue__readyAnswers_settings {
+.ready-answers__info {
     display: flex;
     justify-content: space-between;
     padding: 2px;
 }
 
-.containerDialogue__Answers .containerDialogue__readyAnswers  {
+.Answer .ready-answers  {
     width: 25%;
 }
 
-.containerDialogue__Answers .dropdownCustom {
+.Answer .dropdown-btn {
     background: transparent;
     color: black;
     width: 60%;
@@ -107,30 +107,12 @@
     margin: 10px 0;
 }
 
-body .containerDialogue__containerMessages_modal {
-   max-width: 50%;
-}
-
-.containerDialogue__containerMessages_modalBtnClose {
-    position: absolute;
-    right: 10px;
-}
-
 .messageInfo {
     height: 25px;
     width: 100%;
     text-align: center;
     margin: 5px 0;
     font-style: italic;
-}
-
-.containerDialogue-tooltips {
-    cursor: pointer
-}
-
-.containerDialogue-tooltips:hover {
-    background-color: rgba(45, 156, 247, 0.925);
-    color: white;
 }
 
 .popover {

@@ -19,19 +19,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Picker from 'emoji-picker-react'
 import debounce from 'lodash.debounce'
 import { usePubNub } from 'pubnub-react'
-import {
-    fetchDialoguesFromDatabase,
-    pushNewMessageInDatabase,
-} from '../../../../actions'
+import { fetchDialoguesFromDatabase, pushNewMessageInDatabase } from '../../../../actions'
 import Message from './MessageInfo'
 import './Dialogue.css'
 
-function OperatorAnswer({
-    itemId,
-    pushNewMessageInDatabase,
-    fetchDialoguesFromDatabase,
-    settingsUser
-}) {
+function OperatorAnswer({ itemId, pushNewMessageInDatabase, fetchDialoguesFromDatabase, settingsUser }) {
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [showEmoji, setShowEmoji] = useState(false)
     const [inputValue, setInputValue] = useState('')
@@ -117,7 +109,7 @@ function OperatorAnswer({
         return (
             <Popover placement="top-start" isOpen={showTooltip} target="myTooltip" toggle={isShowTooltip}>
                 <PopoverHeader>Готовые фразы:</PopoverHeader>
-                {arrResAutocomplete.map(elem => <PopoverBody className="containerDialogue-tooltips" onClick={() => {
+                {arrResAutocomplete.map(elem => <PopoverBody onClick={() => {
                     selectPhrase(elem.content)
                     pushArrResAC([])
                 }} key={elem.id}>{elem.content}</PopoverBody>)}
@@ -126,15 +118,12 @@ function OperatorAnswer({
     }
 
     return (
-        <div>
+        <>
             <Message itemId={itemId} />
             <div id="myTooltip"></div>
             <View />
-            <div className="containerDialogue__Answers">
-                <Form
-                    onSubmit={submitNewMessage}
-                    className="containerDialogue__Answer"
-                >
+            <div className="Answer">
+                <Form onSubmit={submitNewMessage} className="Answer-form" >
                     <FormGroup className="position-relative">
                         <Label for="answer">Введите ответ:</Label>
                         <div className="position-relative">
@@ -147,38 +136,27 @@ function OperatorAnswer({
                             />
                             <FontAwesomeIcon
                                 icon={['fas', 'smile']}
-                                className="containerDialogue__input_emoji"
+                                className="Answer-form__emoji_btn"
                                 onClick={() => setShowEmoji(!showEmoji)}
                             />
                         </div>
                         {showEmoji ? (
-                            <div className="containerDialogue__input_emojiPicker">
-                                <Picker
-                                    disableSearchBar="false"
-                                    onEmojiClick={onEmojiClick}
-                                />
+                            <div className="Answer-form__emoji">
+                                <Picker disableSearchBar="false" onEmojiClick={onEmojiClick} />
                             </div>
                         ) : null}
                     </FormGroup>
-                    <Button
-                        className="containerDialogue__Answer_btn"
-                        color="primary"
-                        type="submit"
-                    >
+                    <Button className="Answer-form__btn" color="primary" type="submit" >
                         Отправить
                     </Button>
                 </Form>
-                <div className="containerDialogue__readyAnswers">
-                    <div className="containerDialogue__readyAnswers_settings">
+                <div className="ready-answers">
+                    <div className="ready-answers__info">
                         <div>Или выберете из готовых:</div>
                         <FontAwesomeIcon icon={['fas', 'cog']} color="grey" />
                     </div>
-                    <Dropdown
-                        isOpen={dropdownOpen}
-                        toggle={toggleDropdown}
-                        size="sm"
-                    >
-                        <DropdownToggle className="dropdownCustom" caret>
+                    <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown} size="sm" >
+                        <DropdownToggle className="dropdown-btn" caret>
                             Варианты
                         </DropdownToggle>
                         <DropdownMenu>
@@ -187,7 +165,7 @@ function OperatorAnswer({
                     </Dropdown>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
