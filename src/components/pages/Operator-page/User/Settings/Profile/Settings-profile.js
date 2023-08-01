@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Form, Field } from 'react-final-form'
 import { ToastContainer } from 'react-toastify'
 import {
-    fetchMessageFailure,
+    gotError,
     clearErrors,
     updatePassword,
     updateUserName,
@@ -16,8 +16,8 @@ import PicturePreview from '../../../../../Picture-preview/Picture-preview'
 import './Settings-profile.css'
 
 function SettingsProfile({
-    fetchMessageFailure,
-    errorFromState,
+    gotError,
+    error,
     clearErrors,
     updatePassword,
     user,
@@ -38,10 +38,10 @@ function SettingsProfile({
                     const error = {
                         message: 'Пароль должен содержать цифру, буквы в нижнем и верхнем регистре и иметь длину не менее 8 знаков'
                     }
-                    fetchMessageFailure(error)
+                    gotError(error)
 
                 } else {
-                    if (errorFromState) clearErrors()
+                    if (error) clearErrors()
 
                     updatePassword(values.password)
                 }
@@ -49,7 +49,7 @@ function SettingsProfile({
                 const error = {
                     message: 'Пароли не совпадают'
                 }
-                fetchMessageFailure(error)
+                gotError(error)
             }
         }
 
@@ -137,18 +137,18 @@ function SettingsProfile({
                     </form>
                 )}
             />
-            {errorFromState ? (
-                <div className="error">{errorFromState}</div>
+            {error ? (
+                <div className="error">{error}</div>
             ) : null}
         </>
     )
 }
 
-const mapStateToProps = ({ errorFromState, user }) => ({ errorFromState, user })
+const mapStateToProps = ({ error, user }) => ({ error, user })
 
 const mapDispatchToProps = {
     clearErrors,
-    fetchMessageFailure,
+    gotError,
     updatePassword,
     updateUserName,
     updatedUserName,

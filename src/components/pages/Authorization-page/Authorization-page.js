@@ -5,11 +5,7 @@ import { Form, FormGroup, Input, FormFeedback, Label, Button } from 'reactstrap'
 import { useFormik } from 'formik'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
-import {
-    fetchAuthorization,
-    fetchAuthorizationViaGoogle,
-    clearErrors,
-} from '../../../actions'
+import { auth, authViaGoogle, clearErrors, } from '../../../actions'
 import Spinner from '../../Spinner/Spinner'
 import './Authorization-page.css'
 
@@ -40,13 +36,7 @@ const validate = (values) => {
 
 export { validate }
 
-function AuthorizationPage({
-    errorFromState,
-    loadingFromState,
-    fetchAuthorization,
-    clearErrors,
-    fetchAuthorizationViaGoogle,
-}) {
+function AuthorizationPage({ error, loading, auth, clearErrors, authViaGoogle }) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -54,14 +44,14 @@ function AuthorizationPage({
         },
         validate,
         onSubmit: (values) => {
-            if (errorFromState) clearErrors()
+            if (error) clearErrors()
 
-            fetchAuthorization(values)
+            auth(values)
         },
     })
 
     function onSignIn() {
-        fetchAuthorizationViaGoogle()
+        authViaGoogle()
     }
 
     const popover = (
@@ -149,21 +139,15 @@ function AuthorizationPage({
                             Войти
                         </Button>
                     </Form>
-                    {loadingFromState ? <Spinner /> : null}
-                    {errorFromState ? (
-                        <div className="error">{errorFromState}</div>
+                    {loading ? <Spinner /> : null}
+                    {error ? (
+                        <div className="error">{error}</div>
                     ) : null}
                 </div>
                 <div className="container-links">
                     <div className="link">
-                        <button
-                            onClick={onSignIn}
-                            className="link_btnGoogle"
-                        >
-                            <FontAwesomeIcon
-                                className="link_icon"
-                                icon={['fab', 'google']}
-                            />
+                        <button onClick={onSignIn} className="link_btnGoogle" >
+                            <FontAwesomeIcon className="link_icon" icon={['fab', 'google']} />
                             Войти через Google
                         </button>
                     </div>
@@ -172,7 +156,7 @@ function AuthorizationPage({
                             to="/Registration"
                             className="link_elem"
                             onClick={() => {
-                                if (errorFromState) clearErrors()
+                                if (error) clearErrors()
                             }}
                         >
                             Зарегистрироваться
@@ -181,7 +165,7 @@ function AuthorizationPage({
                             to="/ResetPassword"
                             className="link_elem"
                             onClick={() => {
-                                if (errorFromState) clearErrors()
+                                if (error) clearErrors()
                             }}
                         >
                             Забыли пароль?
@@ -196,12 +180,12 @@ function AuthorizationPage({
     )
 }
 
-const mapStateToProps = ({ errorFromState, loadingFromState }) => ({ loadingFromState, errorFromState })
+const mapStateToProps = ({ error, loading }) => ({ loading, error })
 
 const mapDispatchToProps = {
-    fetchAuthorization,
+    auth,
     clearErrors,
-    fetchAuthorizationViaGoogle,
+    authViaGoogle,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthorizationPage)

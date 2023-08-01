@@ -1,17 +1,17 @@
 import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
-import { fetchUserSettings, updateSettingsDialogue, } from '../../../../../../actions'
+import { fetchUserSettings, updateChatSettings, } from '../../../../../../actions'
 import ReadyPhrases from './Ready-phrases'
 import AutomaticGreeting from './Automatic-greeting'
 import Topics from './Topics'
 import './Settings-dialogue.css'
 
-function SettingsDialogues({ updateSettingsDialogue, user, settingsUser, fetchUserSettings, }) {
+function SettingsDialogues({ updateChatSettings, user, settingsUser, fetchUserSettings, }) {
 
     const submit = useCallback(values => {
-        updateSettingsDialogue(values, user.uid)
+        updateChatSettings(values, user.uid)
         fetchUserSettings(user.uid)
-    }, [fetchUserSettings, updateSettingsDialogue, user.uid])
+    }, [fetchUserSettings, updateChatSettings, user.uid])
 
     return (
         <div className="Settings-dialogues">
@@ -33,7 +33,7 @@ function SettingsDialogues({ updateSettingsDialogue, user, settingsUser, fetchUs
 const mapStateToProps = ({ user, settingsUser }) => ({ user, settingsUser })
 
 const mapDispatchToProps = {
-    updateSettingsDialogue,
+    updateChatSettings,
     fetchUserSettings,
 }
 

@@ -6,14 +6,14 @@ import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Link } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import { changeValueActiveCases, updateDialogueInDatabase } from '../../../../actions'
+import { changeValueActiveCases, updateChatsInDB } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedFilterResults } from '../../../../utils'
 import './FinishedCases.css'
 import '../Operator-page.css'
 
-function FinishedCases({ dialogues, changeValueActiveCases, valueActiveCases, updateDialogueInDatabase }) {
+function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, updateChatsInDB }) {
 
     let allResultFilter = []
 
@@ -24,8 +24,8 @@ function FinishedCases({ dialogues, changeValueActiveCases, valueActiveCases, up
     let isSavedCase = false
 
     function filterData() {
-        for (let objDialogue in dialogues) {
-            let contentDialogue = dialogues[objDialogue]
+        for (let objDialogue in chats) {
+            let contentDialogue = chats[objDialogue]
             let messages = contentDialogue.messages
             if (contentDialogue.status === 'finished') {
                 if (contentDialogue.isSave) {
@@ -45,7 +45,7 @@ function FinishedCases({ dialogues, changeValueActiveCases, valueActiveCases, up
         }
     }
 
-    if (dialogues) {
+    if (chats) {
         filterData()
         createDisplayedFilterResults(
             allResultFilter,
@@ -130,10 +130,7 @@ function FinishedCases({ dialogues, changeValueActiveCases, valueActiveCases, up
                                         color="danger"
                                         size="sm"
                                         onClick={() => {
-                                            updateDialogueInDatabase(
-                                                { isSave: false },
-                                                elem.idDialogue
-                                            )
+                                            updateChatsInDB({ isSave: false }, elem.idDialogue)
                                         }}
                                     >
                                         Удалить из сохранённых
@@ -144,10 +141,7 @@ function FinishedCases({ dialogues, changeValueActiveCases, valueActiveCases, up
                                         color="info"
                                         size="sm"
                                         onClick={() => {
-                                            updateDialogueInDatabase(
-                                                { isSave: true },
-                                                elem.idDialogue
-                                            )
+                                            updateChatsInDB({ isSave: true }, elem.idDialogue)
                                         }}
                                     >
                                         Сохранить диалог
@@ -192,11 +186,11 @@ function FinishedCases({ dialogues, changeValueActiveCases, valueActiveCases, up
     )
 }
 
-const mapStateToProps = ({ dialogues, valueActiveCases }) => ({ dialogues, valueActiveCases })
+const mapStateToProps = ({ chats, valueActiveCases }) => ({ chats, valueActiveCases })
 
 const mapDispatchToProps = {
     changeValueActiveCases,
-    updateDialogueInDatabase,
+    updateChatsInDB,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FinishedCases)

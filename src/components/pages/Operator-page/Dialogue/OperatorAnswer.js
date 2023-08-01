@@ -19,11 +19,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Picker from 'emoji-picker-react'
 import debounce from 'lodash.debounce'
 import { usePubNub } from 'pubnub-react'
-import { pushNewMessageInDatabase } from '../../../../actions'
+import { pushNewMessage } from '../../../../actions'
 import Message from './MessageInfo'
 import './Dialogue.css'
 
-function OperatorAnswer({ itemId, pushNewMessageInDatabase, settingsUser }) {
+function OperatorAnswer({ itemId, pushNewMessage, settingsUser }) {
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [showEmoji, setShowEmoji] = useState(false)
     const [inputValue, setInputValue] = useState('')
@@ -61,7 +61,7 @@ function OperatorAnswer({ itemId, pushNewMessageInDatabase, settingsUser }) {
                 isOperator: true,
             },
         }
-        pushNewMessageInDatabase(newMessage, itemId)
+        pushNewMessage(newMessage, itemId)
         setValue('')
     }
 
@@ -171,7 +171,7 @@ function OperatorAnswer({ itemId, pushNewMessageInDatabase, settingsUser }) {
 const mapStateToProps = ({ settingsUser }) => ({ settingsUser })
 
 const mapDispatchToProps = {
-    pushNewMessageInDatabase
+    pushNewMessage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OperatorAnswer)

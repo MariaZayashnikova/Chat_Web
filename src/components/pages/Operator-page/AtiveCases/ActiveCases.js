@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { changeValueActiveCases, updateDialogueInDatabase } from '../../../../actions'
+import { changeValueActiveCases, updateChatsInDB } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedFilterResults } from '../../../../utils'
@@ -13,11 +13,11 @@ import './ActiveCases.css'
 import '../Operator-page.css'
 
 function ActiveCases({
-    dialogues,
+    chats,
     changeValueActiveCases,
     valueActiveCases,
-    errorFromState,
-    updateDialogueInDatabase,
+    error,
+    updateChatsInDB,
     user,
 }) {
     let allResultFilter = []
@@ -27,8 +27,8 @@ function ActiveCases({
     let displayedFilterResults = []
 
     function filterData() {
-        for (let objDialogue in dialogues) {
-            let contentDialogue = dialogues[objDialogue]
+        for (let objDialogue in chats) {
+            let contentDialogue = chats[objDialogue]
             let messages = contentDialogue.messages
             for (let timeMessage in messages) {
                 let message = messages[timeMessage]
@@ -47,7 +47,7 @@ function ActiveCases({
         }
     }
 
-    if (dialogues) {
+    if (chats) {
         filterData()
         createDisplayedFilterResults(
             allResultFilter,
@@ -103,7 +103,7 @@ function ActiveCases({
                                     color="primary"
                                     size="sm"
                                     onClick={() => {
-                                        updateDialogueInDatabase(
+                                        updateChatsInDB(
                                             { status: 'inWork', operatorUID: user.uid },
                                             elem.idDialogue
                                         )
@@ -131,8 +131,8 @@ function ActiveCases({
                 <div className="queueQuantity">
                     Клиентов в очереди: {allResultFilter.length}
                 </div>
-                {errorFromState ? (
-                    <div className="error">{errorFromState}</div>
+                {error ? (
+                    <div className="error">{error}</div>
                 ) : null}
                 <ListGroup
                     id="scrollableDiv"
@@ -156,22 +156,22 @@ function ActiveCases({
 }
 
 const mapStateToProps = ({
-    dialogues,
+    chats,
     valueActiveCases,
     user,
-    errorFromState,
+    error,
 }) => {
     return {
-        dialogues,
+        chats,
         valueActiveCases,
         user,
-        errorFromState,
+        error,
     }
 }
 
 const mapDispatchToProps = {
     changeValueActiveCases,
-    updateDialogueInDatabase,
+    updateChatsInDB,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActiveCases)

@@ -2,20 +2,20 @@ import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import { connect } from 'react-redux'
-import { dialoguesFromDatabase } from '../../actions'
+import { gotChats } from '../../actions'
 
-function GetDataFromDB({ dialoguesFromDatabase }) {
+function GetDataFromDB({ gotChats }) {
     const database = firebase.database().ref('Chats/');
 
     database.on('value', (snapshot) => {
         let data = snapshot.val();
-        dialoguesFromDatabase(data);
+        gotChats(data);
     })
     return <></>
 }
 
 const mapDispatchToProps = {
-    dialoguesFromDatabase
+    gotChats
 }
 
 export default connect(null, mapDispatchToProps)(GetDataFromDB)

@@ -7,7 +7,7 @@ import Spinner from '../../../Spinner/Spinner'
 import Settings from './Settings/Settings'
 import './User.css'
 
-function User({ user, signOutUser, pushDialogue, loadingFromState }) {
+function User({ user, signOutUser, pushDialogue, loading }) {
     function addDialogueCustom() { // функция для добавления нового обращения, пока не готово мобильное приложение
         let name = prompt('Ваше имя')
         let content = prompt('Тест обращения')
@@ -48,7 +48,7 @@ function User({ user, signOutUser, pushDialogue, loadingFromState }) {
                 </Button>
             ) : null}
 
-            {loadingFromState ? <Spinner /> : null}
+            {loading ? <Spinner /> : null}
 
             <Button outline color="primary" className="User__sign-out" onClick={() => signOutUser()}>
                 Выйти
@@ -57,7 +57,7 @@ function User({ user, signOutUser, pushDialogue, loadingFromState }) {
     )
 }
 
-const mapStateToProps = ({ user, loadingFromState }) => ({ loadingFromState, user })
+const mapStateToProps = ({ user, loading }) => ({ loading, user })
 
 const mapDispatchToProps = { signOutUser, pushDialogue }
 

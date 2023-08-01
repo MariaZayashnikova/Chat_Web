@@ -11,7 +11,7 @@ import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedFilterResults } from '../../../../utils'
 import '../Operator-page.css'
 
-function InWorkCases({ dialogues, changeValueActiveCases, valueActiveCases, user }) {
+function InWorkCases({ chats, changeValueActiveCases, valueActiveCases, user }) {
     let allResultFilter = []
 
     let displayedFilterResults = []
@@ -19,8 +19,8 @@ function InWorkCases({ dialogues, changeValueActiveCases, valueActiveCases, user
     let hasMoreActiveCases = true
 
     function filterData() {
-        for (let objDialogue in dialogues) {
-            let contentDialogue = dialogues[objDialogue]
+        for (let objDialogue in chats) {
+            let contentDialogue = chats[objDialogue]
             let messages = contentDialogue.messages
             if (
                 contentDialogue.status === 'inWork' &&
@@ -39,7 +39,7 @@ function InWorkCases({ dialogues, changeValueActiveCases, valueActiveCases, user
         }
     }
 
-    if (dialogues) {
+    if (chats) {
         filterData()
         createDisplayedFilterResults(
             allResultFilter,
@@ -134,9 +134,9 @@ function InWorkCases({ dialogues, changeValueActiveCases, valueActiveCases, user
     )
 }
 
-const mapStateToProps = ({ dialogues, valueActiveCases, user }) => {
+const mapStateToProps = ({ chats, valueActiveCases, user }) => {
     return {
-        dialogues,
+        chats,
         valueActiveCases,
         user,
     }

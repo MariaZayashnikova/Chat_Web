@@ -8,7 +8,7 @@ import { resetPassword, clearErrors } from '../../../actions'
 import { validate } from '../Authorization-page/Authorization-page'
 import 'react-toastify/dist/ReactToastify.css'
 
-function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
+function ResetPasswordPage({ error, resetPassword, clearErrors }) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -18,7 +18,7 @@ function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
     })
 
     function submitResetForm(email) {
-        if (errorFromState) clearErrors()
+        if (error) clearErrors()
 
         resetPassword(email)
     }
@@ -68,8 +68,8 @@ function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
                         Отправить ссылку для восстановления пароля
                     </Button>
                 </div>
-                {errorFromState ? (
-                    <div className="error">{errorFromState}</div>
+                {error ? (
+                    <div className="error">{error}</div>
                 ) : null}
                 <ToastContainer />
                 <div className="container-links">
@@ -78,7 +78,7 @@ function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
                             to="/"
                             className="link_elem"
                             onClick={() => {
-                                if (errorFromState) clearErrors()
+                                if (error) clearErrors()
                             }}
                         >
                             Войти
@@ -87,7 +87,7 @@ function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
                             to="/Registration"
                             className="link_elem"
                             onClick={() => {
-                                if (errorFromState) clearErrors()
+                                if (error) clearErrors()
                             }}
                         >
                             Регистрация
@@ -99,7 +99,7 @@ function ResetPasswordPage({ errorFromState, resetPassword, clearErrors }) {
     )
 }
 
-const mapStateToProps = ({ errorFromState }) => ({ errorFromState })
+const mapStateToProps = ({ error }) => ({ error })
 
 const mapDispatchToProps = { resetPassword, clearErrors }
 

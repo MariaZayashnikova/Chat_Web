@@ -4,18 +4,10 @@ import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import { setValueSearch, updateDialogueInDatabase } from '../../../../actions'
+import { setValueSearch, updateChatsInDB } from '../../../../actions'
 import './SearchBar.css'
 
-function SearchBar({
-    dialogues,
-    valueSearch,
-    setValueSearch,
-    status,
-    isSave,
-    updateDialogueInDatabase,
-    user,
-}) {
+function SearchBar({ chats, valueSearch, setValueSearch, status, isSave, updateChatsInDB, user }) {
     let resultSearch = []
 
     function searchStart(e) {
@@ -24,8 +16,8 @@ function SearchBar({
     }
 
     function search() {
-        for (let objDialogue in dialogues) {
-            let contentDialogue = dialogues[objDialogue]
+        for (let objDialogue in chats) {
+            let contentDialogue = chats[objDialogue]
             let nameClient = contentDialogue.client.toLowerCase()
             let timeMessage = contentDialogue.messages
             if (isSave) {
@@ -93,7 +85,7 @@ function SearchBar({
         }
     }
 
-    if (dialogues && valueSearch) search()
+    if (chats && valueSearch) search()
 
     const ViewResultSearch = ({ arrResult }) => {
         return arrResult.map((elem, i) => {
@@ -103,7 +95,7 @@ function SearchBar({
                         className="resultSearch__item"
                         onClick={() => {
                             if (status === 'active') {
-                                updateDialogueInDatabase(
+                                updateChatsInDB(
                                     {
                                         status: 'inWork',
                                         operatorUID: user.uid,
@@ -133,7 +125,7 @@ function SearchBar({
         ) : null
 
     let noResult =
-        dialogues && valueSearch && resultSearch.length === 0 ? (
+        chats && valueSearch && resultSearch.length === 0 ? (
             <ListGroupItem>Ничего не найдено</ListGroupItem>
         ) : null
 
@@ -158,9 +150,9 @@ function SearchBar({
     )
 }
 
-const mapStateToProps = ({ dialogues, valueSearch, user }) => {
+const mapStateToProps = ({ chats, valueSearch, user }) => {
     return {
-        dialogues,
+        chats,
         valueSearch,
         user,
     }
@@ -168,7 +160,7 @@ const mapStateToProps = ({ dialogues, valueSearch, user }) => {
 
 const mapDispatchToProps = {
     setValueSearch,
-    updateDialogueInDatabase,
+    updateChatsInDB,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar)

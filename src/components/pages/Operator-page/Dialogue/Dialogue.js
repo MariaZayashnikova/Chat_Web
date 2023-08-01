@@ -6,13 +6,13 @@ import { ToastContainer } from 'react-toastify'
 import { Toast, ToastBody, ToastHeader, Button } from 'reactstrap'
 import moment from 'moment'
 import 'moment/locale/ru.js'
-import { updateDialogueInDatabase, pushNewMessageInDatabase } from '../../../../actions'
+import { updateChatsInDB, pushNewMessage } from '../../../../actions'
 import { calculateDate } from '../../../../utils'
 import OperatorAnswer from './OperatorAnswer'
 import PicturePreview from '../../../Picture-preview/Picture-preview'
 import './Dialogue.css'
 
-function Dialogue({ dialogues, updateDialogueInDatabase, settingsUser, pushNewMessageInDatabase }) {
+function Dialogue({ chats, updateChatsInDB, settingsUser, pushNewMessage }) {
 
     let messageArray = [],
         clientName,
@@ -22,10 +22,10 @@ function Dialogue({ dialogues, updateDialogueInDatabase, settingsUser, pushNewMe
     let { itemId } = useParams()
 
     function filterData() {
-        for (let dialogueObj in dialogues) {
+        for (let dialogueObj in chats) {
             if (dialogueObj !== itemId) continue
 
-            let dialogue = dialogues[dialogueObj]
+            let dialogue = chats[dialogueObj]
             clientName = dialogue.client
 
             if (dialogue.status) {
@@ -65,10 +65,10 @@ function Dialogue({ dialogues, updateDialogueInDatabase, settingsUser, pushNewMe
                 isOperator: true,
             },
         }
-        pushNewMessageInDatabase(newMessage, itemId)
+        pushNewMessage(newMessage, itemId)
     }
 
-    if (dialogues) {
+    if (chats) {
         filterData()
         checkIsFirstMessage()
     }
@@ -161,7 +161,7 @@ function Dialogue({ dialogues, updateDialogueInDatabase, settingsUser, pushNewMe
                             color="danger"
                             size="sm"
                             onClick={() => {
-                                updateDialogueInDatabase({ isSave: false }, itemId)
+                                updateChatsInDB({ isSave: false }, itemId)
                             }}
                         >
                             Удалить из сохранённых
@@ -172,7 +172,7 @@ function Dialogue({ dialogues, updateDialogueInDatabase, settingsUser, pushNewMe
                             color="primary"
                             size="sm"
                             onClick={() => {
-                                updateDialogueInDatabase({ isSave: true }, itemId)
+                                updateChatsInDB({ isSave: true }, itemId)
                             }}
                         >
                             Сохранить диалог
@@ -191,11 +191,11 @@ function Dialogue({ dialogues, updateDialogueInDatabase, settingsUser, pushNewMe
     )
 }
 
-const mapStateToProps = ({ dialogues, settingsUser }) => ({ dialogues, settingsUser })
+const mapStateToProps = ({ chats, settingsUser }) => ({ chats, settingsUser })
 
 const mapDispatchToProps = {
-    updateDialogueInDatabase,
-    pushNewMessageInDatabase
+    updateChatsInDB,
+    pushNewMessage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogue)
