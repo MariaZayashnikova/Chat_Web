@@ -5,28 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Link } from 'react-router-dom'
-import {
-    changeValueActiveCases,
-    fetchDialoguesFromDatabase,
-} from '../../../../actions'
+import { changeValueActiveCases } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedFilterResults } from '../../../../utils'
 import '../Operator-page.css'
 
-function InWorkCases({
-    fetchDialoguesFromDatabase,
-    dialogues,
-    changeValueActiveCases,
-    valueActiveCases,
-    user,
-}) {
-    if (!dialogues) fetchDialoguesFromDatabase()
-
-    let timerId = setInterval(() => {
-        fetchDialoguesFromDatabase()
-    }, 60000)
-
+function InWorkCases({ dialogues, changeValueActiveCases, valueActiveCases, user }) {
     let allResultFilter = []
 
     let displayedFilterResults = []
@@ -158,8 +143,7 @@ const mapStateToProps = ({ dialogues, valueActiveCases, user }) => {
 }
 
 const mapDispatchToProps = {
-    fetchDialoguesFromDatabase,
-    changeValueActiveCases,
+    changeValueActiveCases
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(InWorkCases)

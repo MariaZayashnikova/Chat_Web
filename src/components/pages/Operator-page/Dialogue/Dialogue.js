@@ -6,17 +6,13 @@ import { ToastContainer } from 'react-toastify'
 import { Toast, ToastBody, ToastHeader, Button } from 'reactstrap'
 import moment from 'moment'
 import 'moment/locale/ru.js'
-import {
-    fetchDialoguesFromDatabase,
-    updateDialogueInDatabase,
-    pushNewMessageInDatabase
-} from '../../../../actions'
+import { updateDialogueInDatabase, pushNewMessageInDatabase } from '../../../../actions'
 import { calculateDate } from '../../../../utils'
 import OperatorAnswer from './OperatorAnswer'
 import PicturePreview from '../../../Picture-preview/Picture-preview'
 import './Dialogue.css'
 
-function Dialogue({ fetchDialoguesFromDatabase, dialogues, updateDialogueInDatabase, settingsUser, pushNewMessageInDatabase }) {
+function Dialogue({ dialogues, updateDialogueInDatabase, settingsUser, pushNewMessageInDatabase }) {
 
     let messageArray = [],
         clientName,
@@ -70,19 +66,12 @@ function Dialogue({ fetchDialoguesFromDatabase, dialogues, updateDialogueInDatab
             },
         }
         pushNewMessageInDatabase(newMessage, itemId)
-        fetchDialoguesFromDatabase()
     }
 
     if (dialogues) {
         filterData()
         checkIsFirstMessage()
-    } else {
-        fetchDialoguesFromDatabase()
     }
-
-    // setInterval(() => {
-    //     fetchDialoguesFromDatabase()
-    // }, 30000)
 
     function analyzeContent(str) {
         let options = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'],
@@ -172,11 +161,7 @@ function Dialogue({ fetchDialoguesFromDatabase, dialogues, updateDialogueInDatab
                             color="danger"
                             size="sm"
                             onClick={() => {
-                                updateDialogueInDatabase(
-                                    { isSave: false },
-                                    itemId
-                                )
-                                fetchDialoguesFromDatabase()
+                                updateDialogueInDatabase({ isSave: false }, itemId)
                             }}
                         >
                             Удалить из сохранённых
@@ -187,11 +172,7 @@ function Dialogue({ fetchDialoguesFromDatabase, dialogues, updateDialogueInDatab
                             color="primary"
                             size="sm"
                             onClick={() => {
-                                updateDialogueInDatabase(
-                                    { isSave: true },
-                                    itemId
-                                )
-                                fetchDialoguesFromDatabase()
+                                updateDialogueInDatabase({ isSave: true }, itemId)
                             }}
                         >
                             Сохранить диалог
@@ -213,7 +194,6 @@ function Dialogue({ fetchDialoguesFromDatabase, dialogues, updateDialogueInDatab
 const mapStateToProps = ({ dialogues, settingsUser }) => ({ dialogues, settingsUser })
 
 const mapDispatchToProps = {
-    fetchDialoguesFromDatabase,
     updateDialogueInDatabase,
     pushNewMessageInDatabase
 }

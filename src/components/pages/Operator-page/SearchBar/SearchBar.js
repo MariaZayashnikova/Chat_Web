@@ -4,15 +4,10 @@ import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import {
-    fetchDialoguesFromDatabase,
-    setValueSearch,
-    updateDialogueInDatabase,
-} from '../../../../actions'
+import { setValueSearch, updateDialogueInDatabase } from '../../../../actions'
 import './SearchBar.css'
 
 function SearchBar({
-    fetchDialoguesFromDatabase,
     dialogues,
     valueSearch,
     setValueSearch,
@@ -24,7 +19,6 @@ function SearchBar({
     let resultSearch = []
 
     function searchStart(e) {
-        fetchDialoguesFromDatabase()
         resultSearch = []
         setValueSearch(e.target.value.toLowerCase())
     }
@@ -173,7 +167,6 @@ const mapStateToProps = ({ dialogues, valueSearch, user }) => {
 }
 
 const mapDispatchToProps = {
-    fetchDialoguesFromDatabase,
     setValueSearch,
     updateDialogueInDatabase,
 }

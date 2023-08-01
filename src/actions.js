@@ -22,9 +22,7 @@ export const clearErrors = () => ({ type: 'clearErrors' })
 export const resetPassword = (data) => ({ type: 'resetPassword', data })
 export const signOutUser = () => ({ type: 'signOutUser' })
 export const userLoggedOut = () => ({ type: 'userLoggedOut' })
-export const fetchDialoguesFromDatabase = () => ({
-    type: 'fetchDialoguesFromDatabase',
-})
+
 export const dialoguesFromDatabase = (data) => ({
     type: 'dialoguesFromDatabase',
     data,

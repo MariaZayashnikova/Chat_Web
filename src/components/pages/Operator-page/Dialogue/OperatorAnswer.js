@@ -19,11 +19,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Picker from 'emoji-picker-react'
 import debounce from 'lodash.debounce'
 import { usePubNub } from 'pubnub-react'
-import { fetchDialoguesFromDatabase, pushNewMessageInDatabase } from '../../../../actions'
+import { pushNewMessageInDatabase } from '../../../../actions'
 import Message from './MessageInfo'
 import './Dialogue.css'
 
-function OperatorAnswer({ itemId, pushNewMessageInDatabase, fetchDialoguesFromDatabase, settingsUser }) {
+function OperatorAnswer({ itemId, pushNewMessageInDatabase, settingsUser }) {
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [showEmoji, setShowEmoji] = useState(false)
     const [inputValue, setInputValue] = useState('')
@@ -63,7 +63,6 @@ function OperatorAnswer({ itemId, pushNewMessageInDatabase, fetchDialoguesFromDa
         }
         pushNewMessageInDatabase(newMessage, itemId)
         setValue('')
-        fetchDialoguesFromDatabase()
     }
 
     function addPhraseInTooltip(phraseId, arrResult) {
@@ -172,8 +171,7 @@ function OperatorAnswer({ itemId, pushNewMessageInDatabase, fetchDialoguesFromDa
 const mapStateToProps = ({ settingsUser }) => ({ settingsUser })
 
 const mapDispatchToProps = {
-    pushNewMessageInDatabase,
-    fetchDialoguesFromDatabase,
+    pushNewMessageInDatabase
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OperatorAnswer)

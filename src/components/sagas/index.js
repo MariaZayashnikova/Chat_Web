@@ -168,30 +168,30 @@ function* userLoggedOut() {
         yield put({ type: 'fetchMessageFailure', error })
     }
 }
+//получение данных чатов один раз
+// function fetchDataFromDatabase() {
+//     return firebase
+//         .database()
+//         .ref('Chats/')
+//         .once('value')
+//         .then((snapshot) => ({ snapshot }))
+//         .catch((error) => ({ error }))
+// }
 
-function fetchDataFromDatabase() {
-    return firebase
-        .database()
-        .ref('Chats/')
-        .once('value')
-        .then((snapshot) => ({ snapshot }))
-        .catch((error) => ({ error }))
-}
-
-function* dataFromDatabase() {
-    const { snapshot, error } = yield call(() => fetchDataFromDatabase())
-    if (snapshot) {
-        const data = snapshot.val()
-        yield put({ type: 'dialoguesFromDatabase', data })
-    }
-    if (error) {
-        let err = {
-            message: 'Что-то пошло не так... Попробуйте позже',
-        }
-        console.log(error)
-        yield put({ type: 'fetchMessageFailure', err })
-    }
-}
+// function* dataFromDatabase() {
+//     const { snapshot, error } = yield call(() => fetchDataFromDatabase())
+//     if (snapshot) {
+//         const data = snapshot.val()
+//         yield put({ type: 'dialoguesFromDatabase', data })
+//     }
+//     if (error) {
+//         let err = {
+//             message: 'Что-то пошло не так... Попробуйте позже',
+//         }
+//         console.log(error)
+//         yield put({ type: 'fetchMessageFailure', err })
+//     }
+// }
 
 function pushNewDialogueInDataBase(action) {
     let post = firebase.database().ref('Chats/')
@@ -444,10 +444,6 @@ function* signOut() {
     yield takeLatest('signOutUser', userLoggedOut)
 }
 
-function* fromDatabase() {
-    yield takeLatest('fetchDialoguesFromDatabase', dataFromDatabase)
-}
-
 export default function* rootSaga() {
     yield all([
         fetchAuthorizationUser(),
@@ -455,7 +451,6 @@ export default function* rootSaga() {
         fetchAuthorizationViaGoogleUser(),
         fetchResetPasswordUser(),
         signOut(),
-        fromDatabase(),
         pushDialogueInDB(),
         update_Dialogue(),
         pushNewMessage(),

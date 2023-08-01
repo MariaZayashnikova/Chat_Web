@@ -6,11 +6,7 @@ import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Link } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import {
-    fetchDialoguesFromDatabase,
-    updateDialogueInDatabase,
-    changeValueActiveCases,
-} from '../../../../actions'
+import { updateDialogueInDatabase, changeValueActiveCases } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedFilterResults } from '../../../../utils'
@@ -18,15 +14,12 @@ import './SavedCases.css'
 import '../Operator-page.css'
 
 function SavedCases({
-    fetchDialoguesFromDatabase,
     dialogues,
     updateDialogueInDatabase,
     user,
     valueActiveCases,
     changeValueActiveCases,
 }) {
-    if (!dialogues) fetchDialoguesFromDatabase()
-
     let allResultFilter = []
 
     let displayedFilterResults = []
@@ -62,10 +55,6 @@ function SavedCases({
             valueActiveCases
         )
     }
-
-    let timerId = setInterval(() => {
-        fetchDialoguesFromDatabase()
-    }, 60000)
 
     function loadFunc() {
         setTimeout(() => {
@@ -178,7 +167,6 @@ const mapStateToProps = ({ dialogues, user, valueActiveCases }) => {
 }
 
 const mapDispatchToProps = {
-    fetchDialoguesFromDatabase,
     updateDialogueInDatabase,
     changeValueActiveCases,
 }

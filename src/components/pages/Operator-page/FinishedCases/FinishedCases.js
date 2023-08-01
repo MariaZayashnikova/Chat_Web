@@ -6,25 +6,14 @@ import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Link } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import {
-    changeValueActiveCases,
-    fetchDialoguesFromDatabase,
-    updateDialogueInDatabase,
-} from '../../../../actions'
+import { changeValueActiveCases, updateDialogueInDatabase } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedFilterResults } from '../../../../utils'
 import './FinishedCases.css'
 import '../Operator-page.css'
 
-function FinishedCases({
-    fetchDialoguesFromDatabase,
-    dialogues,
-    changeValueActiveCases,
-    valueActiveCases,
-    updateDialogueInDatabase,
-}) {
-    if (!dialogues) fetchDialoguesFromDatabase()
+function FinishedCases({ dialogues, changeValueActiveCases, valueActiveCases, updateDialogueInDatabase }) {
 
     let allResultFilter = []
 
@@ -64,10 +53,6 @@ function FinishedCases({
             valueActiveCases
         )
     }
-
-    let timerId = setInterval(() => {
-        fetchDialoguesFromDatabase()
-    }, 60000)
 
     function loadFunc() {
         setTimeout(() => {
@@ -210,7 +195,6 @@ function FinishedCases({
 const mapStateToProps = ({ dialogues, valueActiveCases }) => ({ dialogues, valueActiveCases })
 
 const mapDispatchToProps = {
-    fetchDialoguesFromDatabase,
     changeValueActiveCases,
     updateDialogueInDatabase,
 }

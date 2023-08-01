@@ -4,6 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { fetchUserSettings, getTopicsFromDB, setValueSearch } from '../../../actions'
 import NavBar from './NavBar/NavBar'
 import User from './User/User'
+import GetDataFromDB from '../../services/getDataFromDB'
 import './Operator-page.css'
 
 function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB, setValueSearch }) {
@@ -25,9 +26,11 @@ function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB, 
         }
         settingsUser.phrases = newArr
     }
+    console.log(new Date().getTime())
 
     return (
         <div className="Operator-page">
+            <GetDataFromDB />
             <NavBar />
             <div className="container-content">
                 <User />
