@@ -152,22 +152,10 @@ function AuthorizationPage({ error, loading, auth, clearErrors, authViaGoogle })
                         </button>
                     </div>
                     <div className="link">
-                        <Link
-                            to="/Registration"
-                            className="link_elem"
-                            onClick={() => {
-                                if (error) clearErrors()
-                            }}
-                        >
+                        <Link to="/Registration" className="link_elem" >
                             Зарегистрироваться
                         </Link>
-                        <Link
-                            to="/ResetPassword"
-                            className="link_elem"
-                            onClick={() => {
-                                if (error) clearErrors()
-                            }}
-                        >
+                        <Link to="/ResetPassword" className="link_elem" >
                             Забыли пароль?
                         </Link>
                     </div>

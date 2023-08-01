@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom'
-import { fetchUserSettings, getTopicsFromDB, setValueSearch } from '../../../actions'
+import { fetchUserSettings, getTopicsFromDB, setValueSearch, clearErrors } from '../../../actions'
 import NavBar from './NavBar/NavBar'
 import User from './User/User'
 import GetDataFromDB from '../../services/getDataFromDB'
 import './Operator-page.css'
 
-function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB, setValueSearch }) {
+function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB, setValueSearch, clearErrors }) {
     let location = useLocation();
 
     useEffect(() => {
         setValueSearch(null)
+        clearErrors()
     }, [location])
 
     if (!settingsUser) {
@@ -47,7 +48,8 @@ const mapStateToProps = ({ user, settingsUser }) => ({ user, settingsUser })
 const mapDispatchToProps = {
     fetchUserSettings,
     getTopicsFromDB,
-    setValueSearch
+    setValueSearch,
+    clearErrors
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OperatorPage)

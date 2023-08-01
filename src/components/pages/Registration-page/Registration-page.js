@@ -135,22 +135,10 @@ function RegistrationPage({ loading, error, registration, gotError, clearErrors 
                 </div>
                 <div className="container-links">
                     <div className="link">
-                        <Link
-                            to="/"
-                            className="link_elem"
-                            onClick={() => {
-                                if (error) clearErrors()
-                            }}
-                        >
+                        <Link to="/" className="link_elem" >
                             Войти
                         </Link>
-                        <Link
-                            to="/ResetPassword"
-                            className="link_elem"
-                            onClick={() => {
-                                if (error) clearErrors()
-                            }}
-                        >
+                        <Link to="/ResetPassword" className="link_elem" >
                             Забыли пароль?
                         </Link>
                     </div>
