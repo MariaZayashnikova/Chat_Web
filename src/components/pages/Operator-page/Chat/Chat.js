@@ -12,7 +12,7 @@ import OperatorAnswer from './OperatorAnswer'
 import PicturePreview from '../../../Picture-preview/Picture-preview'
 import './Chat.css'
 
-function Chat({ chats, updateChatsInDB, settingsUser, pushNewMessage }) {
+function Chat({ chats, updateChatsInDB, settingsUser, pushNewMessage, user }) {
 
     let messageArray = [],
         clientName,
@@ -20,12 +20,17 @@ function Chat({ chats, updateChatsInDB, settingsUser, pushNewMessage }) {
         dialogueResultObj = {}
 
     let { itemId } = useParams()
-
+    //сделать обработку несуществующего диалога через url
     function filterData() {
         for (let dialogueObj in chats) {
             if (dialogueObj !== itemId) continue
 
             let dialogue = chats[dialogueObj]
+
+            if (dialogue.status === 'active') {
+                updateChatsInDB({ status: 'inWork', operatorUID: user.uid }, itemId)
+                break
+            }
             clientName = dialogue.client
 
             if (dialogue.status) {
@@ -191,7 +196,7 @@ function Chat({ chats, updateChatsInDB, settingsUser, pushNewMessage }) {
     )
 }
 
-const mapStateToProps = ({ chats, settingsUser }) => ({ chats, settingsUser })
+const mapStateToProps = ({ chats, settingsUser, user }) => ({ chats, settingsUser, user })
 
 const mapDispatchToProps = {
     updateChatsInDB,

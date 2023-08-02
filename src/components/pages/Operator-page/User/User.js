@@ -3,11 +3,10 @@ import { connect } from 'react-redux'
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { pushDialogue, signOutUser } from '../../../../actions'
-import Spinner from '../../../Spinner/Spinner'
 import Settings from './Settings/Settings'
 import './User.css'
 
-function User({ user, signOutUser, pushDialogue, loading }) {
+function User({ user, signOutUser, pushDialogue }) {
     function addDialogueCustom() { // функция для добавления нового обращения, пока не готово мобильное приложение
         let name = prompt('Ваше имя')
         let content = prompt('Тест обращения')
@@ -48,8 +47,6 @@ function User({ user, signOutUser, pushDialogue, loading }) {
                 </Button>
             ) : null}
 
-            {loading ? <Spinner /> : null}
-
             <Button outline color="primary" className="User__sign-out" onClick={() => signOutUser()}>
                 Выйти
             </Button>
@@ -57,7 +54,7 @@ function User({ user, signOutUser, pushDialogue, loading }) {
     )
 }
 
-const mapStateToProps = ({ user, loading }) => ({ loading, user })
+const mapStateToProps = ({ user }) => ({ user })
 
 const mapDispatchToProps = { signOutUser, pushDialogue }
 

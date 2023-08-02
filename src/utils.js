@@ -27,16 +27,16 @@ const validate = (values) => {
 
 export { validate }
 
-function createDisplayedFilterResults(allResultFilter, displayedFilterResults, valueActiveCases) {
+function createDisplayedChats(result, displayedChats, valueActiveCases) {
     let i = 0
-    allResultFilter.forEach((elem) => {
+    result.forEach((elem) => {
         i++
         if (i > valueActiveCases) return
-        else displayedFilterResults.push(elem)
+        else displayedChats.push(elem)
     })
 }
 
-export { createDisplayedFilterResults }
+export { createDisplayedChats }
 
 function calculateDate(timestamp) {
     let time

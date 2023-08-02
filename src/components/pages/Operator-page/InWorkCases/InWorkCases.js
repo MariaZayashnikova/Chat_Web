@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import { changeValueActiveCases } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
-import { calculateDate, createDisplayedFilterResults } from '../../../../utils'
+import { calculateDate, createDisplayedChats } from '../../../../utils'
 import '../Operator-page.css'
 
 function InWorkCases({ chats, changeValueActiveCases, valueActiveCases, user }) {
@@ -41,7 +41,7 @@ function InWorkCases({ chats, changeValueActiveCases, valueActiveCases, user }) 
 
     if (chats) {
         filterData()
-        createDisplayedFilterResults(
+        createDisplayedChats(
             allResultFilter,
             displayedFilterResults,
             valueActiveCases
@@ -61,8 +61,8 @@ function InWorkCases({ chats, changeValueActiveCases, valueActiveCases, user }) 
             let timestamp = calculateDate(parseInt(elem.time, 10))
             return (
                 <ListGroupItem key={elem.idDialogue}>
-                    <div className="dialogue">
-                        <div className="dialogue__user">
+                    <div className="chat-elem">
+                        <div className="chat-elem__user">
                             <FontAwesomeIcon
                                 icon={['fas', 'user-tie']}
                                 size="3x"
@@ -70,22 +70,22 @@ function InWorkCases({ chats, changeValueActiveCases, valueActiveCases, user }) 
                             />
                             <p>{elem.client}</p>
                         </div>
-                        <div className="dialogue__topic">
+                        <div className="chat-elem__topic">
                             <div>
-                                <p className="dialogue__topic_title">Тема:</p>
+                                <p className="chat-elem__topic_title">Тема:</p>
                                 {elem.topic}
                             </div>
                             <div>
-                                <p className="dialogue__topic_title">
+                                <p className="chat-elem__topic_title">
                                     Подтема:
                                 </p>
                                 {elem.subtopic}
                             </div>
                         </div>
-                        <div className="dialogue__message">{elem.content}</div>
-                        <div className="dialogue__actions">
-                            <div className="dialogue__actions_time">
-                                <div>{timestamp}</div>
+                        <div className="chat-elem__message">{elem.content}</div>
+                        <div className="chat-elem__actions">
+                            <div className="chat-elem__actions_time">
+                                {timestamp}
                             </div>
                             <Link to={`/OperatorPage/Chat/${elem.idDialogue}`}>
                                 <Button
@@ -115,7 +115,7 @@ function InWorkCases({ chats, changeValueActiveCases, valueActiveCases, user }) 
             <div className="queue">
                 <ListGroup
                     id="scrollableDiv"
-                    className="containerQueue"
+                    className="queue__list"
                 >
                     <InfiniteScroll
                         dataLength={displayedFilterResults.length}

@@ -61,9 +61,15 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
             }
+        case 'getChats':
+            return {
+                ...state,
+                loading: true,
+            }
         case 'gotChats':
             return {
                 ...state,
+                loading: false,
                 chats: action.data,
             }
         case 'setValueSearch':

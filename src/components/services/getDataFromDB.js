@@ -2,10 +2,12 @@ import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import { connect } from 'react-redux'
-import { gotChats } from '../../actions'
+import { gotChats, getChats } from '../../actions'
 
-function GetDataFromDB({ gotChats }) {
+function GetDataFromDB({ gotChats, getChats }) {
     const database = firebase.database().ref('Chats/');
+
+    getChats()
 
     database.on('value', (snapshot) => {
         let data = snapshot.val();
@@ -14,8 +16,6 @@ function GetDataFromDB({ gotChats }) {
     return <></>
 }
 
-const mapDispatchToProps = {
-    gotChats
-}
+const mapDispatchToProps = { gotChats, getChats }
 
 export default connect(null, mapDispatchToProps)(GetDataFromDB)

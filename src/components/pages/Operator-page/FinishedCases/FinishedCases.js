@@ -9,7 +9,7 @@ import { ToastContainer } from 'react-toastify'
 import { changeValueActiveCases, updateChatsInDB } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
-import { calculateDate, createDisplayedFilterResults } from '../../../../utils'
+import { calculateDate, createDisplayedChats } from '../../../../utils'
 import './FinishedCases.css'
 import '../Operator-page.css'
 
@@ -47,7 +47,7 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
 
     if (chats) {
         filterData()
-        createDisplayedFilterResults(
+        createDisplayedChats(
             allResultFilter,
             displayedFilterResults,
             valueActiveCases
@@ -80,8 +80,8 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
             }
             return (
                 <ListGroupItem key={elem.idDialogue}>
-                    <div className="dialogue">
-                        <div className="dialogue__user">
+                    <div className="chat-elem">
+                        <div className="chat-elem__user">
                             <FontAwesomeIcon
                                 icon={['fas', 'user-tie']}
                                 size="3x"
@@ -89,13 +89,13 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
                             />
                             <p>{elem.client}</p>
                         </div>
-                        <div className="dialogue__topic">
+                        <div className="chat-elem__topic">
                             <div>
-                                <p className="dialogue__topic_title">Тема:</p>
+                                <p className="chat-elem__topic_title">Тема:</p>
                                 {elem.topic}
                             </div>
                             <div>
-                                <p className="dialogue__topic_title">
+                                <p className="chat-elem__topic_title">
                                     Подтема:
                                 </p>
                                 {elem.subtopic}
@@ -167,7 +167,7 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
             <div className="queue">
                 <ListGroup
                     id="scrollableDiv"
-                    className="containerQueue"
+                    className="queue__list"
                 >
                     <InfiniteScroll
                         dataLength={displayedFilterResults.length}

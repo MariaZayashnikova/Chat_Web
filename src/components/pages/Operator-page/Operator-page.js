@@ -7,12 +7,12 @@ import User from './User/User'
 import GetDataFromDB from '../../services/getDataFromDB'
 import './Operator-page.css'
 
-function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB, setValueSearch, clearErrors }) {
+function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB, setValueSearch, clearErrors, error }) {
     let location = useLocation();
 
     useEffect(() => {
         setValueSearch(null)
-        clearErrors()
+        if (error) clearErrors()
     }, [location])
 
     if (!settingsUser) {
@@ -42,7 +42,7 @@ function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB, 
     )
 }
 
-const mapStateToProps = ({ user, settingsUser }) => ({ user, settingsUser })
+const mapStateToProps = ({ user, settingsUser, error }) => ({ user, settingsUser, error })
 
 const mapDispatchToProps = {
     fetchUserSettings,
