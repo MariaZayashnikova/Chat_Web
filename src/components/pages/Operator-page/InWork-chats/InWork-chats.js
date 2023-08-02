@@ -10,7 +10,7 @@ import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedChats } from '../../../../utils'
 import '../Operator-page.css'
 
-function InWorkCases({ chats, user }) {
+function InWorkChats({ chats, user }) {
     let result = [],
         displayedChats = [],
         hasMoreInWorkChats = true
@@ -115,4 +115,4 @@ function InWorkCases({ chats, user }) {
 
 const mapStateToProps = ({ chats, user }) => ({ chats, user })
 
-export default connect(mapStateToProps)(InWorkCases)
+export default connect(mapStateToProps)(InWorkChats)

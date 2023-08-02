@@ -11,7 +11,7 @@ import OperatorPage from '../pages/Operator-page/Operator-page'
 import ResetPasswordPage from '../pages/Reset-password-page/Reset-password-page'
 import ErrorRoute from '../ErrorRoute/ErrorRoute'
 import Chat from '../pages/Operator-page/Chat/Chat'
-import InWorkCases from '../pages/Operator-page/InWorkCases/InWorkCases'
+import InWorkChats from '../pages/Operator-page/InWork-chats/InWork-chats'
 import SavedCases from '../pages/Operator-page/SavedCases/SavesCases'
 import FinishedCases from '../pages/Operator-page/FinishedCases/FinishedCases'
 import ActiveChats from '../pages/Operator-page/Active-chats/Active-chats'
@@ -27,7 +27,7 @@ function App({ user }) {
                 <Route path="/" element={user ? <OperatorPage /> : <AuthorizationPage />}>
                     <Route path='/OperatorPage'>
                         <Route path='Active' element={<ActiveChats />} />
-                        <Route path="inWork" element={<InWorkCases />} />
+                        <Route path="inWork" element={<InWorkChats />} />
                         <Route path="Saved" element={<SavedCases />} />
                         <Route path="Finished" element={<FinishedCases />} />
                         <Route path="Chat/:itemId" element={<Chat />} />
