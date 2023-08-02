@@ -4,7 +4,7 @@ import { useFormik } from 'formik'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { gotError, registration, clearErrors } from '../../../actions'
-import { validate } from '../Authorization-page/Authorization-page'
+import { validate } from '../../../utils'
 import Spinner from '../../Spinner/Spinner'
 
 function RegistrationPage({ loading, error, registration, gotError, clearErrors }) {

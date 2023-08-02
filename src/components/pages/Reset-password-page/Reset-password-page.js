@@ -5,7 +5,7 @@ import { useFormik } from 'formik'
 import { connect } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 import { resetPassword, clearErrors } from '../../../actions'
-import { validate } from '../Authorization-page/Authorization-page'
+import { validate } from '../../../utils'
 import 'react-toastify/dist/ReactToastify.css'
 
 function ResetPasswordPage({ error, resetPassword, clearErrors }) {

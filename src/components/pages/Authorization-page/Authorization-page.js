@@ -7,34 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
 import { auth, authViaGoogle, clearErrors, } from '../../../actions'
 import Spinner from '../../Spinner/Spinner'
+import { validate } from '../../../utils'
 import './Authorization-page.css'
-
-const validate = (values) => {
-    const errors = {}
-
-    if (!values.password) {
-        errors.password = true
-    } else if (
-        !/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/i.test(
-            values.password
-        )
-    ) {
-        errors.password =
-            'Пароль должен содержать цифру, буквы в нижнем и верхнем регистре и иметь длину не менее 8 знаков'
-    }
-
-    if (!values.email) {
-        errors.email = true
-    } else if (
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-    ) {
-        errors.email = 'Invalid email address'
-    }
-
-    return errors
-}
-
-export { validate }
 
 function AuthorizationPage({ error, loading, auth, clearErrors, authViaGoogle }) {
     const formik = useFormik({

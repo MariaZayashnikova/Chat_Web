@@ -81,7 +81,7 @@ function ActiveCases({
                         </div>
                         <div className="dialogue__topic">
                             <div>
-                                <p className="dialogue__topic_title">Тема:</p>{' '}
+                                <p className="dialogue__topic_title">Тема:</p>
                                 {elem.topic}
                             </div>
                             <div>
