@@ -10,7 +10,7 @@ import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedChats } from '../../../../utils'
 import '../Operator-page.css'
 
-function InWorkChats({ chats, user }) {
+function InWorkChats({ chats, user, loading }) {
     let result = [],
         displayedChats = [],
         hasMoreInWorkChats = true
@@ -93,6 +93,7 @@ function InWorkChats({ chats, user }) {
         <>
             <SearchBar status={'inWork'} />
             <div className="queue">
+                {loading ? <Spinner /> : null}
                 <ListGroup id="scrollableDiv" className="queue__list" >
                     <InfiniteScroll
                         dataLength={displayedChats.length}
@@ -113,6 +114,6 @@ function InWorkChats({ chats, user }) {
     )
 }
 
-const mapStateToProps = ({ chats, user }) => ({ chats, user })
+const mapStateToProps = ({ chats, user, loading }) => ({ chats, user, loading })
 
 export default connect(mapStateToProps)(InWorkChats)
