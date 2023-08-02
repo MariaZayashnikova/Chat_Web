@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,70 +6,61 @@ import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Link } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import { updateChatsInDB, changeValueActiveCases } from '../../../../actions'
+import { updateChatsInDB } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedChats } from '../../../../utils'
 import './SavedCases.css'
 import '../Operator-page.css'
 
-function SavedCases({ chats, updateChatsInDB, user, valueActiveCases, changeValueActiveCases }) {
-    let allResultFilter = []
+function SavedCases({ chats, updateChatsInDB, user, loading }) {
+    let result = [],
+        displayedChats = [],
+        hasMoreSavedChats = true
 
-    let displayedFilterResults = []
+    const [valueSavedChat, setValueSavedChat] = useState(5)
 
-    let hasMoreActiveCases = true
+    const changeValueSavedChat = () => setValueSavedChat(valueSavedChat + 5)
 
     function filterData() {
-        for (let objDialogue in chats) {
-            let contentDialogue = chats[objDialogue]
-            let messages = contentDialogue.messages
-            if (
-                contentDialogue.isSave === true &&
-                user.uid === contentDialogue.operatorUID
-            ) {
+        for (let chatId in chats) {
+            let chat = chats[chatId]
+            let messages = chat.messages
+            if (chat.isSave === true && user.uid === chat.operatorUID) {
                 let objResult = {
-                    idDialogue: objDialogue,
-                    client: contentDialogue.client,
-                    topic: contentDialogue.topic,
-                    subtopic: contentDialogue.subtopic,
+                    chatId: chatId,
+                    client: chat.client,
+                    topic: chat.topic,
+                    subtopic: chat.subtopic,
                     content: Object.values(messages).pop().content,
                     time: Object.keys(messages).pop(),
                 }
-                allResultFilter.push(objResult)
+                result.push(objResult)
             }
         }
     }
 
     if (chats) {
         filterData()
-        createDisplayedChats(
-            allResultFilter,
-            displayedFilterResults,
-            valueActiveCases
-        )
+        createDisplayedChats(result, displayedChats, valueSavedChat)
     }
 
     function loadFunc() {
         setTimeout(() => {
-            changeValueActiveCases()
+            changeValueSavedChat()
         }, 1500)
     }
 
-    if (displayedFilterResults.length === allResultFilter.length) hasMoreActiveCases = false
+    if (displayedChats.length === result.length) hasMoreSavedChats = false
 
     const ViewResult = ({ arrResult }) => {
         return arrResult.map((elem) => {
             let timestamp = calculateDate(parseInt(elem.time, 10))
             return (
-                <ListGroupItem key={elem.idDialogue}>
+                <ListGroupItem key={elem.chatId}>
                     <div className="chat-elem">
                         <div className="chat-elem__user">
-                            <FontAwesomeIcon
-                                icon={['fas', 'user-tie']}
-                                size="3x"
-                                color="darkblue"
-                            />
+                            <FontAwesomeIcon icon={['fas', 'user-tie']} size="3x" color="darkblue" />
                             <p>{elem.client}</p>
                         </div>
                         <div className="chat-elem__topic">
@@ -89,13 +80,8 @@ function SavedCases({ chats, updateChatsInDB, user, valueActiveCases, changeValu
                             <div className="chat-elem__actions_time">
                                 {timestamp}
                             </div>
-                            <Link to={`/OperatorPage/Chat/${elem.idDialogue}`}>
-                                <Button
-                                    type="button"
-                                    outline
-                                    color="primary"
-                                    size="sm"
-                                >
+                            <Link to={`/OperatorPage/Chat/${elem.chatId}`}>
+                                <Button type="button" outline color="primary" size="sm"  >
                                     Войти в диалог
                                 </Button>
                             </Link>
@@ -104,10 +90,8 @@ function SavedCases({ chats, updateChatsInDB, user, valueActiveCases, changeValu
                                 outline
                                 color="danger"
                                 size="sm"
-                                className="dialogue__actions_button dialogue__actions_buttonDelete"
-                                onClick={() => {
-                                    updateChatsInDB({ isSave: false }, elem.idDialogue)
-                                }}
+                                className="chat-elem__actions_btn-delete"
+                                onClick={() => updateChatsInDB({ isSave: false }, elem.chatId)}
                             >
                                 Удалить из сохранённых
                             </Button>
@@ -118,30 +102,25 @@ function SavedCases({ chats, updateChatsInDB, user, valueActiveCases, changeValu
         })
     }
 
-    let result =
-        displayedFilterResults.length > 0 ? (
-            <ViewResult arrResult={displayedFilterResults} />
-        ) : null
-
     return (
         <>
             <SearchBar isSave={true} />
             <ToastContainer />
             <div className="queue">
-                <ListGroup
-                    id="scrollableDiv"
-                    className="queue__list"
-                >
+                {loading ? <Spinner /> : null}
+                <ListGroup id="scrollableDiv" className="queue__list" >
                     <InfiniteScroll
-                        dataLength={displayedFilterResults.length}
+                        dataLength={displayedChats.length}
                         pageStart={0}
                         next={loadFunc}
-                        hasMore={hasMoreActiveCases}
+                        hasMore={hasMoreSavedChats}
                         loader={<Spinner />}
-                        children={displayedFilterResults}
+                        children={displayedChats}
                         scrollableTarget="scrollableDiv"
                     >
-                        {result}
+                        {displayedChats.length > 0 ? (
+                            <ViewResult arrResult={displayedChats} />
+                        ) : null}
                     </InfiniteScroll>
                 </ListGroup>
             </div>
@@ -149,17 +128,8 @@ function SavedCases({ chats, updateChatsInDB, user, valueActiveCases, changeValu
     )
 }
 
-const mapStateToProps = ({ chats, user, valueActiveCases }) => {
-    return {
-        chats,
-        user,
-        valueActiveCases,
-    }
-}
+const mapStateToProps = ({ chats, user, loading }) => ({ chats, user, loading })
 
-const mapDispatchToProps = {
-    updateChatsInDB,
-    changeValueActiveCases,
-}
+const mapDispatchToProps = { updateChatsInDB }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedCases)
