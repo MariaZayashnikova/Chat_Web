@@ -8,10 +8,10 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedChats } from '../../../../utils'
-import './ActiveCases.css'
+import './Active-chats.css'
 import '../Operator-page.css'
 
-function ActiveCases({ chats, error, loading }) {
+function ActiveChats({ chats, error, loading }) {
     let result = [],
         displayedChats = [],
         hasMoreActiveChats = true
@@ -125,4 +125,4 @@ function ActiveCases({ chats, error, loading }) {
 
 const mapStateToProps = ({ chats, error, loading }) => ({ chats, error, loading })
 
-export default connect(mapStateToProps)(ActiveCases)
+export default connect(mapStateToProps)(ActiveChats)

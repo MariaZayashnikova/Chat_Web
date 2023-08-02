@@ -14,7 +14,7 @@ import Chat from '../pages/Operator-page/Chat/Chat'
 import InWorkCases from '../pages/Operator-page/InWorkCases/InWorkCases'
 import SavedCases from '../pages/Operator-page/SavedCases/SavesCases'
 import FinishedCases from '../pages/Operator-page/FinishedCases/FinishedCases'
-import ActiveCases from '../pages/Operator-page/AtiveCases/ActiveCases'
+import ActiveChats from '../pages/Operator-page/Active-chats/Active-chats'
 import './App.css'
 
 library.add(fab, fas)
@@ -26,7 +26,7 @@ function App({ user }) {
             <Routes>
                 <Route path="/" element={user ? <OperatorPage /> : <AuthorizationPage />}>
                     <Route path='/OperatorPage'>
-                        <Route path='Active' element={<ActiveCases />} />
+                        <Route path='Active' element={<ActiveChats />} />
                         <Route path="inWork" element={<InWorkCases />} />
                         <Route path="Saved" element={<SavedCases />} />
                         <Route path="Finished" element={<FinishedCases />} />
