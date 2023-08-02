@@ -1,73 +1,63 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Link } from 'react-router-dom'
-import { changeValueActiveCases } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedChats } from '../../../../utils'
 import '../Operator-page.css'
 
-function InWorkCases({ chats, changeValueActiveCases, valueActiveCases, user }) {
-    let allResultFilter = []
+function InWorkCases({ chats, user }) {
+    let result = [],
+        displayedChats = [],
+        hasMoreInWorkChats = true
 
-    let displayedFilterResults = []
+    const [valueInWorkChats, setValueInWorkChats] = useState(5)
 
-    let hasMoreActiveCases = true
+    const changeValueInWorkChats = () => setValueInWorkChats(valueInWorkChats + 5)
 
     function filterData() {
-        for (let objDialogue in chats) {
-            let contentDialogue = chats[objDialogue]
-            let messages = contentDialogue.messages
-            if (
-                contentDialogue.status === 'inWork' &&
-                user.uid === contentDialogue.operatorUID
-            ) {
+        for (let chatId in chats) {
+            const chat = chats[chatId]
+            const messages = chat.messages
+            if (chat.status === 'inWork' && user.uid === chat.operatorUID) {
                 let objResult = {
-                    idDialogue: objDialogue,
-                    client: contentDialogue.client,
-                    topic: contentDialogue.topic,
-                    subtopic: contentDialogue.subtopic,
+                    chatId: chatId,
+                    client: chat.client,
+                    topic: chat.topic,
+                    subtopic: chat.subtopic,
                     content: Object.values(messages).pop().content,
                     time: Object.keys(messages).pop(),
                 }
-                allResultFilter.push(objResult)
+                result.push(objResult)
             }
         }
     }
 
     if (chats) {
         filterData()
-        createDisplayedChats(
-            allResultFilter,
-            displayedFilterResults,
-            valueActiveCases
-        )
+        createDisplayedChats(result, displayedChats, valueInWorkChats)
     }
 
     function loadFunc() {
         setTimeout(() => {
-            changeValueActiveCases()
+            changeValueInWorkChats()
         }, 1500)
     }
 
-    if (displayedFilterResults.length === allResultFilter.length) hasMoreActiveCases = false
+    if (displayedChats.length === result.length) hasMoreInWorkChats = false
 
     const ViewResult = ({ arrResult }) => {
         return arrResult.map((elem) => {
             let timestamp = calculateDate(parseInt(elem.time, 10))
             return (
-                <ListGroupItem key={elem.idDialogue}>
+                <ListGroupItem key={elem.chatId}>
                     <div className="chat-elem">
                         <div className="chat-elem__user">
-                            <FontAwesomeIcon
-                                icon={['fas', 'user-tie']}
-                                size="3x"
-                                color="darkblue"
-                            />
+                            <FontAwesomeIcon icon={['fas', 'user-tie']} size="3x" color="darkblue" />
                             <p>{elem.client}</p>
                         </div>
                         <div className="chat-elem__topic">
@@ -87,13 +77,8 @@ function InWorkCases({ chats, changeValueActiveCases, valueActiveCases, user }) 
                             <div className="chat-elem__actions_time">
                                 {timestamp}
                             </div>
-                            <Link to={`/OperatorPage/Chat/${elem.idDialogue}`}>
-                                <Button
-                                    type="button"
-                                    outline
-                                    color="primary"
-                                    size="sm"
-                                >
+                            <Link to={`/OperatorPage/Chat/${elem.chatId}`}>
+                                <Button type="button" outline color="primary" size="sm"  >
                                     Войти в диалог
                                 </Button>
                             </Link>
@@ -104,29 +89,23 @@ function InWorkCases({ chats, changeValueActiveCases, valueActiveCases, user }) 
         })
     }
 
-    let result =
-        displayedFilterResults.length > 0 ? (
-            <ViewResult arrResult={displayedFilterResults} />
-        ) : null
-
     return (
         <>
             <SearchBar status={'inWork'} />
             <div className="queue">
-                <ListGroup
-                    id="scrollableDiv"
-                    className="queue__list"
-                >
+                <ListGroup id="scrollableDiv" className="queue__list" >
                     <InfiniteScroll
-                        dataLength={displayedFilterResults.length}
+                        dataLength={displayedChats.length}
                         pageStart={0}
                         next={loadFunc}
-                        hasMore={hasMoreActiveCases}
+                        hasMore={hasMoreInWorkChats}
                         loader={<Spinner />}
-                        children={displayedFilterResults}
+                        children={displayedChats}
                         scrollableTarget="scrollableDiv"
                     >
-                        {result}
+                        {displayedChats.length > 0 ? (
+                            <ViewResult arrResult={displayedChats} />
+                        ) : null}
                     </InfiniteScroll>
                 </ListGroup>
             </div>
@@ -134,16 +113,6 @@ function InWorkCases({ chats, changeValueActiveCases, valueActiveCases, user }) 
     )
 }
 
-const mapStateToProps = ({ chats, valueActiveCases, user }) => {
-    return {
-        chats,
-        valueActiveCases,
-        user,
-    }
-}
+const mapStateToProps = ({ chats, user }) => ({ chats, user })
 
-const mapDispatchToProps = {
-    changeValueActiveCases
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(InWorkCases)
+export default connect(mapStateToProps)(InWorkCases)
