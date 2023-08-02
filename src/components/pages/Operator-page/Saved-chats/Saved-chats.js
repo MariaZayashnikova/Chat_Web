@@ -10,10 +10,10 @@ import { updateChatsInDB } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedChats } from '../../../../utils'
-import './SavedCases.css'
+import './Saved-chats.css'
 import '../Operator-page.css'
 
-function SavedCases({ chats, updateChatsInDB, user, loading }) {
+function SavedChats({ chats, updateChatsInDB, user, loading }) {
     let result = [],
         displayedChats = [],
         hasMoreSavedChats = true
@@ -132,4 +132,4 @@ const mapStateToProps = ({ chats, user, loading }) => ({ chats, user, loading })
 
 const mapDispatchToProps = { updateChatsInDB }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SavedCases)
+export default connect(mapStateToProps, mapDispatchToProps)(SavedChats)
