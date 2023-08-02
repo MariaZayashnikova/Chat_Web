@@ -10,9 +10,9 @@ import { updateChatsInDB, pushNewMessage } from '../../../../actions'
 import { calculateDate } from '../../../../utils'
 import OperatorAnswer from './OperatorAnswer'
 import PicturePreview from '../../../Picture-preview/Picture-preview'
-import './Dialogue.css'
+import './Chat.css'
 
-function Dialogue({ chats, updateChatsInDB, settingsUser, pushNewMessage }) {
+function Chat({ chats, updateChatsInDB, settingsUser, pushNewMessage }) {
 
     let messageArray = [],
         clientName,
@@ -198,4 +198,4 @@ const mapDispatchToProps = {
     pushNewMessage
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dialogue)
+export default connect(mapStateToProps, mapDispatchToProps)(Chat)

@@ -27,7 +27,6 @@ function OperatorPage({ user, settingsUser, fetchUserSettings, getTopicsFromDB, 
         }
         settingsUser.phrases = newArr
     }
-    console.log(new Date().getTime())
 
     return (
         <div className="Operator-page">

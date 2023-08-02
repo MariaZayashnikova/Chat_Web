@@ -10,7 +10,7 @@ import RegistrationPage from '../pages/Registration-page/Registration-page'
 import OperatorPage from '../pages/Operator-page/Operator-page'
 import ResetPasswordPage from '../pages/Reset-password-page/Reset-password-page'
 import ErrorRoute from '../ErrorRoute/ErrorRoute'
-import Dialogue from '../pages/Operator-page/Dialogue/Dialogue'
+import Chat from '../pages/Operator-page/Chat/Chat'
 import InWorkCases from '../pages/Operator-page/InWorkCases/InWorkCases'
 import SavedCases from '../pages/Operator-page/SavedCases/SavesCases'
 import FinishedCases from '../pages/Operator-page/FinishedCases/FinishedCases'
@@ -30,7 +30,7 @@ function App({ user }) {
                         <Route path="inWork" element={<InWorkCases />} />
                         <Route path="Saved" element={<SavedCases />} />
                         <Route path="Finished" element={<FinishedCases />} />
-                        <Route path="Dialogue/:itemId" element={<Dialogue />} />
+                        <Route path="Chat/:itemId" element={<Chat />} />
                     </Route>
                 </Route>
                 <Route path="/Registration" element={<RegistrationPage />} />

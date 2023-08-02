@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { usePubNub } from 'pubnub-react'
-import './Dialogue.css'
+import './Chat.css'
 // todo: когда будет мобильное приложение, протестировать
 function Message({ itemId }) {
     /*    const pubnub = usePubNub()

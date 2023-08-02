@@ -87,7 +87,7 @@ function InWorkCases({ chats, changeValueActiveCases, valueActiveCases, user }) 
                             <div className="dialogue__actions_time">
                                 <div>{timestamp}</div>
                             </div>
-                            <Link to={`/OperatorPage/Dialogue/${elem.idDialogue}`}>
+                            <Link to={`/OperatorPage/Chat/${elem.idDialogue}`}>
                                 <Button
                                     type="button"
                                     outline

@@ -90,7 +90,7 @@ function SearchBar({ chats, valueSearch, setValueSearch, status, isSave, updateC
     const ViewResultSearch = ({ arrResult }) => {
         return arrResult.map((elem, i) => {
             return (
-                <Link key={elem.idDialogue + i} to={`/OperatorPage/Dialogue/${elem.idDialogue}`}>
+                <Link key={elem.idDialogue + i} to={`/OperatorPage/Chat/${elem.idDialogue}`}>
                     <ListGroupItem
                         className="resultSearch__item"
                         onClick={() => {

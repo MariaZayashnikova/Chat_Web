@@ -21,7 +21,7 @@ import debounce from 'lodash.debounce'
 import { usePubNub } from 'pubnub-react'
 import { pushNewMessage } from '../../../../actions'
 import Message from './MessageInfo'
-import './Dialogue.css'
+import './Chat.css'
 
 function OperatorAnswer({ itemId, pushNewMessage, settingsUser }) {
     const [dropdownOpen, setDropdownOpen] = useState(false)

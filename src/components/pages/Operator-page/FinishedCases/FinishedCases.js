@@ -113,7 +113,7 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
                                 </div>
                             </div>
                             <div className="dialogueFinished__buttons">
-                                <Link to={`/OperatorPage/Dialogue/${elem.idDialogue}`}>
+                                <Link to={`/OperatorPage/Chat/${elem.idDialogue}`}>
                                     <Button
                                         type="button"
                                         outline
