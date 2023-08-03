@@ -11,10 +11,6 @@ export const getChats = () => ({ type: 'getChats' })
 export const gotChats = (data) => ({ type: 'gotChats', data })
 export const setValueSearch = (value) => ({ type: 'setValueSearch', value })
 export const pushDialogue = (value) => ({ type: 'pushDialogue', value })
-export const changeValueActiveCases = (value) => ({
-    type: 'changeValueActiveCases',
-    value,
-})
 export const updateChatsInDB = (value, idDialogue) => ({ type: 'updateChatsInDB', value, idDialogue })
 export const pushNewMessage = (value, idDialogue) => ({ type: 'pushNewMessage', value, idDialogue })
 export const updatePassword = (value) => ({ type: 'updatePassword', value })

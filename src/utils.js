@@ -28,11 +28,11 @@ const validate = (values) => {
 
 export { validate }
 
-function createDisplayedChats(result, displayedChats, valueActiveCases) {
+function createDisplayedChats(result, displayedChats, value) {
     let i = 0
     result.forEach((elem) => {
         i++
-        if (i > valueActiveCases) return
+        if (i > value) return
         else displayedChats.push(elem)
     })
 }

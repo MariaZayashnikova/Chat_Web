@@ -4,7 +4,6 @@ const initialState = {
     user: null,
     chats: null,
     valueSearch: null,
-    valueActiveCases: 5,
     settingsUser: null,
     topics: null,
 }
@@ -76,11 +75,6 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 valueSearch: action.value,
-            }
-        case 'changeValueActiveCases':
-            return {
-                ...state,
-                valueActiveCases: state.valueActiveCases + 5,
             }
         case 'updatedUserName':
             return {
