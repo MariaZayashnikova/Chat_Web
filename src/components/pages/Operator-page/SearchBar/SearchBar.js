@@ -1,82 +1,66 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Input, Label } from 'reactstrap'
 import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import { setValueSearch, updateChatsInDB } from '../../../../actions'
 import './SearchBar.css'
 
-function SearchBar({ chats, valueSearch, setValueSearch, status, isSave, updateChatsInDB, user }) {
+function SearchBar({ chats, status, isSave, user }) {
     let resultSearch = []
+
+    const [value, setValue] = useState(null)
 
     function searchStart(e) {
         resultSearch = []
-        setValueSearch(e.target.value.toLowerCase())
+        setValue(e.target.value.toLowerCase())
+    }
+
+    function createResultObject(chatId, chat, content = null) {
+        return {
+            chatId: chatId,
+            client: chat.client,
+            topic: chat.topic,
+            subtopic: chat.subtopic,
+            content: content,
+        }
     }
 
     function search() {
-        for (let objDialogue in chats) {
-            let contentDialogue = chats[objDialogue]
-            let nameClient = contentDialogue.client.toLowerCase()
-            let timeMessage = contentDialogue.messages
+        for (let chatId in chats) {
+            let chat = chats[chatId]
+            let nameClient = chat.client.toLowerCase()
+            let messages = chat.messages
             if (isSave) {
-                if (
-                    contentDialogue.isSave &&
-                    contentDialogue.operatorUID === user.uid
-                ) {
-                    if (nameClient.includes(valueSearch)) {
-                        let objResult = {
-                            idDialog: objDialogue,
-                            client: contentDialogue.client,
-                            topic: contentDialogue.topic,
-                            subtopic: contentDialogue.subtopic,
-                            content: null,
-                        }
-                        resultSearch.push(objResult)
+                if (chat.isSave && chat.operatorUID === user.uid) {
+                    if (nameClient.includes(value)) {
+                        let result = createResultObject(chatId, chat);
+                        resultSearch.push(result)
                     }
-                    for (let elemMessage in timeMessage) {
-                        let message = timeMessage[elemMessage]
+                    for (let timeMessage in messages) {
+                        let message = messages[timeMessage]
                         if (message.content) {
                             let content = message.content.toLowerCase()
-                            if (content.includes(valueSearch)) {
-                                let objResult = {
-                                    idDialogue: objDialogue,
-                                    client: contentDialogue.client,
-                                    topic: contentDialogue.topic,
-                                    subtopic: contentDialogue.subtopic,
-                                    content: message.content,
-                                }
-                                resultSearch.push(objResult)
+                            if (content.includes(value)) {
+                                let result = createResultObject(chatId, chat, message.content);
+                                resultSearch.push(result)
                             }
                         }
                     }
                 }
             } else {
-                if (contentDialogue.status === status) {
-                    if (nameClient.includes(valueSearch)) {
-                        let objResult = {
-                            idDialogue: objDialogue,
-                            client: contentDialogue.client,
-                            topic: contentDialogue.topic,
-                            subtopic: contentDialogue.subtopic,
-                            content: null,
-                        }
-                        resultSearch.push(objResult)
+                if (chat.status === status) {
+                    if (nameClient.includes(value)) {
+                        let result = createResultObject(chatId, chat);
+                        resultSearch.push(result)
                     }
-                    for (let elemMessage in timeMessage) {
-                        let message = timeMessage[elemMessage]
+                    for (let timeMessage in messages) {
+                        let message = messages[timeMessage]
                         if (message.content) {
                             let content = message.content.toLowerCase()
-                            if (content.includes(valueSearch)) {
-                                let objResult = {
-                                    idDialogue: objDialogue,
-                                    client: contentDialogue.client,
-                                    topic: contentDialogue.topic,
-                                    subtopic: contentDialogue.subtopic,
-                                    content: message.content,
-                                }
-                                resultSearch.push(objResult)
+                            if (content.includes(value)) {
+                                let result = createResultObject(chatId, chat, message.content);
+                                resultSearch.push(result)
                             }
                         }
                     }
@@ -85,26 +69,65 @@ function SearchBar({ chats, valueSearch, setValueSearch, status, isSave, updateC
         }
     }
 
-    if (chats && valueSearch) search()
+    // function mysearch() {
+    //     for (let chatId in chats) {
+    //         let chat = chats[chatId]
+    //         let nameClient = chat.client.toLowerCase()
+    //         let messages = chat.messages
+
+    //         if (status === 'active') {
+
+    //         } else {
+
+    //         }
+
+    //         if (chat.operatorUID !== user.uid) continue
+
+    //         if (isSave) {
+    //             if (chat.isSave && chat.operatorUID === user.uid) {
+    //                 if (nameClient.includes(value)) {
+    //                     let result = createResultObject(chatId, chat);
+    //                     resultSearch.push(result)
+    //                 }
+    //                 for (let timeMessage in messages) {
+    //                     let message = messages[timeMessage]
+    //                     if (message.content) {
+    //                         let content = message.content.toLowerCase()
+    //                         if (content.includes(value)) {
+    //                             let result = createResultObject(chatId, chat, message.content);
+    //                             resultSearch.push(result)
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         } else {
+    //             if (chat.status === status) {
+    //                 if (nameClient.includes(value)) {
+    //                     let result = createResultObject(chatId, chat);
+    //                     resultSearch.push(result)
+    //                 }
+    //                 for (let timeMessage in messages) {
+    //                     let message = messages[timeMessage]
+    //                     if (message.content) {
+    //                         let content = message.content.toLowerCase()
+    //                         if (content.includes(value)) {
+    //                             let result = createResultObject(chatId, chat, message.content);
+    //                             resultSearch.push(result)
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    if (chats && value) search()
 
     const ViewResultSearch = ({ arrResult }) => {
         return arrResult.map((elem, i) => {
             return (
-                <Link key={elem.idDialogue + i} to={`/OperatorPage/Chat/${elem.idDialogue}`}>
-                    <ListGroupItem
-                        className="resultSearch__item"
-                        onClick={() => {
-                            if (status === 'active') {
-                                updateChatsInDB(
-                                    {
-                                        status: 'inWork',
-                                        operatorUID: user.uid,
-                                    },
-                                    elem.idDialogue
-                                )
-                            }
-                        }}
-                    >
+                <Link key={elem.chatId + i} to={`/OperatorPage/Chat/${elem.chatId}`}>
+                    <ListGroupItem className="resultSearch__item" >
                         <div className="resultSearch__dialogue">
                             <p className="resultSearch__dialogue_nameClient">
                                 {elem.client}
@@ -125,7 +148,7 @@ function SearchBar({ chats, valueSearch, setValueSearch, status, isSave, updateC
         ) : null
 
     let noResult =
-        chats && valueSearch && resultSearch.length === 0 ? (
+        chats && value && resultSearch.length === 0 ? (
             <ListGroupItem>Ничего не найдено</ListGroupItem>
         ) : null
 
@@ -150,17 +173,6 @@ function SearchBar({ chats, valueSearch, setValueSearch, status, isSave, updateC
     )
 }
 
-const mapStateToProps = ({ chats, valueSearch, user }) => {
-    return {
-        chats,
-        valueSearch,
-        user,
-    }
-}
+const mapStateToProps = ({ chats, user }) => ({ chats, user })
 
-const mapDispatchToProps = {
-    setValueSearch,
-    updateChatsInDB,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchBar)
+export default connect(mapStateToProps)(SearchBar)

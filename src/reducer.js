@@ -3,7 +3,6 @@ const initialState = {
     error: false,
     user: null,
     chats: null,
-    valueSearch: null,
     settingsUser: null,
     topics: null,
 }
@@ -70,11 +69,6 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 chats: action.data,
-            }
-        case 'setValueSearch':
-            return {
-                ...state,
-                valueSearch: action.value,
             }
         case 'updatedUserName':
             return {
