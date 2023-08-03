@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ToastContainer } from 'react-toastify'
 import { Toast, ToastBody, ToastHeader, Button } from 'reactstrap'
 import moment from 'moment'

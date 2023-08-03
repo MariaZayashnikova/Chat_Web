@@ -13,7 +13,7 @@ import ErrorRoute from '../ErrorRoute/ErrorRoute'
 import Chat from '../pages/Operator-page/Chat/Chat'
 import InWorkChats from '../pages/Operator-page/InWork-chats/InWork-chats'
 import SavedChats from '../pages/Operator-page/Saved-chats/Saved-chats'
-import FinishedCases from '../pages/Operator-page/FinishedCases/FinishedCases'
+import FinishedChats from '../pages/Operator-page/Finished-chats/Finished-chats'
 import ActiveChats from '../pages/Operator-page/Active-chats/Active-chats'
 import './App.css'
 
@@ -29,7 +29,7 @@ function App({ user }) {
                         <Route path='Active' element={<ActiveChats />} />
                         <Route path="inWork" element={<InWorkChats />} />
                         <Route path="Saved" element={<SavedChats />} />
-                        <Route path="Finished" element={<FinishedCases />} />
+                        <Route path="Finished" element={<FinishedChats />} />
                         <Route path="Chat/:itemId" element={<Chat />} />
                     </Route>
                 </Route>

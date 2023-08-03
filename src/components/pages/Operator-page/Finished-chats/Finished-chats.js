@@ -10,10 +10,10 @@ import { updateChatsInDB } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
 import { calculateDate, createDisplayedChats, CalcStars } from '../../../../utils'
-import './FinishedCases.css'
+import './Finished-chats.css'
 import '../Operator-page.css'
 
-function FinishedCases({ chats, updateChatsInDB, loading }) {
+function FinishedChats({ chats, updateChatsInDB, loading }) {
     let result = [],
         displayedChats = [],
         hasMoreFinishedChats = true,
@@ -154,4 +154,4 @@ const mapStateToProps = ({ chats, loading }) => ({ chats, loading })
 
 const mapDispatchToProps = { updateChatsInDB }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FinishedCases)
+export default connect(mapStateToProps, mapDispatchToProps)(FinishedChats)
