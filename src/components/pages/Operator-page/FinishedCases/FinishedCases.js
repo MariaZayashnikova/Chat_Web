@@ -24,21 +24,20 @@ function FinishedCases({ chats, updateChatsInDB, loading }) {
     const changeValueFinishedChats = () => setValueFinishedChats(valueFinishedChats + 5)
 
     function filterData() {
-        for (let objDialogue in chats) {
-            let contentDialogue = chats[objDialogue]
-            let messages = contentDialogue.messages
-            if (contentDialogue.status === 'finished') {
-                if (contentDialogue.isSave) {
-                    isSavedChat = contentDialogue.isSave
-                }
+        for (let chatId in chats) {
+            let chat = chats[chatId]
+            let messages = chat.messages
+            if (chat.status === 'finished') {
+                if (chat.isSave) isSavedChat = chat.isSave
+
                 let objResult = {
-                    idDialogue: objDialogue,
-                    client: contentDialogue.client,
-                    topic: contentDialogue.topic,
-                    subtopic: contentDialogue.subtopic,
+                    chatId: chatId,
+                    client: chat.client,
+                    topic: chat.topic,
+                    subtopic: chat.subtopic,
                     content: Object.values(messages).pop().content,
-                    time: contentDialogue.completionTime,
-                    grade: contentDialogue.grade,
+                    time: chat.completionTime,
+                    grade: chat.grade,
                 }
                 result.push(objResult)
             }
@@ -62,14 +61,10 @@ function FinishedCases({ chats, updateChatsInDB, loading }) {
         return arrResult.map((elem) => {
             let timestamp = calculateDate(parseInt(elem.time, 10))
             return (
-                <ListGroupItem key={elem.idDialogue}>
+                <ListGroupItem key={elem.chatId}>
                     <div className="chat-elem">
                         <div className="chat-elem__user">
-                            <FontAwesomeIcon
-                                icon={['fas', 'user-tie']}
-                                size="3x"
-                                color="darkblue"
-                            />
+                            <FontAwesomeIcon icon={['fas', 'user-tie']} size="3x" color="darkblue" />
                             <p>{elem.client}</p>
                         </div>
                         <div className="chat-elem__topic">
@@ -84,25 +79,20 @@ function FinishedCases({ chats, updateChatsInDB, loading }) {
                                 {elem.subtopic}
                             </div>
                         </div>
-                        <div className="dialogue__messageFinished">
+                        <div className="chat-elem__message">
                             {elem.content}
                         </div>
-                        <div className="dialogueFinished__actions">
-                            <div className="dialogueFinished__info">
+                        <div className="chat-elem__finished-actions">
+                            <div className="chat-elem__finished-actions_info">
                                 <div>{timestamp}</div>
                                 <div>
                                     <div>Оценка</div>
                                     <CalcStars element={elem} property='grade' iconSize='1' />
                                 </div>
                             </div>
-                            <div className="dialogueFinished__buttons">
-                                <Link to={`/OperatorPage/Chat/${elem.idDialogue}`}>
-                                    <Button
-                                        type="button"
-                                        outline
-                                        color="primary"
-                                        size="sm"
-                                    >
+                            <div className="chat-elem__finished-actions_btns">
+                                <Link to={`/OperatorPage/Chat/${elem.chatId}`}>
+                                    <Button type="button" outline color="primary" size="sm" >
                                         Войти в диалог
                                     </Button>
                                 </Link>
@@ -112,9 +102,7 @@ function FinishedCases({ chats, updateChatsInDB, loading }) {
                                         outline
                                         color="danger"
                                         size="sm"
-                                        onClick={() => {
-                                            updateChatsInDB({ isSave: false }, elem.idDialogue)
-                                        }}
+                                        onClick={() => updateChatsInDB({ isSave: false }, elem.chatId)}
                                     >
                                         Удалить из сохранённых
                                     </Button>
@@ -123,9 +111,7 @@ function FinishedCases({ chats, updateChatsInDB, loading }) {
                                         outline
                                         color="info"
                                         size="sm"
-                                        onClick={() => {
-                                            updateChatsInDB({ isSave: true }, elem.idDialogue)
-                                        }}
+                                        onClick={() => updateChatsInDB({ isSave: true }, elem.chatId)}
                                     >
                                         Сохранить диалог
                                     </Button>
@@ -143,10 +129,8 @@ function FinishedCases({ chats, updateChatsInDB, loading }) {
             <SearchBar status={'finished'} />
             <ToastContainer />
             <div className="queue">
-                <ListGroup
-                    id="scrollableDiv"
-                    className="queue__list"
-                >
+                {loading ? <Spinner /> : null}
+                <ListGroup id="scrollableDiv" className="queue__list" >
                     <InfiniteScroll
                         dataLength={displayedChats.length}
                         pageStart={0}
