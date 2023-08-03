@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const validate = (values) => {
     const errors = {}
@@ -60,3 +61,14 @@ function calculateDate(timestamp) {
 }
 
 export { calculateDate }
+
+function CalcStars({ element, property, iconSize }) {
+    let result = [],
+        size = iconSize + 'x'
+    for (let i = 0; i < element[property]; i++) {
+        result.push(<FontAwesomeIcon icon={['fas', 'star']} key={i} color="yellow" size={size} />)
+    }
+    return result
+}
+
+export { CalcStars }

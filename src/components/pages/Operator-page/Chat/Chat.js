@@ -7,7 +7,7 @@ import { Toast, ToastBody, ToastHeader, Button } from 'reactstrap'
 import moment from 'moment'
 import 'moment/locale/ru.js'
 import { updateChatsInDB, pushNewMessage } from '../../../../actions'
-import { calculateDate } from '../../../../utils'
+import { calculateDate, CalcStars } from '../../../../utils'
 import OperatorAnswer from './OperatorAnswer'
 import PicturePreview from '../../../Picture-preview/Picture-preview'
 import './Chat.css'
@@ -98,19 +98,11 @@ function Chat({ chats, updateChatsInDB, settingsUser, pushNewMessage, user }) {
         return { res, startSrt, endStr }
     }
 
-    const CalcStars = () => {
-        let arr = []
-        for (let i = 0; i < dialogueResultObj.grade; i++) {
-            arr.push(<FontAwesomeIcon icon={['fas', 'star']} key={i} color="yellow" size="3x" />)
-        }
-        return arr
-    }
-
     const ViewDialogueResult = () => {
         return (
             <div className="Dialogue__result">
                 <div className="stars">
-                    <CalcStars />
+                    <CalcStars element={dialogueResultObj} property='grade' iconSize='3' />
                 </div>
                 <p>
                     Диалог завершился &nbsp;

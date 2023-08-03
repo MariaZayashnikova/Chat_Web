@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,22 +6,22 @@ import 'moment/locale/ru.js'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Link } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import { changeValueActiveCases, updateChatsInDB } from '../../../../actions'
+import { updateChatsInDB } from '../../../../actions'
 import SearchBar from '../SearchBar/SearchBar'
 import Spinner from '../../../Spinner/Spinner'
-import { calculateDate, createDisplayedChats } from '../../../../utils'
+import { calculateDate, createDisplayedChats, CalcStars } from '../../../../utils'
 import './FinishedCases.css'
 import '../Operator-page.css'
 
-function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, updateChatsInDB }) {
+function FinishedCases({ chats, updateChatsInDB, loading }) {
+    let result = [],
+        displayedChats = [],
+        hasMoreFinishedChats = true,
+        isSavedChat = false
 
-    let allResultFilter = []
+    const [valueFinishedChats, setValueFinishedChats] = useState(5)
 
-    let hasMoreActiveCases = true
-
-    let displayedFilterResults = []
-
-    let isSavedCase = false
+    const changeValueFinishedChats = () => setValueFinishedChats(valueFinishedChats + 5)
 
     function filterData() {
         for (let objDialogue in chats) {
@@ -29,7 +29,7 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
             let messages = contentDialogue.messages
             if (contentDialogue.status === 'finished') {
                 if (contentDialogue.isSave) {
-                    isSavedCase = contentDialogue.isSave
+                    isSavedChat = contentDialogue.isSave
                 }
                 let objResult = {
                     idDialogue: objDialogue,
@@ -40,44 +40,27 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
                     time: contentDialogue.completionTime,
                     grade: contentDialogue.grade,
                 }
-                allResultFilter.push(objResult)
+                result.push(objResult)
             }
         }
     }
 
     if (chats) {
         filterData()
-        createDisplayedChats(
-            allResultFilter,
-            displayedFilterResults,
-            valueActiveCases
-        )
+        createDisplayedChats(result, displayedChats, valueFinishedChats)
     }
 
     function loadFunc() {
         setTimeout(() => {
-            changeValueActiveCases()
+            changeValueFinishedChats()
         }, 1500)
     }
 
-    if (displayedFilterResults.length === allResultFilter.length) hasMoreActiveCases = false
+    if (displayedChats.length === result.length) hasMoreFinishedChats = false
 
     const ViewResult = ({ arrResult }) => {
         return arrResult.map((elem) => {
             let timestamp = calculateDate(parseInt(elem.time, 10))
-            let CalcStars = () => {
-                let arr = []
-                for (let i = 0; i < elem.grade; i++) {
-                    arr.push(
-                        <FontAwesomeIcon
-                            icon={['fas', 'star']}
-                            key={i}
-                            color="yellow"
-                        />
-                    )
-                }
-                return arr
-            }
             return (
                 <ListGroupItem key={elem.idDialogue}>
                     <div className="chat-elem">
@@ -109,7 +92,7 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
                                 <div>{timestamp}</div>
                                 <div>
                                     <div>Оценка</div>
-                                    <CalcStars />
+                                    <CalcStars element={elem} property='grade' iconSize='1' />
                                 </div>
                             </div>
                             <div className="dialogueFinished__buttons">
@@ -123,7 +106,7 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
                                         Войти в диалог
                                     </Button>
                                 </Link>
-                                {isSavedCase ? (
+                                {isSavedChat ? (
                                     <Button
                                         type="button"
                                         outline
@@ -155,11 +138,6 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
         })
     }
 
-    let result =
-        displayedFilterResults.length > 0 ? (
-            <ViewResult arrResult={displayedFilterResults} />
-        ) : null
-
     return (
         <>
             <SearchBar status={'finished'} />
@@ -170,15 +148,17 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
                     className="queue__list"
                 >
                     <InfiniteScroll
-                        dataLength={displayedFilterResults.length}
+                        dataLength={displayedChats.length}
                         pageStart={0}
                         next={loadFunc}
-                        hasMore={hasMoreActiveCases}
+                        hasMore={hasMoreFinishedChats}
                         loader={<Spinner />}
-                        children={displayedFilterResults}
+                        children={displayedChats}
                         scrollableTarget="scrollableDiv"
                     >
-                        {result}
+                        {displayedChats.length > 0 ? (
+                            <ViewResult arrResult={displayedChats} />
+                        ) : null}
                     </InfiniteScroll>
                 </ListGroup>
             </div>
@@ -186,11 +166,8 @@ function FinishedCases({ chats, changeValueActiveCases, valueActiveCases, update
     )
 }
 
-const mapStateToProps = ({ chats, valueActiveCases }) => ({ chats, valueActiveCases })
+const mapStateToProps = ({ chats, loading }) => ({ chats, loading })
 
-const mapDispatchToProps = {
-    changeValueActiveCases,
-    updateChatsInDB,
-}
+const mapDispatchToProps = { updateChatsInDB }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FinishedCases)
