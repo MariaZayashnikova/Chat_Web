@@ -1,4 +1,4 @@
-.Dialogue__client {
+.Chat__client {
     display: flex;
     font-weight: bold;
     font-size: 24px;
@@ -8,7 +8,7 @@
     box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.1);
 }
 
-.Dialogue__client button {
+.Chat__client button {
     margin-left: 15px;
 }
 
@@ -22,7 +22,7 @@
     right: 0.75rem;
 }
 
-.Dialogue__messages .messages {
+.Chat__messages .messages {
     height: 550px;
     overflow: auto;
     display: flex;
@@ -97,7 +97,7 @@
     cursor: pointer;
 }
 
-.Dialogue__result {
+.Chat__result {
     display: flex;
     flex-direction: column;
     align-items: center;
