@@ -126,7 +126,7 @@ function FinishedChats({ chats, updateChatsInDB, loading }) {
 
     return (
         <>
-            <SearchBar status={'finished'} />
+            <SearchBar status='finished' />
             <ToastContainer />
             <div className="queue">
                 {loading ? <Spinner /> : null}

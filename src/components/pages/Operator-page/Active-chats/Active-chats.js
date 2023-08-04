@@ -96,7 +96,7 @@ function ActiveChats({ chats, error, loading }) {
 
     return (
         <>
-            <SearchBar status={'active'} />
+            <SearchBar status='active' />
             <div className="queue">
                 <div className="queue__quantity">
                     Клиентов в очереди: {result.length}

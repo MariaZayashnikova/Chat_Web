@@ -104,7 +104,7 @@ function SavedChats({ chats, updateChatsInDB, user, loading }) {
 
     return (
         <>
-            <SearchBar isSave={true} />
+            <SearchBar status='saved' />
             <ToastContainer />
             <div className="queue">
                 {loading ? <Spinner /> : null}

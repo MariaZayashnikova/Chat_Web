@@ -6,7 +6,7 @@ import { ListGroup, ListGroupItem } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import './SearchBar.css'
 
-function SearchBar({ chats, status, isSave, user }) {
+function SearchBar({ chats, status, user }) {
     let resultSearch = []
 
     const [value, setValue] = useState(null)
@@ -26,100 +26,40 @@ function SearchBar({ chats, status, isSave, user }) {
         }
     }
 
-    function search() {
-        for (let chatId in chats) {
-            let chat = chats[chatId]
-            let nameClient = chat.client.toLowerCase()
-            let messages = chat.messages
-            if (isSave) {
-                if (chat.isSave && chat.operatorUID === user.uid) {
-                    if (nameClient.includes(value)) {
-                        let result = createResultObject(chatId, chat);
-                        resultSearch.push(result)
-                    }
-                    for (let timeMessage in messages) {
-                        let message = messages[timeMessage]
-                        if (message.content) {
-                            let content = message.content.toLowerCase()
-                            if (content.includes(value)) {
-                                let result = createResultObject(chatId, chat, message.content);
-                                resultSearch.push(result)
-                            }
-                        }
-                    }
-                }
-            } else {
-                if (chat.status === status) {
-                    if (nameClient.includes(value)) {
-                        let result = createResultObject(chatId, chat);
-                        resultSearch.push(result)
-                    }
-                    for (let timeMessage in messages) {
-                        let message = messages[timeMessage]
-                        if (message.content) {
-                            let content = message.content.toLowerCase()
-                            if (content.includes(value)) {
-                                let result = createResultObject(chatId, chat, message.content);
-                                resultSearch.push(result)
-                            }
-                        }
-                    }
+    function findSearchMatches(nameClient, chatId, chat, messages) {
+        if (nameClient.includes(value)) {
+            let result = createResultObject(chatId, chat);
+            resultSearch.push(result)
+        }
+        for (let timeMessage in messages) {
+            let message = messages[timeMessage]
+            if (message.content) {
+                let content = message.content.toLowerCase()
+                if (content.includes(value)) {
+                    let result = createResultObject(chatId, chat, message.content);
+                    resultSearch.push(result)
                 }
             }
         }
     }
 
-    // function mysearch() {
-    //     for (let chatId in chats) {
-    //         let chat = chats[chatId]
-    //         let nameClient = chat.client.toLowerCase()
-    //         let messages = chat.messages
+    function search() {
+        for (let chatId in chats) {
+            const chat = chats[chatId]
+            const nameClient = chat.client.toLowerCase()
+            const messages = chat.messages
 
-    //         if (status === 'active') {
-
-    //         } else {
-
-    //         }
-
-    //         if (chat.operatorUID !== user.uid) continue
-
-    //         if (isSave) {
-    //             if (chat.isSave && chat.operatorUID === user.uid) {
-    //                 if (nameClient.includes(value)) {
-    //                     let result = createResultObject(chatId, chat);
-    //                     resultSearch.push(result)
-    //                 }
-    //                 for (let timeMessage in messages) {
-    //                     let message = messages[timeMessage]
-    //                     if (message.content) {
-    //                         let content = message.content.toLowerCase()
-    //                         if (content.includes(value)) {
-    //                             let result = createResultObject(chatId, chat, message.content);
-    //                             resultSearch.push(result)
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         } else {
-    //             if (chat.status === status) {
-    //                 if (nameClient.includes(value)) {
-    //                     let result = createResultObject(chatId, chat);
-    //                     resultSearch.push(result)
-    //                 }
-    //                 for (let timeMessage in messages) {
-    //                     let message = messages[timeMessage]
-    //                     if (message.content) {
-    //                         let content = message.content.toLowerCase()
-    //                         if (content.includes(value)) {
-    //                             let result = createResultObject(chatId, chat, message.content);
-    //                             resultSearch.push(result)
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+            if (status === 'active' && chat.status === 'active') {
+                findSearchMatches(nameClient, chatId, chat, messages)
+            }
+            else if (chat.operatorUID !== user.uid) continue
+            else if (chat.isSave && status === 'saved') {
+                findSearchMatches(nameClient, chatId, chat, messages)
+            } else if (chat.status === status) {
+                findSearchMatches(nameClient, chatId, chat, messages)
+            }
+        }
+    }
 
     if (chats && value) search()
 
@@ -127,9 +67,9 @@ function SearchBar({ chats, status, isSave, user }) {
         return arrResult.map((elem, i) => {
             return (
                 <Link key={elem.chatId + i} to={`/OperatorPage/Chat/${elem.chatId}`}>
-                    <ListGroupItem className="resultSearch__item" >
-                        <div className="resultSearch__dialogue">
-                            <p className="resultSearch__dialogue_nameClient">
+                    <ListGroupItem className="result-search__item">
+                        <div className="result-search__chat-info">
+                            <p className="result-search__chat-info_name">
                                 {elem.client}
                             </p>
                             <p>{elem.topic}</p>
@@ -142,34 +82,23 @@ function SearchBar({ chats, status, isSave, user }) {
         })
     }
 
-    let result =
-        resultSearch.length > 0 ? (
-            <ViewResultSearch arrResult={resultSearch} />
-        ) : null
-
-    let noResult =
-        chats && value && resultSearch.length === 0 ? (
-            <ListGroupItem>Ничего не найдено</ListGroupItem>
-        ) : null
-
     return (
-        <div className="searchBar">
-            <div className="containerSearch">
-                <Label for="search" className="labelSearch">
-                    Поиск:
-                </Label>
-                <Input
-                    type="search"
-                    id="search"
-                    className="containerSearch__search"
-                    onInput={debounce(searchStart, 1000)}
-                />
+        <>
+            <div className="SearchBar">
+                <Label for="search">  Поиск:  </Label>
+                <Input type="search" id="search" onInput={debounce(searchStart, 1000)} />
             </div>
-            {noResult}
-            {result ? (
-                <ListGroup className="resultSearch">{result}</ListGroup>
-            ) : null}
-        </div>
+            <div style={{ position: "relative" }}>
+                {chats && value ? (
+                    <ListGroup className="result-search">
+                        {resultSearch.length > 0 ? (
+                            <ViewResultSearch arrResult={resultSearch} />) : (
+                            <ListGroupItem>Ничего не найдено</ListGroupItem>
+                        )}
+                    </ListGroup>
+                ) : null}
+            </div>
+        </>
     )
 }
 

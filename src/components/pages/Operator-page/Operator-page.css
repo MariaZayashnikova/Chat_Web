@@ -12,16 +12,21 @@
     padding: 10px;
     border: 2px solid lightgrey;
     margin-left: 10px;
-    min-height: 500px;
+    height: 80vh;
     box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.1);
 }
 
 .content {
     padding: 20px 10px;
+    height: 95%;
+}
+
+.queue {
+    height: 90%;
 }
 
 .queue__list {
-    height: 500px;
+    height: 90%;
     overflow: auto;
 }
 

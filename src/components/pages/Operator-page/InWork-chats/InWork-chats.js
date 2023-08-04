@@ -91,7 +91,7 @@ function InWorkChats({ chats, user, loading }) {
 
     return (
         <>
-            <SearchBar status={'inWork'} />
+            <SearchBar status='inWork' />
             <div className="queue">
                 {loading ? <Spinner /> : null}
                 <ListGroup id="scrollableDiv" className="queue__list" >
