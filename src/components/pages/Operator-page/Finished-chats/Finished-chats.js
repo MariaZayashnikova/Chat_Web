@@ -13,7 +13,7 @@ import { calculateDate, createDisplayedChats, CalcStars } from '../../../../util
 import './Finished-chats.css'
 import '../Operator-page.css'
 
-function FinishedChats({ chats, updateChatsInDB, loading }) {
+function FinishedChats({ chats, updateChatsInDB, loading, user }) {
     let result = [],
         displayedChats = [],
         hasMoreFinishedChats = true,
@@ -27,10 +27,10 @@ function FinishedChats({ chats, updateChatsInDB, loading }) {
         for (let chatId in chats) {
             let chat = chats[chatId]
             let messages = chat.messages
-            if (chat.status === 'finished') {
+            if (chat.status === 'finished' && user.uid === chat.operatorUID) {
                 if (chat.isSave) isSavedChat = chat.isSave
 
-                let objResult = {
+                let res = {
                     chatId: chatId,
                     client: chat.client,
                     topic: chat.topic,
@@ -39,7 +39,7 @@ function FinishedChats({ chats, updateChatsInDB, loading }) {
                     time: chat.completionTime,
                     grade: chat.grade,
                 }
-                result.push(objResult)
+                result.push(res)
             }
         }
     }
@@ -150,7 +150,7 @@ function FinishedChats({ chats, updateChatsInDB, loading }) {
     )
 }
 
-const mapStateToProps = ({ chats, loading }) => ({ chats, loading })
+const mapStateToProps = ({ chats, loading, user }) => ({ chats, loading, user })
 
 const mapDispatchToProps = { updateChatsInDB }
 
