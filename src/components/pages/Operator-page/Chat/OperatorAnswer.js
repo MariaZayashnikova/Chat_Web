@@ -122,6 +122,19 @@ function OperatorAnswer({ itemId, pushNewMessage, settingsUser }) {
             <div id="myTooltip"></div>
             <View />
             <div className="Answer">
+                <div className="ready-answers">
+                    <div className="ready-answers__info">
+                        <div>Готовые фразы</div>
+                    </div>
+                    <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown} size="sm" >
+                        <DropdownToggle className="dropdown-btn" caret>
+                            Варианты
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            {settingsUser.phrases.map(elem => <DropdownItem onClick={() => addPhrase(elem.content)} key={elem.id}>{elem.content}</DropdownItem>)}
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
                 <Form onSubmit={submitNewMessage} className="Answer-form" >
                     <FormGroup className="position-relative">
                         <Label for="answer">Введите ответ:</Label>
@@ -149,20 +162,7 @@ function OperatorAnswer({ itemId, pushNewMessage, settingsUser }) {
                         Отправить
                     </Button>
                 </Form>
-                <div className="ready-answers">
-                    <div className="ready-answers__info">
-                        <div>Или выберете из готовых:</div>
-                        <FontAwesomeIcon icon={['fas', 'cog']} color="grey" />
-                    </div>
-                    <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown} size="sm" >
-                        <DropdownToggle className="dropdown-btn" caret>
-                            Варианты
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            {settingsUser.phrases.map(elem => <DropdownItem onClick={() => addPhrase(elem.content)} key={elem.id}>{elem.content}</DropdownItem>)}
-                        </DropdownMenu>
-                    </Dropdown>
-                </div>
+
             </div>
         </>
     )
