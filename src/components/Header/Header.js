@@ -6,7 +6,7 @@ import './Header.css'
 
 function Header() {
     return (
-        <h1 className="header">
+        <h1 className="Header">
             <FontAwesomeIcon icon={faComments} />
             <div className="link">
                 <Link to="/" className="link_elem">

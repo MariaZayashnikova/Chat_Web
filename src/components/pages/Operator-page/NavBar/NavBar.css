@@ -1,0 +1,18 @@
+.NavBar {
+    display: flex;
+    max-height: 500px;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    margin-right: 20px;
+    border: 2px solid lightgrey;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.1);
+}
+
+.NavBar__item {
+    text-align: center;
+    text-decoration: none;
+    font-size: calc(14px + (16 - 14) * ((100vw - 500px) / (1920 - 500)));
+}

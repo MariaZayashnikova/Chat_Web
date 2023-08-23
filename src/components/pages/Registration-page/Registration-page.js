@@ -3,21 +3,11 @@ import { Form, FormGroup, Input, FormFeedback, Label, Button } from 'reactstrap'
 import { useFormik } from 'formik'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import {
-    fetchMessageFailure,
-    fetchRegistration,
-    clearErrors,
-} from '../../../actions'
-import { validate } from '../Authorization-page/Authorization-page'
+import { gotError, registration, clearErrors } from '../../../actions'
+import { validate } from '../../../utils'
 import Spinner from '../../Spinner/Spinner'
 
-function RegistrationPage({
-    loadingFromState,
-    errorFromState,
-    fetchRegistration,
-    fetchMessageFailure,
-    clearErrors,
-}) {
+function RegistrationPage({ loading, error, registration, gotError, clearErrors }) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -27,14 +17,14 @@ function RegistrationPage({
         validate,
         onSubmit: (values) => {
             if (values.password === values.passwordConfirmation) {
-                if (errorFromState) clearErrors()
+                if (error) clearErrors()
 
-                fetchRegistration(values)
+                registration(values)
             } else {
                 const error = {
                     message: 'Пароли не совпадают',
                 }
-                fetchMessageFailure(error)
+                gotError(error)
             }
         },
     })
@@ -138,29 +128,17 @@ function RegistrationPage({
                             Регистрация
                         </Button>
                     </Form>
-                    {loadingFromState ? <Spinner /> : null}
-                    {errorFromState ? (
-                        <div className="error">{errorFromState}</div>
+                    {loading ? <Spinner /> : null}
+                    {error ? (
+                        <div className="error">{error}</div>
                     ) : null}
                 </div>
                 <div className="container-links">
                     <div className="link">
-                        <Link
-                            to="/"
-                            className="link_elem"
-                            onClick={() => {
-                                if (errorFromState) clearErrors()
-                            }}
-                        >
+                        <Link to="/" className="link_elem" >
                             Войти
                         </Link>
-                        <Link
-                            to="/ResetPassword"
-                            className="link_elem"
-                            onClick={() => {
-                                if (errorFromState) clearErrors()
-                            }}
-                        >
+                        <Link to="/ResetPassword" className="link_elem" >
                             Забыли пароль?
                         </Link>
                     </div>
@@ -170,11 +148,11 @@ function RegistrationPage({
     )
 }
 
-const mapStateToProps = ({ loadingFromState, errorFromState }) => ({ loadingFromState, errorFromState })
+const mapStateToProps = ({ loading, error }) => ({ loading, error })
 
 const mapDispatchToProps = {
-    fetchRegistration,
-    fetchMessageFailure,
+    registration,
+    gotError,
     clearErrors,
 }
 

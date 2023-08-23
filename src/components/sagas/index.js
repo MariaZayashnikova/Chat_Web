@@ -27,7 +27,7 @@ const notifyError = (text) =>
         progress: undefined,
     })
 
-function fetchAuthorization(action) {
+function auth(action) {
     return fb
         .auth()
         .signInWithEmailAndPassword(action.value.email, action.value.password)
@@ -35,8 +35,8 @@ function fetchAuthorization(action) {
         .catch((error) => ({ error }))
 }
 
-function* fetchUserAuthorization(action) {
-    const { response, error } = yield call(() => fetchAuthorization(action))
+function* getAuth(action) {
+    const { response, error } = yield call(() => auth(action))
     if (response) {
         let data = {
             name: response.user.displayName,
@@ -45,14 +45,14 @@ function* fetchUserAuthorization(action) {
             token: response.user._lat,
             uid: response.user.uid,
         }
-        yield put({ type: 'fetchMessageSuccess', data })
+        yield put({ type: 'gotUser', data })
     }
     if (error) {
-        yield put({ type: 'fetchMessageFailure', error })
+        yield put({ type: 'gotError', error })
     }
 }
 
-function fetchAuthorizationViaGoogle() {
+function authViaGoogle() {
     let provider = new firebase.auth.GoogleAuthProvider()
     return fb
         .auth()
@@ -61,9 +61,9 @@ function fetchAuthorizationViaGoogle() {
         .catch((error) => ({ error }))
 }
 
-function* fetchUserAuthorizationViaGoogle(action) {
+function* getAuthViaGoogle(action) {
     const { response, error } = yield call(() =>
-        fetchAuthorizationViaGoogle(action)
+        authViaGoogle(action)
     )
     if (response) {
         let data = {
@@ -73,14 +73,14 @@ function* fetchUserAuthorizationViaGoogle(action) {
             token: response.user._lat,
             uid: response.user.uid,
         }
-        yield put({ type: 'fetchMessageSuccess', data })
+        yield put({ type: 'gotUser', data })
     }
     if (error) {
-        yield put({ type: 'fetchMessageFailure', error })
+        yield put({ type: 'gotError', error })
     }
 }
 
-function fetchRegistration(action) {
+function registration(action) {
     return fb
         .auth()
         .createUserWithEmailAndPassword(
@@ -98,8 +98,8 @@ function setStandardPhrasesUser(uid, phrases) {
         .set(phrases)
 }
 
-function* fetchUserRegistration(action) {
-    const { response, error } = yield call(() => fetchRegistration(action))
+function* getRegistration(action) {
+    const { response, error } = yield call(() => registration(action))
     if (response) {
         let data = {
             name: response.user.displayName,
@@ -108,7 +108,7 @@ function* fetchUserRegistration(action) {
             token: response.user._lat,
             uid: response.user.uid,
         }
-        yield put({ type: 'fetchMessageSuccess', data })
+        yield put({ type: 'gotUser', data })
         yield call(() =>
             setStandardPhrasesUser(data.uid, {
                 phrases: {
@@ -129,7 +129,7 @@ function* fetchUserRegistration(action) {
         )
     }
     if (error) {
-        yield put({ type: 'fetchMessageFailure', error })
+        yield put({ type: 'gotError', error })
     }
 }
 
@@ -149,7 +149,7 @@ function* fetchResetPassword(action) {
         let error = {
             message: 'Что-то пошло не так... Попробуйте позже',
         }
-        yield put({ type: 'fetchMessageFailure', error })
+        yield put({ type: 'gotError', error })
     }
 }
 
@@ -165,33 +165,33 @@ function* userLoggedOut() {
         let error = {
             message: 'Что-то пошло не так... Попробуйте позже',
         }
-        yield put({ type: 'fetchMessageFailure', error })
+        yield put({ type: 'gotError', error })
     }
 }
+//получение данных чатов один раз
+// function fetchDataFromDatabase() {
+//     return firebase
+//         .database()
+//         .ref('Chats/')
+//         .once('value')
+//         .then((snapshot) => ({ snapshot }))
+//         .catch((error) => ({ error }))
+// }
 
-function fetchDataFromDatabase() {
-    return firebase
-        .database()
-        .ref('Chats/')
-        .once('value')
-        .then((snapshot) => ({ snapshot }))
-        .catch((error) => ({ error }))
-}
-
-function* dataFromDatabase() {
-    const { snapshot, error } = yield call(() => fetchDataFromDatabase())
-    if (snapshot) {
-        const data = snapshot.val()
-        yield put({ type: 'dialoguesFromDatabase', data })
-    }
-    if (error) {
-        let err = {
-            message: 'Что-то пошло не так... Попробуйте позже',
-        }
-        console.log(error)
-        yield put({ type: 'fetchMessageFailure', err })
-    }
-}
+// function* dataFromDatabase() {
+//     const { snapshot, error } = yield call(() => fetchDataFromDatabase())
+//     if (snapshot) {
+//         const data = snapshot.val()
+//         yield put({ type: 'gotChats', data })
+//     }
+//     if (error) {
+//         let err = {
+//             message: 'Что-то пошло не так... Попробуйте позже',
+//         }
+//         console.log(error)
+//         yield put({ type: 'gotError', err })
+//     }
+// }
 
 function pushNewDialogueInDataBase(action) {
     let post = firebase.database().ref('Chats/')
@@ -202,7 +202,7 @@ function pushNewDialogueInDataBase(action) {
         .catch((err) => console.log(err))
 }
 
-function updateDialogueInDataBase(action) {
+function updateChats(action) {
     firebase
         .database()
         .ref('Chats/' + action.idDialogue)
@@ -215,7 +215,7 @@ function updateDialogueInDataBase(action) {
         })
 }
 
-function pushNewMessageInDataBase(action) {
+function addNewMessage(action) {
     firebase
         .database()
         .ref('Chats/' + action.idDialogue + '/messages/')
@@ -280,11 +280,11 @@ function* UserSettings(action) {
             message: 'Что-то пошло не так... Попробуйте позже',
         }
         console.log(error)
-        yield put({ type: 'fetchMessageFailure', err })
+        yield put({ type: 'gotError', err })
     }
 }
 
-function updateSettingsUser(action) {
+function updateChatSettings(action) {
     firebase
         .database()
         .ref('ready-madeOperatorPhrases/' + action.userUID)
@@ -319,7 +319,7 @@ function* topicsFromDB() {
             message: 'Что-то пошло не так... Попробуйте позже',
         }
         console.log(error)
-        yield put({ type: 'fetchMessageFailure', err })
+        yield put({ type: 'gotError', err })
     }
 }
 
@@ -340,7 +340,7 @@ function* usersAvatar(action) {
             token: action.value.user.token,
             uid: action.value.user.uid,
         }
-        yield put({ type: 'fetchMessageSuccess', data })
+        yield put({ type: 'gotUser', data })
 
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
@@ -377,7 +377,7 @@ function* updateAndFetchAvatar(action) {
         let err = {
             message: 'Что-то пошло не так... Попробуйте позже',
         }
-        yield put({ type: 'fetchMessageFailure', err })
+        yield put({ type: 'gotError', err })
     }
 }
 
@@ -397,8 +397,8 @@ function* fetchSettingsFromDB() {
     yield takeLatest('fetchUserSettings', UserSettings)
 }
 
-function* updateSettingsInDB() {
-    yield takeLatest('updateSettingsDialogue', updateSettingsUser)
+function* updateChatSettingsInDB() {
+    yield takeLatest('updateChatSettings', updateChatSettings)
 }
 
 function* updateUserNameInDB() {
@@ -409,59 +409,51 @@ function* updateUserPassword() {
     yield takeLatest('updatePassword', updatePassword)
 }
 
-function* update_Dialogue() {
-    yield takeLatest('updateDialogueInDatabase', updateDialogueInDataBase)
+function* fetchUpdateChats() {
+    yield takeLatest('updateChatsInDB', updateChats)
 }
 
 function* pushNewMessage() {
-    yield takeLatest('pushNewMessageInDatabase', pushNewMessageInDataBase)
+    yield takeLatest('pushNewMessage', addNewMessage)
 }
 
 function* pushDialogueInDB() {
     yield takeLatest('pushDialogue', pushNewDialogueInDataBase)
 }
 
-function* fetchAuthorizationUser() {
-    yield takeLatest('fetchAuthorization', fetchUserAuthorization)
+function* getAuthUser() {
+    yield takeLatest('auth', getAuth)
 }
 
-function* fetchAuthorizationViaGoogleUser() {
-    yield takeLatest(
-        'fetchAuthorizationViaGoogle',
-        fetchUserAuthorizationViaGoogle
-    )
+function* getAuthViaGoogleUser() {
+    yield takeLatest('authViaGoogle', getAuthViaGoogle)
 }
 
-function* fetchRegistrationUser() {
-    yield takeLatest('fetchRegistration', fetchUserRegistration)
+function* getUserRegistration() {
+    yield takeLatest('registration', getRegistration)
 }
 
 function* fetchResetPasswordUser() {
     yield takeLatest('resetPassword', fetchResetPassword)
 }
 
-function* signOutUser() {
-    yield takeLatest('singnOutUser', userLoggedOut)
-}
-
-function* fromDatabase() {
-    yield takeLatest('fetchDialoguesFromDatabase', dataFromDatabase)
+function* signOut() {
+    yield takeLatest('signOutUser', userLoggedOut)
 }
 
 export default function* rootSaga() {
     yield all([
-        fetchAuthorizationUser(),
-        fetchRegistrationUser(),
-        fetchAuthorizationViaGoogleUser(),
+        getAuthUser(),
+        getUserRegistration(),
+        getAuthViaGoogleUser(),
         fetchResetPasswordUser(),
-        signOutUser(),
-        fromDatabase(),
+        signOut(),
         pushDialogueInDB(),
-        update_Dialogue(),
+        fetchUpdateChats(),
         pushNewMessage(),
         updateUserPassword(),
         updateUserNameInDB(),
-        updateSettingsInDB(),
+        updateChatSettingsInDB(),
         fetchSettingsFromDB(),
         fetchTopicsFromDB(),
         updateAvatar(),

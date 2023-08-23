@@ -1,52 +1,50 @@
 const initialState = {
-    loadingFromState: false,
-    errorFromState: false,
+    loading: false,
+    error: false,
     user: null,
-    dialogues: null,
-    valueSearch: null,
-    valueActiveCases: 5,
+    chats: null,
     settingsUser: null,
     topics: null,
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'fetchAuthorization':
+        case 'auth':
             return {
                 ...state,
-                loadingFromState: true,
+                loading: true,
             }
-        case 'fetchAuthorizationViaGoogle':
+        case 'authViaGoogle':
             return {
                 ...state,
-                loadingFromState: true,
+                loading: true,
             }
-        case 'fetchRegistration':
+        case 'registration':
             return {
                 ...state,
-                loadingFromState: true,
+                loading: true,
             }
-        case 'fetchMessageSuccess':
+        case 'gotUser':
             return {
                 ...state,
-                loadingFromState: false,
+                loading: false,
                 user: action.data,
             }
-        case 'fetchMessageFailure':
+        case 'gotError':
             return {
                 ...state,
-                loadingFromState: false,
-                errorFromState: action.error.message,
+                loading: false,
+                error: action.error.message,
             }
         case 'clearErrors':
             return {
                 ...state,
-                errorFromState: false,
+                error: false,
             }
         case 'resetPassword':
             return {
                 ...state,
-                loadingFromState: true,
+                loading: true,
             }
         case 'userLoggedOut':
             return {
@@ -54,27 +52,23 @@ const reducer = (state = initialState, action) => {
                 user: null,
                 settingsUser: null,
                 topics: null,
-                loadingFromState: false,
+                loading: false,
             }
-        case 'singnOutUser':
+        case 'signOutUser':
             return {
                 ...state,
-                loadingFromState: true,
+                loading: true,
             }
-        case 'dialoguesFromDatabase':
+        case 'getChats':
             return {
                 ...state,
-                dialogues: action.data,
+                loading: true,
             }
-        case 'setValueSearch':
+        case 'gotChats':
             return {
                 ...state,
-                valueSearch: action.value,
-            }
-        case 'changeValueActiveCases':
-            return {
-                ...state,
-                valueActiveCases: state.valueActiveCases + 5,
+                loading: false,
+                chats: action.data,
             }
         case 'updatedUserName':
             return {

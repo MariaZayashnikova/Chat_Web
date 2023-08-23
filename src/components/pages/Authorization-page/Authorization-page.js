@@ -5,48 +5,12 @@ import { Form, FormGroup, Input, FormFeedback, Label, Button } from 'reactstrap'
 import { useFormik } from 'formik'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
-import {
-    fetchAuthorization,
-    fetchAuthorizationViaGoogle,
-    clearErrors,
-} from '../../../actions'
+import { auth, authViaGoogle, clearErrors, } from '../../../actions'
 import Spinner from '../../Spinner/Spinner'
+import { validate } from '../../../utils'
 import './Authorization-page.css'
 
-const validate = (values) => {
-    const errors = {}
-
-    if (!values.password) {
-        errors.password = true
-    } else if (
-        !/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/i.test(
-            values.password
-        )
-    ) {
-        errors.password =
-            'Пароль должен содержать цифру, буквы в нижнем и верхнем регистре и иметь длину не менее 8 знаков'
-    }
-
-    if (!values.email) {
-        errors.email = true
-    } else if (
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-    ) {
-        errors.email = 'Invalid email address'
-    }
-
-    return errors
-}
-
-export { validate }
-
-function AuthorizationPage({
-    errorFromState,
-    loadingFromState,
-    fetchAuthorization,
-    clearErrors,
-    fetchAuthorizationViaGoogle,
-}) {
+function AuthorizationPage({ error, loading, auth, clearErrors, authViaGoogle }) {
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -54,14 +18,14 @@ function AuthorizationPage({
         },
         validate,
         onSubmit: (values) => {
-            if (errorFromState) clearErrors()
+            if (error) clearErrors()
 
-            fetchAuthorization(values)
+            auth(values)
         },
     })
 
     function onSignIn() {
-        fetchAuthorizationViaGoogle()
+        authViaGoogle()
     }
 
     const popover = (
@@ -149,41 +113,23 @@ function AuthorizationPage({
                             Войти
                         </Button>
                     </Form>
-                    {loadingFromState ? <Spinner /> : null}
-                    {errorFromState ? (
-                        <div className="error">{errorFromState}</div>
+                    {loading ? <Spinner /> : null}
+                    {error ? (
+                        <div className="error">{error}</div>
                     ) : null}
                 </div>
                 <div className="container-links">
                     <div className="link">
-                        <button
-                            onClick={onSignIn}
-                            className="link_btnGoogle"
-                        >
-                            <FontAwesomeIcon
-                                className="link_icon"
-                                icon={['fab', 'google']}
-                            />
+                        <button onClick={onSignIn} className="link_btnGoogle" >
+                            <FontAwesomeIcon className="link_icon" icon={['fab', 'google']} />
                             Войти через Google
                         </button>
                     </div>
                     <div className="link">
-                        <Link
-                            to="/Registration"
-                            className="link_elem"
-                            onClick={() => {
-                                if (errorFromState) clearErrors()
-                            }}
-                        >
+                        <Link to="/Registration" className="link_elem" >
                             Зарегистрироваться
                         </Link>
-                        <Link
-                            to="/ResetPassword"
-                            className="link_elem"
-                            onClick={() => {
-                                if (errorFromState) clearErrors()
-                            }}
-                        >
+                        <Link to="/ResetPassword" className="link_elem" >
                             Забыли пароль?
                         </Link>
                     </div>
@@ -196,12 +142,12 @@ function AuthorizationPage({
     )
 }
 
-const mapStateToProps = ({ errorFromState, loadingFromState }) => ({ loadingFromState, errorFromState })
+const mapStateToProps = ({ error, loading }) => ({ loading, error })
 
 const mapDispatchToProps = {
-    fetchAuthorization,
+    auth,
     clearErrors,
-    fetchAuthorizationViaGoogle,
+    authViaGoogle,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthorizationPage)

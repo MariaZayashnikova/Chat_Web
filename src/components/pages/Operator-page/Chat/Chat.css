@@ -1,0 +1,135 @@
+.Chat {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.Chat__client {
+    display: flex;
+    font-weight: bold;
+    font-size: calc(18px + (18 - 14) * ((100vw - 500px) / (1920 - 500)));
+    margin-bottom: 10px;
+    padding: 5px 15px;
+    border-radius: 10px;
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.1);
+}
+
+.Chat__client button {
+    margin-left: 15px;
+}
+
+.info-message {
+    position: relative;
+}
+
+.time-message {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+}
+
+.Chat__messages {
+    height: 70%;
+}
+
+.Chat__messages .messages {
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 7px;
+}
+
+.Answer {
+    display: flex;
+    height: 20%;
+    padding: 10px;
+    background: rgba(173, 170, 170, 0.2);;
+    border-radius: 10px;
+}
+
+.Answer-form__emoji_btn {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    font-size: 26px;
+    color: cornflowerblue;
+    cursor: pointer;
+}
+
+.Answer-form__emoji {
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+}
+
+.Answer .Answer-form {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.Answer-form__btn {
+    width: 20%;
+    align-self: flex-end;
+    margin-top: 10px;
+    font-size: calc(14px + (14 - 12) * ((100vw - 500px) / (1920 - 500)));;
+}
+
+.ready-answers__info {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px;
+}
+
+.Answer .ready-answers  {
+    width: 20%;
+}
+
+.Answer .dropdown-btn {
+    background: transparent;
+    color: black;
+    width: 60%;
+}
+
+.messages .operator-message {
+    align-self: flex-end;
+    margin-bottom: 5px;
+    background: dodgerblue;
+    color: white;
+}
+
+.messages .client-message {
+    background: lightgrey;
+    margin-bottom: 5px;
+}
+
+.image-message {
+    cursor: pointer;
+}
+
+.Chat__result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stars {
+    margin: 10px 0;
+}
+
+.messageInfo {
+    height: 25px;
+    width: 100%;
+    text-align: center;
+    margin: 5px 0;
+    font-style: italic;
+}
+
+.popover {
+    border: 1px solid blue !important;
+}
+
+.popover-header {
+    background-color:rgba(75, 179, 240, 0.911) !important;
+}

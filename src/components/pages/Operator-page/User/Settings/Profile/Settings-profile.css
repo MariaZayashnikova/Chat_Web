@@ -1,0 +1,35 @@
+.Settings-profile {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    font-family: "Trebuchet MS";
+}
+
+.Settings-profile-inputs {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+.Settings-profile-inputs label {
+    margin-bottom: 10px;
+}
+
+.Settings-profile-avatar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Settings-profile button {
+    margin: 10px 0;
+}
+
+.avatar {
+    width: 200px;
+}
+
+.avatar_image {
+    border-radius: 100px;
+    cursor: pointer;
+}
